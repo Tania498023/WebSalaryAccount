@@ -29,8 +29,8 @@ public class UserHib {
         this.userRole = userRole;
         this.records = records;
     }
-    public UserHib(String lastName,String password) {
-
+    public UserHib(String lastName,UserRoleHib userRole, String password) {
+        this.userRole = userRole;
         this.lastName = lastName;
         this.password = password;
     }

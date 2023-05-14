@@ -6,6 +6,7 @@
 <head>
     <title>Title</title>
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 <div class="form-style-2">
@@ -36,7 +37,7 @@
         <c:forEach items="${usersFromServer}" var="user">
             <tr>
                 <td>${user.lastName}</td>
-
+                <td>${user.getUserRoleHib()}</td>
             </tr>
         </c:forEach>
     </table>

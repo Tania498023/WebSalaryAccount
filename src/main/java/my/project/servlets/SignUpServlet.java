@@ -3,6 +3,7 @@ package my.project.servlets;
 
 
 import my.project.models.UserHib;
+import my.project.models.UserRoleHib;
 import my.project.repositories.IRepository;
 import my.project.repositories.Repository;
 
@@ -46,11 +47,12 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // вытащили данные регистрации
+        req.setCharacterEncoding("UTF-8");
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
         // создали пользователя и сохранили его в хранилище
-        UserHib user = new UserHib(name, password);
+        UserHib user = new UserHib(name, UserRoleHib.DEFAULT,password);
         usersRepository.save(user);
         doGet(req, resp);
     }
