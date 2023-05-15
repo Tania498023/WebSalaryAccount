@@ -6,6 +6,7 @@ import my.project.models.UserHib;
 import my.project.models.UserRoleHib;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Repository implements IRepository{
@@ -45,9 +46,28 @@ public class Repository implements IRepository{
       return listUsersInDb.GetUserHibList();
 
     }
+    public List<RecordHib> findAllRec() {
+
+        return listUsersInDb.GetRecHibList();
+
+    }
+    @Override
+    public  List<RecordHib> findRecByName(String name) {
+        List <RecordHib> recByName = new ArrayList<>();
+    for (RecordHib rec : listUsersInDb.GetRecHibList()) {
+        if (rec.getLastName().getLastName().equals(name)) {
+            recByName.add(rec);
+        }
+      }
+    return recByName;
+}
     @Override
     public void save(UserHib user) {
       listUsersInDb.SaveSessionUser(user);
+    }
+    @Override
+    public void saveRec(RecordHib record) {
+        listUsersInDb.SaveSessionRec(record);
     }
     @Override
     public boolean isExist(String name, String password) {

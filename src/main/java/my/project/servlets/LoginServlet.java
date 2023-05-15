@@ -41,6 +41,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // вытаскиваем из запроса имя пользователя и его пароль
+        req.setCharacterEncoding("UTF-8");
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
@@ -53,7 +54,7 @@ public class LoginServlet extends HttpServlet {
             // перенаправляем на страницу home
             req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
         } else {
-            resp.sendRedirect(req.getContextPath() + "/login");
+            resp.sendRedirect(req.getContextPath() + "/signUp");
         }
 
     }

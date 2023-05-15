@@ -13,5 +13,9 @@ public interface IRepository {
 
     List<UserHib> findAll();
     void save(UserHib user);
+
+    List<RecordHib> findAllRec();
+    List<RecordHib> findRecByName(String name);
+    void saveRec(RecordHib record);
     boolean isExist(String name, String password);
 }

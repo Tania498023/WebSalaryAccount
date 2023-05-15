@@ -22,6 +22,7 @@
             <input class="input-field" type="password" id="password" name="password">
         </label>
         <input type="submit" value="Sign Up">
+        <input type="button" value="Main Page" onclick=location.href='home'>
     </form>
 </div>
 
