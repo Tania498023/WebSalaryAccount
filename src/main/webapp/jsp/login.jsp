@@ -10,16 +10,18 @@
 <body>
 <div class="form-style-2">
     <div class="form-style-2-heading">
-        Please Sign Up!
+        Введите логин и пароль!
     </div>
     <form method="post" action="/login">
-        <label for="name">User name
+        <label for="name">Name
             <input class="input-field" type="text" id="name" name="name">
         </label>
         <label for="password">Password
             <input class="input-field" type="password" id="password" name="password">
         </label>
-        <input type="submit" value="Sign Up">
+        <input type="button" value="Вход"onclick=location.href='home'>
+        <input type="button" value="Регистрация" onclick=location.href='signUp'>
+
     </form>
 </div>
 </body>

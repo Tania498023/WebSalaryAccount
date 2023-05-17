@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface IRepository {
     UserHib addFakeDataUser ();
- RecordHib addFakeDataRecord ();
-
+    RecordHib addFakeDataRecord ();
 
     List<UserHib> findAll();
+    UserHib findUserByName(String lastName);
     void save(UserHib user);
 
     List<RecordHib> findAllRec();

@@ -36,6 +36,7 @@ public class RecordHib {
         this.message = message;
     }
 
+
     public RecordHib(LocalDate date, Integer hour, String message, UserHib lastName) {
         this.date = date;
         this.hour = hour;

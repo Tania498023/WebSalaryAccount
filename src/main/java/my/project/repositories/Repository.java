@@ -46,6 +46,16 @@ public class Repository implements IRepository{
       return listUsersInDb.GetUserHibList();
 
     }
+   public UserHib findUserByName(String lastName){
+        UserHib curUs = null;
+
+        for (UserHib user : listUsersInDb.GetUserHibList()){
+            if(user.getLastName().equals(lastName)){
+                curUs = user;
+            }
+        }
+       return curUs;
+    }
     public List<RecordHib> findAllRec() {
 
         return listUsersInDb.GetRecHibList();

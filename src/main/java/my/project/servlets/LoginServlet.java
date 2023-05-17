@@ -54,7 +54,9 @@ public class LoginServlet extends HttpServlet {
             // перенаправляем на страницу home
             req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
         } else {
-            resp.sendRedirect(req.getContextPath() + "/signUp");
+          //  resp.sendRedirect(req.getContextPath() + "/signUp");
+            //TO DO вывод сообщения об ошибке входа
+
         }
 
     }
