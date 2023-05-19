@@ -35,6 +35,9 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<RecordHib> records = usersRepository.findAllRec();
         req.setAttribute("usersFromServer", records);
+
+
+
         List<UserHib> users = usersRepository.findAll();
         req.setAttribute("roleByName", users);
         List<String> listUsers = new ArrayList<>();
@@ -43,7 +46,7 @@ public class HomeServlet extends HttpServlet {
             listUsers.add(usByName);
         }
           req.setAttribute("user", req.getSession().getAttribute("user"));
-          req.setAttribute("userFromServer", listUsers);
+          req.setAttribute("usersName", listUsers);
           req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
     }
 

@@ -8,11 +8,9 @@
 </head>
 <body>
 
-<form method="post" action="/home">
-<%--    <div class="form-style-2">--%>
-        <div class="form-style-2-heading">
+<div class="form-style-2-heading">
 <%--            Текущий пользователь--%>
-<%--        </div>--%>
+
         <table>
             <tr>
                 <th>Текущий пользователь</th>
@@ -26,31 +24,34 @@
         </table>
     </div>
 
-    <label for="date">Date
-        <input class="input-field" type="date" id="date" name="date">
-    </label>
-    <label for="hour">Hours
-        <input class="input-field" type="number" id="hour" name="hour">
-    </label>
-    <label for="message">Message
-        <input class="input-field" type="text" id="message" name="message">
-    </label>
+<div class="form-style-2 ">
+    <form method="post" action="/home">
 
-    <label for="lastName">Name
-    <select name="lastName" id="lastName" >
-        <option selected value=""disabled>Список пользователей</option>
+        <label for="date">Date
+            <input class="input-field" type="date" id="date" name="date">
+        </label>
+        <label for="hour">Hours
+            <input class="input-field" type="number" id="hour" name="hour">
+        </label>
+        <label for="message">Message
+            <input class="input-field" type="text" id="message" name="message">
+        </label>
 
-        <c:forEach items="${userFromServer}" var="userFromServer">
+        <label>Name
+            <select name="lastName" >
+                <option selected value=""disabled>Список пользователей</option>
 
-             <option value="">${userFromServer}</option>
-        </c:forEach>
+                <c:forEach items="${usersName}" var="usersName">
+                     <option value="${usersName}">${usersName}</option>
+                </c:forEach>
 
-    </select>
-    </label>
-<div class="form-style-2 input[type=submit]">
-    <input type="submit" value="Save">
+            </select>
+        </label>
+
+        <input type="submit" value="Save">
+    </form>
 </div>
-</form>
+
 
 <div class="form-style-2">
     <div class="form-style-2-heading">
