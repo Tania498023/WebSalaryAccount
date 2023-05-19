@@ -23,7 +23,7 @@ import java.util.List;
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private IRepository usersRepository;
-    public String currentUser;
+
     @Override
     public void init() throws ServletException {
         this.usersRepository = new Repository();
@@ -36,17 +36,16 @@ public class HomeServlet extends HttpServlet {
         List<RecordHib> records = usersRepository.findAllRec();
         req.setAttribute("usersFromServer", records);
         List<UserHib> users = usersRepository.findAll();
+        req.setAttribute("roleByName", users);
         List<String> listUsers = new ArrayList<>();
         for (UserHib item: users) {
             var usByName = item.getLastName();
             listUsers.add(usByName);
         }
-         // String currentUser =  req.getParameter("name");
           req.setAttribute("user", req.getSession().getAttribute("user"));
           req.setAttribute("userFromServer", listUsers);
           req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
     }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -61,22 +60,13 @@ public class HomeServlet extends HttpServlet {
             String lastName = req.getParameter("lastName");
             RecordHib rec = new RecordHib(d,h,message,usersRepository.findUserByName(lastName));
             usersRepository.saveRec(rec);
+            req.setAttribute("listRec", rec);
         }
         catch (Exception e){
 
         }
-    //    resp.sendRedirect(req.getContextPath() + "/home");//?????????
+        //resp.sendRedirect(req.getContextPath() + "/home");
+       doGet(req, resp);
 
-        doGet(req, resp);//???????
-
-//
-//        // получаем параметр запроса
-//        String color = req.getParameter("color");
-//        // создаем Cookie с данным значением
-//        Cookie colorCookie = new Cookie("color", color);
-//        // кладем в ответ
-//        resp.addCookie(colorCookie);
-//        // перенаправляем пользователя обратно на страницу home
-//        resp.sendRedirect(req.getContextPath() + "/home");
     }
 }

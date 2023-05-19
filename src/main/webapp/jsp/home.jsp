@@ -58,10 +58,10 @@
     </div>
     <table>
         <tr>
-            <th>Date</th>
-            <th>Hours</th>
-            <th>Message</th>
-            <th>Name</th>
+            <th>Дата</th>
+            <th>Время</th>
+            <th>Работы</th>
+            <th>Имя</th>
         </tr>
 
         <c:forEach items="${usersFromServer}" var="records">
@@ -71,6 +71,26 @@
                 <td>${records.getHour()}</td>
                 <td>${records.getMessage()}</td>
                 <td>${records.getLastName().getLastName()}</td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
+<div class="form-style-2">
+    <div class="form-style-2-heading">
+        Список сотрудников
+    </div>
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Роль</th>
+         </tr>
+
+        <c:forEach items="${roleByName}" var="users">
+            <tr>
+
+                <td>${users.getLastName()}</td>
+                <td>${users.getUserRoleHib()}</td>
+
             </tr>
         </c:forEach>
     </table>

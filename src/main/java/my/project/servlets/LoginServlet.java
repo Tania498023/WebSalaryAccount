@@ -50,8 +50,8 @@ public class LoginServlet extends HttpServlet {
          req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
         }
         else {
-           resp.sendRedirect(req.getContextPath() + "/login");//пока остаемся на странице login и нажимаем кнопку Регистрация для перехода на страницу SignUp
- //        Message.infoBox("Логин или пароль введен неверно!","Message");
+            resp.sendRedirect(req.getContextPath() + "/login");//пока остаемся на странице login и нажимаем кнопку Регистрация для перехода на страницу SignUp
+        Message.infoBox("Логин или пароль введен неверно!","Message");
 
         }
 
