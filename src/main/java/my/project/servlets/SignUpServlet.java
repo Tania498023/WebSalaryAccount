@@ -17,15 +17,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * 14.03.2018
- * SignUpServlet
- *
- * Сервлет для регистрации
- *
- * @author Sidikov Marsel (First Software Engineering Platform)
- * @version v1.0
- */
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
 

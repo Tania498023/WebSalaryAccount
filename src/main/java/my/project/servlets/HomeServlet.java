@@ -20,15 +20,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 14.03.2018
- * HomeServlet
- *
- * Сервлет, который работает со страницей home
- *
- * @author Sidikov Marsel (First Software Engineering Platform)
- * @version v1.0
- */
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private IRepository usersRepository;
@@ -50,6 +41,8 @@ public class HomeServlet extends HttpServlet {
             var usByName = item.getLastName();
             listUsers.add(usByName);
         }
+         // String currentUser =  req.getParameter("name");
+          req.setAttribute("user", req.getSession().getAttribute("user"));
           req.setAttribute("userFromServer", listUsers);
           req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
     }
@@ -72,16 +65,18 @@ public class HomeServlet extends HttpServlet {
         catch (Exception e){
 
         }
+    //    resp.sendRedirect(req.getContextPath() + "/home");//?????????
 
-        doGet(req, resp);
+        doGet(req, resp);//???????
 
-        // получаем параметр запроса
-        String color = req.getParameter("color");
-        // создаем Cookie с данным значением
-        Cookie colorCookie = new Cookie("color", color);
-        // кладем в ответ
-        resp.addCookie(colorCookie);
-        // перенаправляем пользователя обратно на страницу home
-        resp.sendRedirect(req.getContextPath() + "/home");
+//
+//        // получаем параметр запроса
+//        String color = req.getParameter("color");
+//        // создаем Cookie с данным значением
+//        Cookie colorCookie = new Cookie("color", color);
+//        // кладем в ответ
+//        resp.addCookie(colorCookie);
+//        // перенаправляем пользователя обратно на страницу home
+//        resp.sendRedirect(req.getContextPath() + "/home");
     }
 }

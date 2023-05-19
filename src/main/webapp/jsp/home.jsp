@@ -4,10 +4,28 @@
 <html>
 <head>
     <title>Title</title>
+    <link href="/css/styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
 <form method="post" action="/home">
+<%--    <div class="form-style-2">--%>
+        <div class="form-style-2-heading">
+<%--            Текущий пользователь--%>
+<%--        </div>--%>
+        <table>
+            <tr>
+                <th>Текущий пользователь</th>
+
+             </tr>
+            <tr>
+
+                <td>${user}</td>
+
+            </tr>
+        </table>
+    </div>
+
     <label for="date">Date
         <input class="input-field" type="date" id="date" name="date">
     </label>
@@ -29,12 +47,14 @@
 
     </select>
     </label>
+<div class="form-style-2 input[type=submit]">
     <input type="submit" value="Save">
+</div>
 </form>
 
 <div class="form-style-2">
     <div class="form-style-2-heading">
-        User records
+        Учет времени сотрудников
     </div>
     <table>
         <tr>

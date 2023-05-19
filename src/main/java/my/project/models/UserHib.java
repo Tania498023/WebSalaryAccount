@@ -44,6 +44,10 @@ public class UserHib {
         this.lastName = lastName;
         this.userRole = userRole;
     }
+    public UserHib(String lastName, String password) {
+        this.lastName = lastName;
+        this.password = password;
+    }
 
     public String getPassword() {
         return password;

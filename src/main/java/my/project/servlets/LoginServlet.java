@@ -2,6 +2,8 @@ package my.project.servlets;
 
 
 
+import my.project.help.Message;
+import my.project.models.UserHib;
 import my.project.repositories.IRepository;
 import my.project.repositories.Repository;
 
@@ -13,20 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * 14.03.2018
- * LoginServlet
- *
- * Сервлет, позволяющий польователю войти в систему
- *
- * @author Sidikov Marsel (First Software Engineering Platform)
- * @version v1.0
- */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     // ссылка на хранилище пользователей
     private IRepository usersRepository;
+
 
     @Override
     public void init() throws ServletException {
@@ -40,6 +34,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         // вытаскиваем из запроса имя пользователя и его пароль
         req.setCharacterEncoding("UTF-8");
         String name = req.getParameter("name");
@@ -50,12 +45,13 @@ public class LoginServlet extends HttpServlet {
             // создаем для него сессию
             HttpSession session = req.getSession();
             // кладем в атрибуты сессии атрибут user с именем пользователя
-            session.setAttribute("user", name);
+            session.setAttribute("user",name);
             // перенаправляем на страницу home
-            req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
-        } else {
-          //  resp.sendRedirect(req.getContextPath() + "/signUp");
-            //TO DO вывод сообщения об ошибке входа
+         req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
+        }
+        else {
+           resp.sendRedirect(req.getContextPath() + "/login");//пока остаемся на странице login и нажимаем кнопку Регистрация для перехода на страницу SignUp
+ //        Message.infoBox("Логин или пароль введен неверно!","Message");
 
         }
 

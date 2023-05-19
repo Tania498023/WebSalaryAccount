@@ -19,7 +19,7 @@
         <label for="password">Password
             <input class="input-field" type="password" id="password" name="password">
         </label>
-        <input type="button" value="Вход"onclick=location.href='home'>
+        <input type="submit" value="Вход">
         <input type="button" value="Регистрация" onclick=location.href='signUp'>
 
     </form>
