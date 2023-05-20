@@ -18,4 +18,6 @@ public interface IRepository {
     List<RecordHib> findRecByName(String name);
     void saveRec(RecordHib record);
     boolean isExist(String name, String password);
+
+
 }

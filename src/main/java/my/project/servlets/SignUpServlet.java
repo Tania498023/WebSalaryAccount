@@ -39,12 +39,20 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // вытащили данные регистрации
         req.setCharacterEncoding("UTF-8");
-        String name = req.getParameter("name");
-        String password = req.getParameter("password");
+        try {
+            String name = req.getParameter("name");
+            String role = req.getParameter("role");
+            UserRoleHib userRoleHib = UserRoleHib.valueOf(role);
+            String password = req.getParameter("password");
 
-        // создали пользователя и сохранили его в хранилище
-        UserHib user = new UserHib(name, UserRoleHib.DEFAULT,password);
-        usersRepository.save(user);
+
+            // создали пользователя и сохранили его в хранилище
+            UserHib user = new UserHib(name, userRoleHib, password);
+            usersRepository.save(user);
+
+        } catch (Exception e) {
+
+        }
         doGet(req, resp);
     }
 }

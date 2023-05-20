@@ -9,8 +9,6 @@
 <body>
 
 <div class="form-style-2-heading">
-<%--            Текущий пользователь--%>
-
         <table>
             <tr>
                 <th>Текущий пользователь</th>
@@ -19,6 +17,7 @@
             <tr>
 
                 <td>${user}</td>
+                <td>${usersRole}</td>
 
             </tr>
         </table>
@@ -76,25 +75,6 @@
         </c:forEach>
     </table>
 </div>
-<div class="form-style-2">
-    <div class="form-style-2-heading">
-        Список сотрудников
-    </div>
-    <table>
-        <tr>
-            <th>Имя</th>
-            <th>Роль</th>
-         </tr>
 
-        <c:forEach items="${roleByName}" var="users">
-            <tr>
-
-                <td>${users.getLastName()}</td>
-                <td>${users.getUserRoleHib()}</td>
-
-            </tr>
-        </c:forEach>
-    </table>
-</div>
 </body>
 </html>

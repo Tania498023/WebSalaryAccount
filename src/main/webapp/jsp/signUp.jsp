@@ -14,35 +14,41 @@
         Зарегистрируйтесь!
     </div>
     <form method="post" action="/signUp">
-        <label for="name">Name
+        <label for="name">Имя
             <input class="input-field" type="text" id="name" name="name">
         </label>
-
-        <label for="password">Password
+        <label for="role">Роль
+            <input class="input-field" type="role" id="role" name="role">
+        </label>
+        <label for="password">Пароль
             <input class="input-field" type="password" id="password" name="password">
         </label>
+
         <input type="submit" value="Регистрация">
         <input type="button" value="Авторизация" onclick=location.href='login'>
     </form>
 </div>
+<div class="form-style-2">
+    <div class="form-style-2-heading">
+        Список сотрудников
+    </div>
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Роль</th>
+            <th>Пароль</th>
+        </tr>
 
-<%--<div class="form-style-2">--%>
-<%--    <div class="form-style-2-heading">--%>
-<%--        Already registered!--%>
-<%--    </div>--%>
-<%--    <table>--%>
-<%--        <tr>--%>
-<%--            <th>Имя</th>--%>
-<%--            <th>Роль</th>--%>
+        <c:forEach items="${usersFromServer}" var="users">
+            <tr>
 
-<%--        </tr>--%>
-<%--        <c:forEach items="${usersFromServer}" var="user">--%>
-<%--            <tr>--%>
-<%--                <td>${user.lastName}</td>--%>
-<%--                <td>${user.getUserRoleHib()}</td>--%>
-<%--            </tr>--%>
-<%--        </c:forEach>--%>
-<%--    </table>--%>
-<%--</div>--%>
+                <td>${users.getLastName()}</td>
+                <td>${users.getUserRoleHib()}</td>
+                <td>${users.getPassword()}</td>
+
+            </tr>
+        </c:forEach>
+    </table>
+</div>
 </body>
 </html>

@@ -36,8 +36,6 @@ public class HomeServlet extends HttpServlet {
         List<RecordHib> records = usersRepository.findAllRec();
         req.setAttribute("usersFromServer", records);
 
-
-
         List<UserHib> users = usersRepository.findAll();
         req.setAttribute("roleByName", users);
         List<String> listUsers = new ArrayList<>();
@@ -45,7 +43,14 @@ public class HomeServlet extends HttpServlet {
             var usByName = item.getLastName();
             listUsers.add(usByName);
         }
-          req.setAttribute("user", req.getSession().getAttribute("user"));
+        
+
+        Object checkUser = req.getSession().getAttribute("user");
+        req.setAttribute("user", checkUser);
+        UserHib us = usersRepository.findUserByName(checkUser.toString());
+        req.setAttribute("usersRole", us.getUserRoleHib());
+
+
           req.setAttribute("usersName", listUsers);
           req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
     }
@@ -68,7 +73,7 @@ public class HomeServlet extends HttpServlet {
         catch (Exception e){
 
         }
-        //resp.sendRedirect(req.getContextPath() + "/home");
+
        doGet(req, resp);
 
     }

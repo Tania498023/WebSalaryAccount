@@ -4,6 +4,7 @@ package my.project.servlets;
 
 import my.project.help.Message;
 import my.project.models.UserHib;
+import my.project.models.UserRoleHib;
 import my.project.repositories.IRepository;
 import my.project.repositories.Repository;
 
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -37,6 +40,8 @@ public class LoginServlet extends HttpServlet {
 
         // вытаскиваем из запроса имя пользователя и его пароль
         req.setCharacterEncoding("UTF-8");
+        List<UserHib> checkRole = new ArrayList<>();
+
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
@@ -46,11 +51,12 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession();
             // кладем в атрибуты сессии атрибут user с именем пользователя
             session.setAttribute("user",name);
+
             // перенаправляем на страницу home
          req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
         }
         else {
-            resp.sendRedirect(req.getContextPath() + "/login");//пока остаемся на странице login и нажимаем кнопку Регистрация для перехода на страницу SignUp
+        resp.sendRedirect(req.getContextPath() + "/login");//пока остаемся на странице login и нажимаем кнопку Регистрация для перехода на страницу SignUp
         Message.infoBox("Логин или пароль введен неверно!","Message");
 
         }
