@@ -33,6 +33,22 @@ public class SignUpServlet extends HttpServlet {
         List<UserHib> users = usersRepository.findAll();
         req.setAttribute("usersFromServer", users);
 
+
+        Object checkUser = req.getSession().getAttribute("user");
+
+        UserHib us = usersRepository.findUserByName(checkUser.toString());
+
+        List<String> roleForAvtorizovan = new ArrayList<>();
+        if(us!=null&&us.getUserRoleHib().toString()=="MANAGER") {
+            roleForAvtorizovan.add("MANAGER");
+            roleForAvtorizovan.add("FREELANCER");
+            roleForAvtorizovan.add("EMPLOYEE");
+        }
+        else {
+            roleForAvtorizovan.add("DEFAULT");
+        }
+        req.setAttribute("listRoleFromServer", roleForAvtorizovan);
+
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
         dispatcher.forward(req, resp);
     }

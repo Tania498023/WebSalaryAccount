@@ -19,11 +19,11 @@
         </label>
         <label>Роль
             <select name="role" >
-                <option selected value=""disabled>DEFAULT</option>
 
-                    <option value="0">MANAGER</option>
-                    <option value="1">FREELANCER</option>
-                    <option value="2">EMPLOYEE</option>
+
+                <c:forEach items="${listRoleFromServer}" var="listRoleFromServer">
+                    <option value="${listRoleFromServer}">${listRoleFromServer}</option>
+                </c:forEach>
 
             </select>
         </label>

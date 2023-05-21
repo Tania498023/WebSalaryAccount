@@ -10,10 +10,7 @@ import my.project.repositories.Repository;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -50,6 +47,14 @@ public class HomeServlet extends HttpServlet {
         UserHib us = usersRepository.findUserByName(checkUser.toString());
         req.setAttribute("usersRole", us.getUserRoleHib());
 
+
+//        HttpSession session = req.getSession();
+////        // кладем в атрибуты сессии атрибут user с именем пользователя
+//        session.setAttribute("user",checkUser);
+//
+//        // перенаправляем на страницу home
+        req.getServletContext().getRequestDispatcher("/signUp").forward(req, resp);
+//
 
           req.setAttribute("usersName", listUsers);
           req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
