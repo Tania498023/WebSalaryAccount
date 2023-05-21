@@ -17,8 +17,15 @@
         <label for="name">Имя
             <input class="input-field" type="text" id="name" name="name">
         </label>
-        <label for="role">Роль
-            <input class="input-field" type="role" id="role" name="role">
+        <label>Роль
+            <select name="role" >
+                <option selected value=""disabled>DEFAULT</option>
+
+                    <option value="0">MANAGER</option>
+                    <option value="1">FREELANCER</option>
+                    <option value="2">EMPLOYEE</option>
+
+            </select>
         </label>
         <label for="password">Пароль
             <input class="input-field" type="password" id="password" name="password">
