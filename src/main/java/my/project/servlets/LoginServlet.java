@@ -56,7 +56,8 @@ public class LoginServlet extends HttpServlet {
 
 
             // перенаправляем на страницу home
-         req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
+
+            resp.sendRedirect(req.getContextPath() + "/home");
         }
         else {
         resp.sendRedirect(req.getContextPath() + "/login");//пока остаемся на странице login и нажимаем кнопку Регистрация для перехода на страницу SignUp

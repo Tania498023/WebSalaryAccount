@@ -75,6 +75,9 @@
         </c:forEach>
     </table>
 </div>
-<a href="<c:url value='/logout' />">Logout</a>
+<%--<a href="<c:url value='/logout' />">Logout</a>--%>
+<div class=form-style-2 input[type=button]">
+<input type="button" value="Выход" onclick=location.href='logout'>
+</div>
 </body>
 </html>

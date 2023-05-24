@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import static java.util.Objects.nonNull;
 
-
-@WebFilter("/home")
+@WebFilter("/")
 public class AuthFilter implements Filter{
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -22,11 +22,12 @@ public class AuthFilter implements Filter{
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         HttpServletResponse response = (HttpServletResponse)servletResponse;
 
+
         // смотрим, есть ли сессия для данного запроса (проверяется наличие Cookie с названием JSESSIONID
         HttpSession session = request.getSession(false);
 
         // если сессия не была, или у сессии отсутствует атрибут user, перенаправляем пользователя на страницу с логином
-        if (session == null || session.getAttribute("user") == null) {
+        if (nonNull(session) && nonNull(session.getAttribute("name") ) &&nonNull(session.getAttribute("password") )){
             servletRequest.getServletContext().getRequestDispatcher("/login").forward(request, response);
         }
         // отдаем запрос дальше в цепочку фильтров
