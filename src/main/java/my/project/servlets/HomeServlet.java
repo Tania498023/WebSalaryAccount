@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 @WebServlet("/home")
@@ -42,22 +43,18 @@ public class HomeServlet extends HttpServlet {
         }
         
 
-        Object checkUser = req.getSession().getAttribute("user");
+        Object checkUser = req.getSession().getAttribute("user");//получаем атрибут "user" из сессии
         req.setAttribute("user", checkUser);
         UserHib us = usersRepository.findUserByName(checkUser.toString());
         req.setAttribute("usersRole", us.getUserRoleHib());
 
-
-//        HttpSession session = req.getSession();
-////        // кладем в атрибуты сессии атрибут user с именем пользователя
-//        session.setAttribute("user",checkUser);
-//
-//        // перенаправляем на страницу home
-        req.getServletContext().getRequestDispatcher("/signUp").forward(req, resp);
-//
+        // перенаправляем на страницу home
+     //   req.getServletContext().getRequestDispatcher("/signUp").forward(req, resp);
 
           req.setAttribute("usersName", listUsers);
           req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
+
+
     }
 
     @Override

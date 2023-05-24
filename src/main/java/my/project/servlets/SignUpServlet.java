@@ -30,8 +30,8 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<UserHib> users = usersRepository.findAll();
-        req.setAttribute("usersFromServer", users);
+        List<UserHib> users = usersRepository.findAll();//*отсюда будем выводить список пользователей в html
+        req.setAttribute("usersFromServer", users);//*в атрибут запроса положили пользователей
 
 
         Object checkUser = req.getSession().getAttribute("user");
@@ -50,15 +50,17 @@ public class SignUpServlet extends HttpServlet {
         req.setAttribute("listRoleFromServer", roleForAvtorizovan);
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
-        dispatcher.forward(req, resp);
+        dispatcher.forward(req, resp);//*перенаправление запроса на страницу signUp.jsp
+        //*в методе :сервер получил запрос, вытащил пользователей(users) из Repository, затем положил users в атрибуты запроса и отправил данные на jsp.
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // вытащили данные регистрации
         req.setCharacterEncoding("UTF-8");
         try {
-            String name = req.getParameter("name");
+            String name = req.getParameter("name");//из req забираем параметр name
             String role = req.getParameter("role");
             UserRoleHib userRoleHib = UserRoleHib.valueOf(role);
             String password = req.getParameter("password");
@@ -71,6 +73,7 @@ public class SignUpServlet extends HttpServlet {
         } catch (Exception e) {
 
         }
-        doGet(req, resp);
+        doGet(req, resp);//перенаправление данных на страницу signUp через doGet
     }
+    //*в методе регистрируем получение данных с сервера
 }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 @WebServlet("/login")
@@ -51,6 +52,8 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession();
             // кладем в атрибуты сессии атрибут user с именем пользователя
             session.setAttribute("user",name);
+
+
 
             // перенаправляем на страницу home
          req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
