@@ -11,7 +11,7 @@
 <body>
 <div class="form-style-2">
     <div class="form-style-2-heading">
-        Зарегистрируйтесь!
+        Зарегистрироваться/добавить пользователя
     </div>
     <form method="post" action="/signUp">
         <label for="name">Имя
@@ -32,9 +32,13 @@
         </label>
 
         <input type="submit" value="Регистрация">
-        <input type="button" value="Авторизация" onclick=location.href='login'>
+<%--        <input type="button" value="Авторизация" onclick=location.href='login'>--%>
     </form>
 </div>
+
+
+    <c:if test = "${roleForSign eq 'MANAGER'}">
+
 <div class="form-style-2">
     <div class="form-style-2-heading">
         Список сотрудников
@@ -56,6 +60,9 @@
             </tr>
         </c:forEach>
     </table>
+
 </div>
+    </c:if>
+
 </body>
 </html>

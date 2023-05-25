@@ -37,17 +37,20 @@ public class SignUpServlet extends HttpServlet {
         Object checkUser = req.getSession().getAttribute("user");
 
         UserHib us = usersRepository.findUserByName(checkUser.toString());
-
+        String Ur = "DEFAULT";
         List<String> roleForAvtorizovan = new ArrayList<>();
         if(us!=null&&us.getUserRoleHib().toString()=="MANAGER") {
             roleForAvtorizovan.add("MANAGER");
             roleForAvtorizovan.add("FREELANCER");
             roleForAvtorizovan.add("EMPLOYEE");
+            Ur = "MANAGER";
         }
         else {
             roleForAvtorizovan.add("DEFAULT");
         }
         req.setAttribute("listRoleFromServer", roleForAvtorizovan);
+
+        req.setAttribute("roleForSign", Ur);
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
         dispatcher.forward(req, resp);//*перенаправление запроса на страницу signUp.jsp
@@ -73,7 +76,8 @@ public class SignUpServlet extends HttpServlet {
         } catch (Exception e) {
 
         }
-        doGet(req, resp);//перенаправление данных на страницу signUp через doGet
+        resp.sendRedirect(req.getContextPath() + "/login");
+       // doGet(req, resp);//перенаправление данных на страницу signUp через doGet
     }
     //*в методе регистрируем получение данных с сервера
 }

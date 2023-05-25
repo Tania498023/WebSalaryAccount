@@ -38,7 +38,7 @@
 
         <label>Name
             <select name="lastName" >
-                <option selected value=""disabled>Список пользователей</option>
+                <option selected value=""disabled> </option>
 
                 <c:forEach items="${usersName}" var="usersName">
                      <option value="${usersName}">${usersName}</option>
@@ -47,7 +47,8 @@
             </select>
         </label>
 
-        <input type="submit" value="Save">
+        <input type="submit" value="Сохранить запись">
+        <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
     </form>
 </div>
 
@@ -77,7 +78,7 @@
 </div>
 <%--<a href="<c:url value='/logout' />">Logout</a>--%>
 <div class=form-style-2 input[type=button]">
-<input type="button" value="Выход" onclick=location.href='logout'>
+<input type="button" value="Выход из приложения" onclick=location.href='logout'>
 </div>
 </body>
 </html>
