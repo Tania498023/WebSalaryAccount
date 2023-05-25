@@ -45,8 +45,9 @@ public class HomeServlet extends HttpServlet {
 
         Object checkUser = req.getSession().getAttribute("user");//получаем атрибут "user" из сессии
         req.setAttribute("user", checkUser);
+ //       req.setAttribute("userPas", checkUser);
         UserHib us = usersRepository.findUserByName(checkUser.toString());
-        req.setAttribute("usersRole", us.getUserRoleHib());
+ //       req.setAttribute("usersRole", us.getUserRoleHib());
 
         // перенаправляем на страницу home
      //   req.getServletContext().getRequestDispatcher("/signUp").forward(req, resp);

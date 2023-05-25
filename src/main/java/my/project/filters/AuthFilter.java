@@ -22,12 +22,13 @@ public class AuthFilter implements Filter{
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         HttpServletResponse response = (HttpServletResponse)servletResponse;
 
-
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
         // смотрим, есть ли сессия для данного запроса (проверяется наличие Cookie с названием JSESSIONID
         HttpSession session = request.getSession(false);
 
         // если сессия не была, или у сессии отсутствует атрибут user, перенаправляем пользователя на страницу с логином
-        if (nonNull(session) && nonNull(session.getAttribute("name") ) &&nonNull(session.getAttribute("password") )){
+        if (session==null || session.getAttribute("name")==null && session.getAttribute("password")==null ){
             servletRequest.getServletContext().getRequestDispatcher("/login").forward(request, response);
         }
         // отдаем запрос дальше в цепочку фильтров
