@@ -9,6 +9,20 @@
 
 </head>
 <body>
+<div class="form-style-2-heading">
+    <table>
+        <tr>
+            <th>Текущий пользователь</th>
+
+        </tr>
+        <tr>
+
+            <td>${user}</td>
+            <td>${usersRole}</td>
+
+        </tr>
+    </table>
+</div>
 <div class="form-style-2">
     <div class="form-style-2-heading">
         Зарегистрироваться/добавить пользователя

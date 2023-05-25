@@ -48,7 +48,9 @@
         </label>
 
         <input type="submit" value="Сохранить запись">
+<c:if test = "${chekRoleForHome eq 'MANAGER'}">
         <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
+
     </form>
 </div>
 
@@ -76,6 +78,7 @@
         </c:forEach>
     </table>
 </div>
+</c:if>
 <%--<a href="<c:url value='/logout' />">Logout</a>--%>
 <div class=form-style-2 input[type=button]">
 <input type="button" value="Выход из приложения" onclick=location.href='logout'>

@@ -82,7 +82,7 @@ public class Repository implements IRepository{
     @Override
     public boolean isExist(String name, String password) {
         for (UserHib user : listUsersInDb.GetUserHibList()) {
-            if (user.getLastName().equals(name)) {
+            if (user.getLastName().equals(name)&&user.getPassword().equals(password)) {
                 return true;
             }
         }

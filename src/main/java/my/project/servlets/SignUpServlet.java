@@ -36,7 +36,11 @@ public class SignUpServlet extends HttpServlet {
 
         Object checkUser = req.getSession().getAttribute("user");
 
+        req.setAttribute("user", checkUser);
         UserHib us = usersRepository.findUserByName(checkUser.toString());
+        req.setAttribute("usersRole", us.getUserRoleHib());
+
+       // UserHib us = usersRepository.findUserByName(checkUser.toString());
         String Ur = "DEFAULT";
         List<String> roleForAvtorizovan = new ArrayList<>();
         if(us!=null&&us.getUserRoleHib().toString()=="MANAGER") {

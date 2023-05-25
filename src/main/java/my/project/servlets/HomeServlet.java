@@ -41,13 +41,18 @@ public class HomeServlet extends HttpServlet {
             var usByName = item.getLastName();
             listUsers.add(usByName);
         }
-        
+
 
         Object checkUser = req.getSession().getAttribute("user");//получаем атрибут "user" из сессии
         req.setAttribute("user", checkUser);
- //       req.setAttribute("userPas", checkUser);
         UserHib us = usersRepository.findUserByName(checkUser.toString());
- //       req.setAttribute("usersRole", us.getUserRoleHib());
+        req.setAttribute("usersRole", us.getUserRoleHib());
+        String RoleForHome = "DEFAULT";
+        if(us!=null&&us.getUserRoleHib().toString()=="MANAGER"){
+            RoleForHome="MANAGER";
+        }
+        req.setAttribute("chekRoleForHome",RoleForHome);
+
 
         // перенаправляем на страницу home
      //   req.getServletContext().getRequestDispatcher("/signUp").forward(req, resp);

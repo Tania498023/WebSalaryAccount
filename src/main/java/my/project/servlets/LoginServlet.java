@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 
         // вытаскиваем из запроса имя пользователя и его пароль
         req.setCharacterEncoding("UTF-8");
-//        List<UserHib> checkRole = new ArrayList<>();
+        List<UserHib> checkRole = new ArrayList<>();
 
         String name = req.getParameter("name");
         String password = req.getParameter("password");
@@ -52,7 +52,6 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession();
             // кладем в атрибуты сессии атрибут user с именем пользователя
             session.setAttribute("user",name);
-            session.setAttribute("userPass",password);
 
 
 
