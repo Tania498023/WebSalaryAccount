@@ -33,14 +33,15 @@ public class SignUpServlet extends HttpServlet {
         List<UserHib> users = usersRepository.findAll();//*отсюда будем выводить список пользователей в html
         req.setAttribute("usersFromServer", users);//*в атрибут запроса положили пользователей
 
-
+        UserHib us=null;
         Object checkUser = req.getSession().getAttribute("user");
 
         req.setAttribute("user", checkUser);
-        UserHib us = usersRepository.findUserByName(checkUser.toString());
-        req.setAttribute("usersRole", us.getUserRoleHib());
+        if (checkUser!=null) {
+            us = usersRepository.findUserByName(checkUser.toString());
+            req.setAttribute("usersRole", us.getUserRoleHib());
+        }
 
-       // UserHib us = usersRepository.findUserByName(checkUser.toString());
         String Ur = "DEFAULT";
         List<String> roleForAvtorizovan = new ArrayList<>();
         if(us!=null&&us.getUserRoleHib().toString()=="MANAGER") {
@@ -66,21 +67,32 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // вытащили данные регистрации
         req.setCharacterEncoding("UTF-8");
+        UserHib user = null;
         try {
             String name = req.getParameter("name");//из req забираем параметр name
             String role = req.getParameter("role");
             UserRoleHib userRoleHib = UserRoleHib.valueOf(role);
             String password = req.getParameter("password");
-
+            String oklad = req.getParameter("monthSalary");
+            Double monthSalary = Double.valueOf(oklad);
+            String premia = req.getParameter("bonus");
+            Double bonus = Double.valueOf(premia);
+            String peyHour = req.getParameter("payPerHour");
+            Double payPerHour = Double.valueOf(peyHour);
 
             // создали пользователя и сохранили его в хранилище
-            UserHib user = new UserHib(name, userRoleHib, password);
+            user = new UserHib(name, userRoleHib, password,monthSalary,bonus,payPerHour);
             usersRepository.save(user);
 
         } catch (Exception e) {
 
         }
-        resp.sendRedirect(req.getContextPath() + "/login");
+        if (user.getUserRoleHib().toString()=="DEFAULT"){
+            resp.sendRedirect(req.getContextPath() + "/login");
+        }
+       else {
+            resp.sendRedirect(req.getContextPath() + "/home");
+        }
        // doGet(req, resp);//перенаправление данных на страницу signUp через doGet
     }
     //*в методе регистрируем получение данных с сервера

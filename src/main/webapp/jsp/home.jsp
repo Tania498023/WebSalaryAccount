@@ -36,16 +36,21 @@
             <input class="input-field" type="text" id="message" name="message">
         </label>
 
-        <label>Name
-            <select name="lastName" >
-                <option selected value=""disabled> </option>
 
+        <label>Name
+
+            <select name="lastName" >
+
+                <c:if test = "${usersRole eq 'MANAGER'}">
+                    <option selected value=""disabled> </option>
                 <c:forEach items="${usersName}" var="usersName">
                      <option value="${usersName}">${usersName}</option>
                 </c:forEach>
-
+                </c:if>
+                <option value="${user}">${user}</option>
             </select>
         </label>
+
 
         <input type="submit" value="Сохранить запись">
 <c:if test = "${chekRoleForHome eq 'MANAGER'}">

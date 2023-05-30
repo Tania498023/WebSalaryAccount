@@ -10,6 +10,7 @@
 </head>
 <body>
 <div class="form-style-2-heading">
+<c:if test = "${roleForSign eq 'MANAGER'}">
     <table>
         <tr>
             <th>Текущий пользователь</th>
@@ -22,6 +23,7 @@
 
         </tr>
     </table>
+</c:if>
 </div>
 <div class="form-style-2">
     <div class="form-style-2-heading">

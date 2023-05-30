@@ -13,6 +13,34 @@ public class UserHib {
     private Integer id;
     private String lastName;
     private String password;
+    private Double monthSalary;
+    private Double bonus;
+    private Double payPerHour;
+
+
+    public double getMonthSalary() {
+        return monthSalary;
+    }
+
+    public void setMonthSalary(double monthSalary) {
+        this.monthSalary = monthSalary;
+    }
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
+
+    public double getPayPerHour() {
+        return payPerHour;
+    }
+
+    public void setPayPerHour(double payPerHour) {
+        this.payPerHour = payPerHour;
+    }
     @Enumerated(EnumType.STRING)
     @Column(name = "userrole")
     private UserRoleHib userRole;
@@ -22,17 +50,25 @@ public class UserHib {
     public UserHib() {
     }
 
-    public UserHib(Integer id, String lastName,String password, UserRoleHib userRole, List<RecordHib> records) {
+    public UserHib(Integer id, String lastName,String password, UserRoleHib userRole, List<RecordHib> records,double monthSalary, double bonus, double payPerHour) {
         this.id = id;
         this.lastName = lastName;
         this.password = password;
         this.userRole = userRole;
         this.records = records;
+        this.monthSalary = monthSalary;
+        this.bonus = bonus;
+        this.payPerHour = payPerHour;
+
     }
-    public UserHib(String lastName,UserRoleHib userRole, String password) {
+    public UserHib(String lastName,UserRoleHib userRole, String password,double monthSalary, double bonus, double payPerHour) {
         this.userRole = userRole;
         this.lastName = lastName;
         this.password = password;
+        this.monthSalary = monthSalary;
+        this.bonus = bonus;
+        this.payPerHour = payPerHour;
+
     }
     public UserHib(Integer id, String lastName, UserRoleHib userRole) {
         this.id = id;
@@ -91,6 +127,6 @@ public class UserHib {
 
     @Override
     public String toString() {
-        return this.id + " " + this.lastName + " " + this.password + " " + this.userRole+ " "+ this.records;
+        return this.id + " " + this.lastName + " " + this.password + " " + this.userRole+ " "+ this.records+ " "+ this.monthSalary+ " "+ this.bonus+ " "+ this.payPerHour;
     }
 }
