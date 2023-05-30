@@ -46,7 +46,17 @@
         <label for="password">Пароль
             <input class="input-field" type="password" id="password" name="password">
         </label>
-
+       <c:if test = "${usersRole eq 'MANAGER'}">
+        <label for="monthSalary">Оклад
+            <input class="input-field" type="monthSalary" id="monthSalary" name="monthSalary">
+        </label>
+        <label for="bonus">Бонус
+            <input class="input-field" type="bonus" id="bonus" name="bonus">
+        </label>
+        <label for="payPerHour">Стоимость часа
+            <input class="input-field" type="payPerHour" id="payPerHour" name="payPerHour">
+        </label>
+       </c:if>
         <input type="submit" value="Регистрация">
 <%--        <input type="button" value="Авторизация" onclick=location.href='login'>--%>
     </form>

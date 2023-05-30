@@ -47,10 +47,14 @@
                      <option value="${usersName}">${usersName}</option>
                 </c:forEach>
                 </c:if>
-                <option value="${user}">${user}</option>
+                <c:if test = "${usersRole != 'MANAGER'}">
+                    <option selected value=""disabled> </option>
+                    <option value="${user}">${user}</option>
+
+                </c:if>
+
             </select>
         </label>
-
 
         <input type="submit" value="Сохранить запись">
 <c:if test = "${chekRoleForHome eq 'MANAGER'}">

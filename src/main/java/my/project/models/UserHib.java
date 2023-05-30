@@ -75,10 +75,15 @@ public class UserHib {
         this.lastName = lastName;
         this.userRole = userRole;
     }
-
+    public UserHib(String lastName, UserRoleHib userRole,String password) {
+        this.lastName = lastName;
+        this.userRole = userRole;
+        this.password = password;
+    }
     public UserHib(String lastName, UserRoleHib userRole) {
         this.lastName = lastName;
         this.userRole = userRole;
+
     }
     public UserHib(String lastName, String password) {
         this.lastName = lastName;

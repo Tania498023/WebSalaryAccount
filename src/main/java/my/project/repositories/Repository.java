@@ -27,7 +27,7 @@ public class Repository implements IRepository{
     }
         public UserHib addFakeDataUser () {
 
-            UserHib users = new UserHib("ЯЯ", UserRoleHib.MANAGER);
+            UserHib users = new UserHib("ЯЯ", UserRoleHib.MANAGER,"111111");
             return users;
         }
         //метод пока не нужен,в будущем удалить, если не будем использовать
