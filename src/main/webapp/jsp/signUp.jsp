@@ -29,13 +29,15 @@
     <div class="form-style-2-heading">
         Зарегистрироваться/добавить пользователя
     </div>
+
     <form method="post" action="/signUp">
+
         <label for="name">Имя
             <input class="input-field" type="text" id="name" name="name">
+
         </label>
         <label>Роль
             <select name="role" >
-
 
                 <c:forEach items="${listRoleFromServer}" var="listRoleFromServer">
                     <option value="${listRoleFromServer}">${listRoleFromServer}</option>
@@ -57,9 +59,9 @@
             <input class="input-field" type="payPerHour" id="payPerHour" name="payPerHour">
         </label>
        </c:if>
-        <input type="submit" value="Регистрация">
 <%--        <input type="button" value="Авторизация" onclick=location.href='login'>--%>
-    </form>
+        <input type="submit" value="Сохранить">
+
 </div>
 
 
@@ -70,25 +72,39 @@
         Список сотрудников
     </div>
     <table>
-        <tr>
-            <th>Имя</th>
-            <th>Роль</th>
-            <th>Пароль</th>
+        <tr id="toptr">
+            <td class="tdser">Имя</td>
+            <td class="tdser">Роль</td>
+            <td class="tdser">Пароль</td>
+            <td class="tdser">Оклад</td>
+            <td class="tdser">Бонус</td>
+            <td class="tdser">Стоимость часа</td>
         </tr>
 
         <c:forEach items="${usersFromServer}" var="users">
-            <tr>
+            <tr id="downtr">
 
                 <td>${users.getLastName()}</td>
                 <td>${users.getUserRoleHib()}</td>
                 <td>${users.getPassword()}</td>
-
+                <td>${users.getMonthSalary()}</td>
+                <td>${users.getBonus()}</td>
+                <td>${users.getPayPerHour()}</td>
+                <td><a href="/users?action=delete&id=${users.getLastName()}">delete</a></td>
+                <td><a href="/users?action=update&id=${users.getLastName()}">update</a></td>
             </tr>
         </c:forEach>
     </table>
-
+        <br>
+        <br>
+    Имя:<input type="text" name="bookname" value="${booking.name}"><br><br>
+    Book author:<input type="text" name="bookauthor" value="${booking.author}"><br><br>
+    Book year:<input type="text" name="bookyear" value="${booking.year}"><br><br>
+    <input type="hidden" value="new" name="action">
+    <input type="hidden" value="${booking.id}" name="bookingid">
+    <input type="submit" value="submit">
 </div>
     </c:if>
-
+</form>
 </body>
 </html>

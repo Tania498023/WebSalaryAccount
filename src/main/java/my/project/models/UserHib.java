@@ -18,29 +18,7 @@ public class UserHib {
     private Double payPerHour;
 
 
-    public double getMonthSalary() {
-        return monthSalary;
-    }
 
-    public void setMonthSalary(double monthSalary) {
-        this.monthSalary = monthSalary;
-    }
-
-    public double getBonus() {
-        return bonus;
-    }
-
-    public void setBonus(double bonus) {
-        this.bonus = bonus;
-    }
-
-    public double getPayPerHour() {
-        return payPerHour;
-    }
-
-    public void setPayPerHour(double payPerHour) {
-        this.payPerHour = payPerHour;
-    }
     @Enumerated(EnumType.STRING)
     @Column(name = "userrole")
     private UserRoleHib userRole;
@@ -128,6 +106,29 @@ public class UserHib {
 
     public void setRecords(List<RecordHib> records) {
         this.records = records;
+    }
+    public double getMonthSalary() {
+        return monthSalary;
+    }
+
+    public void setMonthSalary(double monthSalary) {
+        this.monthSalary = monthSalary;
+    }
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
+
+    public double getPayPerHour() {
+        return payPerHour;
+    }
+
+    public void setPayPerHour(double payPerHour) {
+        this.payPerHour = payPerHour;
     }
 
     @Override

@@ -70,4 +70,16 @@ public class MyDbWork {
             tx.commit();
         }
     }
+
+    public void UpdateSessionUser(UserHib user) {
+        Transaction tx;
+        session.update(user);
+        tx = session.getTransaction();
+        if (tx.getStatus().equals(TransactionStatus.ACTIVE)) {
+            tx.commit();
+        } else if (tx.getStatus().equals(TransactionStatus.COMMITTED)) {
+            session.beginTransaction();
+            tx.commit();
+        }
+    }
 }
