@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class MyDbWork {
     public List<UserHib> GetUserHibList(){
           return session.createQuery("from UserHib user ", UserHib.class).getResultList();//список объектов user из таблицы(БД)
          }
+
 
     public List<RecordHib> GetRecHibList(){
 

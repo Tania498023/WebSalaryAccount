@@ -12,7 +12,9 @@ public interface IRepository {
 
     List<UserHib> findAll();
     UserHib findUserByName(String lastName);
+    UserHib findUserById(int id);
     void save(UserHib user);
+    void update(UserHib user);
 
     List<RecordHib> findAllRec();
     List<RecordHib> findRecByName(String name);

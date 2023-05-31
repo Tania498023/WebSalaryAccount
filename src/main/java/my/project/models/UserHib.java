@@ -39,6 +39,16 @@ public class UserHib {
         this.payPerHour = payPerHour;
 
     }
+    public UserHib(Integer id, String lastName,String password, UserRoleHib userRole, double monthSalary, double bonus, double payPerHour) {
+        this.id = id;
+        this.lastName = lastName;
+        this.password = password;
+        this.userRole = userRole;
+        this.monthSalary = monthSalary;
+        this.bonus = bonus;
+        this.payPerHour = payPerHour;
+
+    }
     public UserHib(String lastName,UserRoleHib userRole, String password,double monthSalary, double bonus, double payPerHour) {
         this.userRole = userRole;
         this.lastName = lastName;

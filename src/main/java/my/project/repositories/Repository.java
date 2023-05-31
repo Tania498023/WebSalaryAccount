@@ -56,6 +56,17 @@ public class Repository implements IRepository{
         }
        return curUs;
     }
+    public UserHib findUserById(int id) {
+        UserHib curUs = null;
+
+        for (UserHib user : listUsersInDb.GetUserHibList()){
+            if(user.getId()==id){
+                curUs = user;
+            }
+        }
+        return curUs;
+
+    }
     public List<RecordHib> findAllRec() {
 
         return listUsersInDb.GetRecHibList();
@@ -75,6 +86,11 @@ public class Repository implements IRepository{
     public void save(UserHib user) {
       listUsersInDb.SaveSessionUser(user);
     }
+    @Override
+    public void update(UserHib user) {
+        listUsersInDb.UpdateSessionUser(user);
+    }
+
     @Override
     public void saveRec(RecordHib record) {
         listUsersInDb.SaveSessionRec(record);
