@@ -29,7 +29,8 @@ public class SignUpServlet extends HttpServlet {
         this.usersRepository = new Repository();
     }
 
-    //  UserHib usUp = null;
+    UserHib usUp = null;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<UserHib> users = usersRepository.findAll();//*отсюда будем выводить список пользователей в html
@@ -87,7 +88,7 @@ public class SignUpServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-        if(action.equals("new") ) {
+        if (action.equals("new")) {
             UserHib user = null;
             UserHib checkRole = null;
             Object checkUsers = req.getSession().getAttribute("user");
@@ -132,39 +133,44 @@ public class SignUpServlet extends HttpServlet {
             RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
             dispatcher.forward(req, resp);
         }
+        //обновление и удаление
 
-            if (action.equals("update")) {
-            Object nowUs = req.getSession().getAttribute("usUp");
-            req.setAttribute("usUp",nowUs);
+        if (action.equals("update")) {
 
-                UserHib IdUpUs= null;
-                if (nowUs != null) {
-                    IdUpUs = usersRepository.findUserById(Integer.parseInt((String) nowUs));
-                    IdUpUs.setLastName(req.getParameter("username"));
-                    IdUpUs.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
-                    IdUpUs.setPassword(req.getParameter("userpass"));
-                    IdUpUs.setMonthSalary(Double.parseDouble(req.getParameter("usersalary")));
-                    IdUpUs.setBonus(Double.parseDouble(req.getParameter("userbonus")));
-                    IdUpUs.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
+                if (usUp != null) {
+try {
 
-                    IdUpUs.setId(Integer.parseInt(req.getParameter("updateuserId").toString()));
-                    usersRepository.update(IdUpUs);
+
+    usUp.setLastName(req.getParameter("username"));
+    usUp.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
+    usUp.setPassword(req.getParameter("userpass"));
+    usUp.setMonthSalary(Double.parseDouble(req.getParameter("usersalary")));
+    usUp.setBonus(Double.parseDouble(req.getParameter("userbonus")));
+    usUp.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
+}
+catch (Exception e){
+
+}
+                    //     tre.setId(Integer.parseInt(req.getParameter("updateuserId").toString()));
+                    usersRepository.update(usUp);
                 }
-
 
                 List<UserHib> usersUpdateList = usersRepository.findAll();
                 req.setAttribute("usersUpdateList", usersUpdateList);
             }
+        }
+    }
+
 //            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
 //            dispatcher.forward(req, resp);
 
 
 //        if (user.getUserRoleHib().toString() == "DEFAULT") {
 //                resp.sendRedirect(req.getContextPath() + "/login");
-            }
+ //           }
 //            else {
 //                       resp.sendRedirect(req.getContextPath() + "/home");
-            }
+           // }
 
             //    resp.sendRedirect(req.getContextPath() + "/signUp");
 

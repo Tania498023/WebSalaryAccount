@@ -60,6 +60,7 @@
         </label>
        </c:if>
 
+
         <input type="hidden" value="${'new'}" name="action">
 <%--        <input type="button" value="Авторизация" onclick=location.href='login'>--%>
         <input type="submit" value="Сохранить">
@@ -100,14 +101,14 @@
     </table>
         <br>
         <br>
-    Имя:<input type="text" name="username" value="${IdUpUs.getLastName()}"><br><br>
-    Роль:<input type="text" name="userrole" value="${IdUpUs.getUserRoleHib()}"><br><br>
-    Пароль:<input type="text" name="userpass" value="${IdUpUs.getPassword()}"><br><br>
-    Оклад:<input type="text" name="usersalary" value="${IdUpUs.getMonthSalary()}"><br><br>
-    Бонус:<input type="text" name="userbonus" value="${IdUpUs.getBonus()}"><br><br>
-    Стоимость часа:<input type="text" name="userperhour" value="${IdUpUs.getPayPerHour()}"><br><br>
+    Имя:<input type="text" name="username" value="${usUp.getLastName()}"><br><br>
+    Роль:<input type="text" name="userrole" value="${usUp.getUserRoleHib()}"><br><br>
+    Пароль:<input type="text" name="userpass" value="${usUp.getPassword()}"><br><br>
+    Оклад:<input type="text" name="usersalary" value="${usUp.getMonthSalary()}"><br><br>
+    Бонус:<input type="text" name="userbonus" value="${usUp.getBonus()}"><br><br>
+    Стоимость часа:<input type="text" name="userperhour" value="${usUp.getPayPerHour()}"><br><br>
 
-    <input type="hidden" value="${usUp.getId()==null?'new':'update'}" name="action">
+    <input type="hidden" value="${tre.id==null?'new':'update'}" name="action">
     <input type="submit" value="Изменить">
 </div>
     </c:if>
