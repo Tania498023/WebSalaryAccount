@@ -62,18 +62,13 @@ public class SignUpServlet extends HttpServlet {
 //блок изменения и удаления
         if (req.getParameter("action") != null) {
             if (req.getParameter("action").equals("update")) {
-
                 int id = Integer.parseInt(req.getParameter("id").toString());
-
-
-                UserHib usUp = usersRepository.findUserById(id);
-                HttpSession session = req.getSession();
-                session.setAttribute("usUp", usUp);
+                usUp = usersRepository.findUserById(id);
+                req.setAttribute("usUp", usUp);
                 req.setAttribute("action", "update");
 
-
-                List<UserHib> usersUpdate = usersRepository.findAll();
-                req.setAttribute("usersUpdate", usersUpdate);
+               /* List<UserHib> usersUpdate = usersRepository.findAll();
+                req.setAttribute("usersUpdate", usersUpdate);*/
             }
         }
 
@@ -88,78 +83,80 @@ public class SignUpServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-        if (action.equals("new")) {
+       req.setAttribute("action", "new");
+      if (action.equals("new")) {
             UserHib user = null;
-            UserHib checkRole = null;
-            Object checkUsers = req.getSession().getAttribute("user");
-            req.setAttribute("user", checkUsers);
-            if (checkUsers != null) {
-                checkRole = usersRepository.findUserByName(checkUsers.toString());
+//            UserHib checkRole = null;
+//            Object checkUsers = req.getSession().getAttribute("user");
+//            req.setAttribute("user", checkUsers);
+//            if (checkUsers != null) {
+//                checkRole = usersRepository.findUserByName(checkUsers.toString());
+//
+//                if (checkRole.getUserRoleHib().toString() == "MANAGER") {
 
-                if (checkRole.getUserRoleHib().toString() == "MANAGER") {
+            try {
 
-                    try {
+                String name = req.getParameter("name");//из req забираем параметр name
+                String role = req.getParameter("role");
+                UserRoleHib userRoleHib = UserRoleHib.valueOf(role);
+                String password = req.getParameter("password");
+                String oklad = req.getParameter("monthSalary");
+                Double monthSalary = Double.valueOf(oklad);
+                String premia = req.getParameter("bonus");
+                Double bonus = Double.valueOf(premia);
+                String peyHour = req.getParameter("payPerHour");
+                Double payPerHour = Double.valueOf(peyHour);
 
-                        String name = req.getParameter("name");//из req забираем параметр name
-                        String role = req.getParameter("role");
-                        UserRoleHib userRoleHib = UserRoleHib.valueOf(role);
-                        String password = req.getParameter("password");
-                        String oklad = req.getParameter("monthSalary");
-                        Double monthSalary = Double.valueOf(oklad);
-                        String premia = req.getParameter("bonus");
-                        Double bonus = Double.valueOf(premia);
-                        String peyHour = req.getParameter("payPerHour");
-                        Double payPerHour = Double.valueOf(peyHour);
+                user = new UserHib(name, userRoleHib, password, monthSalary, bonus, payPerHour);
+                usersRepository.save(user);
+            } catch (Exception e) {
 
-                        user = new UserHib(name, userRoleHib, password, monthSalary, bonus, payPerHour);
-
-                    } catch (Exception e) {
-
-                    }
-                }
-            } else {
-                try {
-                    String name = req.getParameter("name");
-                    String role = req.getParameter("role");
-                    UserRoleHib userRoleHib = UserRoleHib.valueOf(role);
-                    String password = req.getParameter("password");
-                    user = new UserHib(name, userRoleHib, password);
-                } catch (Exception e) {
-
-                }
             }
-            // создали пользователя и сохранили его в хранилище
-            usersRepository.save(user);
-            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
-            dispatcher.forward(req, resp);
-        }
+      //  }
+//            } else {
+//                try {
+//                    String name = req.getParameter("name");
+//                    String role = req.getParameter("role");
+//                    UserRoleHib userRoleHib = UserRoleHib.valueOf(role);
+//                    String password = req.getParameter("password");
+//                    user = new UserHib(name, userRoleHib, password);
+//                    usersRepository.save(user);
+//                } catch (Exception e) {
+//
+      }
+
+        // создали пользователя и сохранили его в хранилище
+
+
         //обновление и удаление
 
         if (action.equals("update")) {
 
-                if (usUp != null) {
-try {
+            if (usUp != null) {
 
 
-    usUp.setLastName(req.getParameter("username"));
-    usUp.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
-    usUp.setPassword(req.getParameter("userpass"));
-    usUp.setMonthSalary(Double.parseDouble(req.getParameter("usersalary")));
-    usUp.setBonus(Double.parseDouble(req.getParameter("userbonus")));
-    usUp.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
-}
-catch (Exception e){
+                usUp.setLastName(req.getParameter("username"));
+                usUp.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
+                usUp.setPassword(req.getParameter("userpass"));
+                usUp.setMonthSalary(Double.parseDouble(req.getParameter("usersalary")));
+                usUp.setBonus(Double.parseDouble(req.getParameter("userbonus")));
+                usUp.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
 
-}
-                    //     tre.setId(Integer.parseInt(req.getParameter("updateuserId").toString()));
-                    usersRepository.update(usUp);
-                }
 
-                List<UserHib> usersUpdateList = usersRepository.findAll();
-                req.setAttribute("usersUpdateList", usersUpdateList);
+                //  usUp.setId(Integer.parseInt(req.getParameter("id").toString()));
+                usersRepository.update(usUp);
             }
+
+            List<UserHib> usersUpdateList = usersRepository.findAll();
+            req.setAttribute("usersUpdateList", usersUpdateList);
+
         }
+        resp.sendRedirect(req.getContextPath() + "/home");
+
     }
+}
+
+
 
 //            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
 //            dispatcher.forward(req, resp);
