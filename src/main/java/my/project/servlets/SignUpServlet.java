@@ -109,8 +109,12 @@ public class SignUpServlet extends HttpServlet {
 
                 user = new UserHib(name, userRoleHib, password, monthSalary, bonus, payPerHour);
                 usersRepository.save(user);
+
             } catch (Exception e) {
 
+            }
+            finally {
+                resp.sendRedirect(req.getContextPath() + "/login");
             }
       //  }
 //            } else {
@@ -149,9 +153,9 @@ public class SignUpServlet extends HttpServlet {
 
             List<UserHib> usersUpdateList = usersRepository.findAll();
             req.setAttribute("usersUpdateList", usersUpdateList);
-
+            resp.sendRedirect(req.getContextPath() + "/home");
         }
-        resp.sendRedirect(req.getContextPath() + "/home");
+
 
     }
 }

@@ -60,59 +60,69 @@
         </label>
        </c:if>
 
-<%--        <input type="hidden" value="${session == null?'new':'update'}" name="action">--%>
-<%--        <input type="hidden" value="${'newS'}" name="actionS">--%>
+              <c:if test = "${usersRole ne 'MANAGER'}">
+                   <label for="monthSalary">Оклад
+                       <input class="input-field" type="monthSalary" id="monthSalary" name="monthSalary" value = "0.0">
+                   </label>
+                   <label for="bonus">Бонус
+                       <input class="input-field" type="bonus" id="bonus" name="bonus"value = "0.0">
+                   </label>
+                   <label for="payPerHour">Стоимость часа
+                       <input class="input-field" type="payPerHour" id="payPerHour" name="payPerHour"value = "0.0">
+                   </label>
+              </c:if>
+
+        <input type="hidden" value="${'new'}" name="action">
 <%--        <input type="button" value="Авторизация" onclick=location.href='login'>--%>
         <input type="submit" value="Сохранить">
 
-
+</div>
 
 
     <c:if test = "${roleForSign eq 'MANAGER'}">
 
+<div class="form-style-2">
+    <div class="form-style-2-heading">
+        Список сотрудников
+    </div>
+    <table>
+        <tr id="toptr">
+            <td class="tdser">ID</td>
+            <td class="tdser">Имя</td>
+            <td class="tdser">Роль</td>
+            <td class="tdser">Пароль</td>
+            <td class="tdser">Оклад</td>
+            <td class="tdser">Бонус</td>
+            <td class="tdser">Стоимость часа</td>
+        </tr>
 
-                <div class="form-style-2-heading">
-                    Список сотрудников
-                </div>
-                <table>
-                    <tr id="toptr">
-                        <td class="tdser">ID</td>
-                        <td class="tdser">Имя</td>
-                        <td class="tdser">Роль</td>
-                        <td class="tdser">Пароль</td>
-                        <td class="tdser">Оклад</td>
-                        <td class="tdser">Бонус</td>
-                        <td class="tdser">Стоимость часа</td>
-                    </tr>
+        <c:forEach items="${usersFromServer}" var="users">
+            <tr id="downtr">
+                <td>${users.getId()}</td>
+                <td>${users.getLastName()}</td>
+                <td>${users.getUserRoleHib()}</td>
+                <td>${users.getPassword()}</td>
+                <td>${users.getMonthSalary()}</td>
+                <td>${users.getBonus()}</td>
+                <td>${users.getPayPerHour()}</td>
+                <td><a href="/signUp?action=delete&id=${users.getId()}">delete</a></td>
+                <td><a href="/signUp?action=update&id=${users.getId()}">update</a></td>
+            </tr>
+        </c:forEach>
+    </table>
+        <br>
+        <br>
+    Имя:<input type="text" name="username" value="${IdUpUs.getLastName()}"><br><br>
+    Роль:<input type="text" name="userrole" value="${IdUpUs.getUserRoleHib()}"><br><br>
+    Пароль:<input type="text" name="userpass" value="${IdUpUs.getPassword()}"><br><br>
+    Оклад:<input type="text" name="usersalary" value="${IdUpUs.getMonthSalary()}"><br><br>
+    Бонус:<input type="text" name="userbonus" value="${IdUpUs.getBonus()}"><br><br>
+    Стоимость часа:<input type="text" name="userperhour" value="${IdUpUs.getPayPerHour()}"><br><br>
 
-                    <c:forEach items="${usersFromServer}" var="users">
-                        <tr id="downtr">
-                            <td>${users.getId()}</td>
-                            <td>${users.getLastName()}</td>
-                            <td>${users.getUserRoleHib()}</td>
-                            <td>${users.getPassword()}</td>
-                            <td>${users.getMonthSalary()}</td>
-                            <td>${users.getBonus()}</td>
-                            <td>${users.getPayPerHour()}</td>
-                            <td><a href="/signUp?action=delete&id=${users.getId()}">delete</a></td>
-                            <td><a href="/signUp?action=update&id=${users.getId()}">update</a></td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                    <br>
-                    <br>
-                Имя:<input type="text" name="username" value="${usUp.getLastName()}"><br><br>
-                Роль:<input type="text" name="userrole" value="${usUp.getUserRoleHib()}"><br><br>
-                Пароль:<input type="text" name="userpass" value="${usUp.getPassword()}"><br><br>
-                Оклад:<input type="text" name="usersalary" value="${usUp.getMonthSalary()}"><br><br>
-                Бонус:<input type="text" name="userbonus" value="${usUp.getBonus()}"><br><br>
-                Стоимость часа:<input type="text" name="userperhour" value="${usUp.getPayPerHour()}"><br><br>
-
-                <input type="hidden" value="${usUp.getId()==null?'new':'update'}" name="action">
-                <input type="submit" value="Изменить">
-
-    </c:if>
+    <input type="hidden" value="${usUp.getId()==null?'new':'update'}" name="action">
+    <input type="submit" value="Изменить">
 </div>
+    </c:if>
 </form>
 </body>
 </html>
