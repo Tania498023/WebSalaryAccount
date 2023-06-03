@@ -51,6 +51,7 @@
                     <label for="payPerHour">Стоимость часа
                         <input class="input-field" type="payPerHour" id="payPerHour" name="payPerHour">
                     </label>
+
        </c:if>
 
               <c:if test = "${usersRole ne 'MANAGER'}">
@@ -111,7 +112,9 @@
     Стоимость часа:<input type="text" name="userperhour" value="${usUp.getPayPerHour()}"><br><br>
 
     <input type="submit" value="Изменить">
+
 </div>
+        <input type="button" value="Главное меню" onclick=location.href='home'>
     </c:if>
 <input type="button" value="Выход из приложения" onclick=location.href='logout'>
 </form>

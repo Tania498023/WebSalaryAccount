@@ -1,7 +1,5 @@
 package my.project.servlets;
 
-
-
 import my.project.models.UserHib;
 import my.project.models.UserRoleHib;
 import my.project.repositories.IRepository;
@@ -67,8 +65,6 @@ public class SignUpServlet extends HttpServlet {
                 req.setAttribute("usUp", usUp);
                 req.setAttribute("action", "update");
 
-               /* List<UserHib> usersUpdate = usersRepository.findAll();
-                req.setAttribute("usersUpdate", usersUpdate);*/
             }
         }
 
@@ -83,16 +79,9 @@ public class SignUpServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-       req.setAttribute("action", "new");
+        req.setAttribute("action", "new");
       if (action.equals("new")) {
             UserHib user = null;
-//            UserHib checkRole = null;
-//            Object checkUsers = req.getSession().getAttribute("user");
-//            req.setAttribute("user", checkUsers);
-//            if (checkUsers != null) {
-//                checkRole = usersRepository.findUserByName(checkUsers.toString());
-//
-//                if (checkRole.getUserRoleHib().toString() == "MANAGER") {
 
             try {
 
@@ -114,31 +103,17 @@ public class SignUpServlet extends HttpServlet {
 
             }
             finally {
+                if (user.getUserRoleHib().toString() == "DEFAULT") {
                 resp.sendRedirect(req.getContextPath() + "/login");
+                }
+            else {
+                       resp.sendRedirect(req.getContextPath() + "/signUp");
+                     }
             }
-      //  }
-//            } else {
-//                try {
-//                    String name = req.getParameter("name");
-//                    String role = req.getParameter("role");
-//                    UserRoleHib userRoleHib = UserRoleHib.valueOf(role);
-//                    String password = req.getParameter("password");
-//                    user = new UserHib(name, userRoleHib, password);
-//                    usersRepository.save(user);
-//                } catch (Exception e) {
-//
       }
-
-        // создали пользователя и сохранили его в хранилище
-
-
         //обновление и удаление
-
         if (action.equals("update")) {
-
             if (usUp != null) {
-
-
                 usUp.setLastName(req.getParameter("username"));
                 usUp.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
                 usUp.setPassword(req.getParameter("userpass"));
@@ -146,34 +121,14 @@ public class SignUpServlet extends HttpServlet {
                 usUp.setBonus(Double.parseDouble(req.getParameter("userbonus")));
                 usUp.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
 
-
-                //  usUp.setId(Integer.parseInt(req.getParameter("id").toString()));
                 usersRepository.update(usUp);
             }
-
             List<UserHib> usersUpdateList = usersRepository.findAll();
             req.setAttribute("usersUpdateList", usersUpdateList);
-            resp.sendRedirect(req.getContextPath() + "/home");
+            resp.sendRedirect(req.getContextPath() + "/signUp");
         }
-
-
     }
 }
-
-
-
-//            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
-//            dispatcher.forward(req, resp);
-
-
-//        if (user.getUserRoleHib().toString() == "DEFAULT") {
-//                resp.sendRedirect(req.getContextPath() + "/login");
- //           }
-//            else {
-//                       resp.sendRedirect(req.getContextPath() + "/home");
-           // }
-
-            //    resp.sendRedirect(req.getContextPath() + "/signUp");
 
         //*в методе регистрируем получение данных с сервера
 
