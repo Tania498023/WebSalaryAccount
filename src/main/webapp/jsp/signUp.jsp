@@ -14,70 +14,61 @@
     <table>
         <tr>
             <th>Текущий пользователь</th>
-
         </tr>
         <tr>
-
             <td>${user}</td>
             <td>${usersRole}</td>
-
         </tr>
     </table>
 </c:if>
 </div>
+
 <div class="form-style-2">
     <div class="form-style-2-heading">
         Зарегистрироваться/добавить пользователя
     </div>
-
     <form method="post" action="/signUp">
-
         <label for="name">Имя
             <input class="input-field" type="text" id="name" name="name">
-
         </label>
-        <label>Роль
-            <select name="role" >
-
-                <c:forEach items="${listRoleFromServer}" var="listRoleFromServer">
-                    <option value="${listRoleFromServer}">${listRoleFromServer}</option>
-                </c:forEach>
-
-            </select>
-        </label>
-        <label for="password">Пароль
-            <input class="input-field" type="password" id="password" name="password">
-        </label>
+            <label>Роль
+                <select name="role" >
+                    <c:forEach items="${listRoleFromServer}" var="listRoleFromServer">
+                        <option value="${listRoleFromServer}">${listRoleFromServer}</option>
+                    </c:forEach>
+                </select>
+            </label>
+                <label for="password">Пароль
+                    <input class="input-field" type="password" id="password" name="password">
+                </label>
        <c:if test = "${usersRole eq 'MANAGER'}">
-        <label for="monthSalary">Оклад
-            <input class="input-field" type="monthSalary" id="monthSalary" name="monthSalary">
-        </label>
-        <label for="bonus">Бонус
-            <input class="input-field" type="bonus" id="bonus" name="bonus">
-        </label>
-        <label for="payPerHour">Стоимость часа
-            <input class="input-field" type="payPerHour" id="payPerHour" name="payPerHour">
-        </label>
+            <label for="monthSalary">Оклад
+                <input class="input-field" type="monthSalary" id="monthSalary" name="monthSalary">
+            </label>
+                <label for="bonus">Бонус
+                    <input class="input-field" type="bonus" id="bonus" name="bonus">
+                </label>
+                    <label for="payPerHour">Стоимость часа
+                        <input class="input-field" type="payPerHour" id="payPerHour" name="payPerHour">
+                    </label>
        </c:if>
 
               <c:if test = "${usersRole ne 'MANAGER'}">
-                   <label for="monthSalary">Оклад
-                       <input class="input-field" type="monthSalary" id="monthSalary" name="monthSalary" value = "0.0">
+                   <label for="monthSalary">
+                       <input type="hidden" class="input-field" type="monthSalary" id="monthSalary" name="monthSalary" value = "0.0">
                    </label>
-                   <label for="bonus">Бонус
-                       <input class="input-field" type="bonus" id="bonus" name="bonus"value = "0.0">
-                   </label>
-                   <label for="payPerHour">Стоимость часа
-                       <input class="input-field" type="payPerHour" id="payPerHour" name="payPerHour"value = "0.0">
-                   </label>
+                       <label for="bonus">
+                           <input type="hidden" class="input-field" type="bonus" id="bonus" name="bonus"value = "0.0">
+                       </label>
+                           <label for="payPerHour">
+                               <input type="hidden" class="input-field" type="payPerHour" id="payPerHour" name="payPerHour"value = "0.0">
+                           </label>
               </c:if>
+        <input type="hidden" value="${usUp.getId()==null?'new':'update'}" name="action">
 
-        <input type="hidden" value="${'new'}" name="action">
-<%--        <input type="button" value="Авторизация" onclick=location.href='login'>--%>
         <input type="submit" value="Сохранить">
 
 </div>
-
 
     <c:if test = "${roleForSign eq 'MANAGER'}">
 
@@ -112,17 +103,17 @@
     </table>
         <br>
         <br>
-    Имя:<input type="text" name="username" value="${IdUpUs.getLastName()}"><br><br>
-    Роль:<input type="text" name="userrole" value="${IdUpUs.getUserRoleHib()}"><br><br>
-    Пароль:<input type="text" name="userpass" value="${IdUpUs.getPassword()}"><br><br>
-    Оклад:<input type="text" name="usersalary" value="${IdUpUs.getMonthSalary()}"><br><br>
-    Бонус:<input type="text" name="userbonus" value="${IdUpUs.getBonus()}"><br><br>
-    Стоимость часа:<input type="text" name="userperhour" value="${IdUpUs.getPayPerHour()}"><br><br>
+    Имя:<input type="text" name="username" value="${usUp.getLastName()}"><br><br>
+    Роль:<input type="text" name="userrole" value="${usUp.getUserRoleHib()}"><br><br>
+    Пароль:<input type="text" name="userpass" value="${usUp.getPassword()}"><br><br>
+    Оклад:<input type="text" name="usersalary" value="${usUp.getMonthSalary()}"><br><br>
+    Бонус:<input type="text" name="userbonus" value="${usUp.getBonus()}"><br><br>
+    Стоимость часа:<input type="text" name="userperhour" value="${usUp.getPayPerHour()}"><br><br>
 
-    <input type="hidden" value="${usUp.getId()==null?'new':'update'}" name="action">
     <input type="submit" value="Изменить">
 </div>
     </c:if>
+<input type="button" value="Выход из приложения" onclick=location.href='logout'>
 </form>
 </body>
 </html>
