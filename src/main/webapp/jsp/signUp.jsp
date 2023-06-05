@@ -105,7 +105,14 @@
         <br>
         <br>
     Имя:<input type="text" name="username" value="${idForUpdate.getLastName()}"><br><br>
-    Роль:<input type="text" name="userrole" value="${idForUpdate.getUserRoleHib()}"><br><br>
+    <label>Роль
+        <select name="userrole">
+            <option value="${idForUpdate.getUserRoleHib()}">${idForUpdate.getUserRoleHib()}</option>
+                <c:forEach items="${listRoleFromServer}" var="listRoleFromServer">
+                    <option value="${listRoleFromServer}">${listRoleFromServer}</option>
+                </c:forEach>
+        </select>
+    </label>
     Пароль:<input type="text" name="userpass" value="${idForUpdate.getPassword()}"><br><br>
     Оклад:<input type="text" name="usersalary" value="${idForUpdate.getMonthSalary()}"><br><br>
     Бонус:<input type="text" name="userbonus" value="${idForUpdate.getBonus()}"><br><br>
