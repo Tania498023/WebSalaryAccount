@@ -59,9 +59,9 @@ public class SignUpServlet extends HttpServlet {
 //блок изменения и удаления
         if (req.getParameter("action") != null) {
             if (req.getParameter("action").equals("update")) {
-                Integer id = Integer.parseInt(req.getParameter("id").toString());
-                UserHib usUper = usersRepository.findUserById(id);
-                req.getSession().setAttribute("id", usUper);
+                Integer selectId = Integer.parseInt(req.getParameter("id").toString());
+                UserHib usUper = usersRepository.findUserById(selectId);
+                req.getSession().setAttribute("idForUpdate", usUper);
                 req.setAttribute("action", "update");
             }
 
@@ -79,7 +79,7 @@ public class SignUpServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         req.setAttribute("action", "new");
-        UserHib usUp = null;
+
         if (action.equals("new")) {
             UserHib user = null;
 
@@ -112,19 +112,18 @@ public class SignUpServlet extends HttpServlet {
 
             //  обновление и удаление
             if (action.equals("update")) {
-                 UserHib id = (UserHib)(req.getSession().getAttribute("id"));
-                 req.setAttribute("id",id);
-//                UserHib vfgb = (UserHib)(req.getSession().getAttribute("sessionuserid"));
+                 UserHib userUpdate = (UserHib)(req.getSession().getAttribute("idForUpdate"));
+                 req.setAttribute("userUpdate",userUpdate);
 
-            if (id != null) {
-                id.setLastName(req.getParameter("username"));
-                id.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
-                id.setPassword(req.getParameter("userpass"));
-                id.setMonthSalary(Double.parseDouble(req.getParameter("usersalary")));
-                id.setBonus(Double.parseDouble(req.getParameter("userbonus")));
-                id.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
-                id.setId(Integer.parseInt(req.getParameter("sessionuserid")));
-                usersRepository.update(id);
+            if (userUpdate != null) {
+                userUpdate.setLastName(req.getParameter("username"));
+                userUpdate.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
+                userUpdate.setPassword(req.getParameter("userpass"));
+                userUpdate.setMonthSalary(Double.parseDouble(req.getParameter("usersalary")));
+                userUpdate.setBonus(Double.parseDouble(req.getParameter("userbonus")));
+                userUpdate.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
+
+                usersRepository.update(userUpdate);
                      }
                 List<UserHib> usersUpdateList = usersRepository.findAll();
                 req.setAttribute("usersUpdateList", usersUpdateList);
