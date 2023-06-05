@@ -4,6 +4,7 @@ import my.project.models.UserHib;
 import my.project.models.UserRoleHib;
 import my.project.repositories.IRepository;
 import my.project.repositories.Repository;
+import org.hibernate.Session;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,8 +27,6 @@ public class SignUpServlet extends HttpServlet {
     public void init() throws ServletException {
         this.usersRepository = new Repository();
     }
-
-    UserHib usUp = null;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -60,12 +59,12 @@ public class SignUpServlet extends HttpServlet {
 //блок изменения и удаления
         if (req.getParameter("action") != null) {
             if (req.getParameter("action").equals("update")) {
-                int id = Integer.parseInt(req.getParameter("id").toString());
-                usUp = usersRepository.findUserById(id);
-                req.setAttribute("usUp", usUp);
+                Integer id = Integer.parseInt(req.getParameter("id").toString());
+                UserHib usUper = usersRepository.findUserById(id);
+                req.getSession().setAttribute("id", usUper);
                 req.setAttribute("action", "update");
-
             }
+
         }
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
@@ -80,7 +79,8 @@ public class SignUpServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         req.setAttribute("action", "new");
-      if (action.equals("new")) {
+        UserHib usUp = null;
+        if (action.equals("new")) {
             UserHib user = null;
 
             try {
@@ -101,34 +101,38 @@ public class SignUpServlet extends HttpServlet {
 
             } catch (Exception e) {
 
-            }
-            finally {
-                if (user.getUserRoleHib().toString() == "DEFAULT") {
-                resp.sendRedirect(req.getContextPath() + "/login");
+                } finally {
+                    if (user.getUserRoleHib().toString() == "DEFAULT") {
+                        resp.sendRedirect(req.getContextPath() + "/login");
+                    } else {
+                resp.sendRedirect(req.getContextPath() + "/signUp");
+                    }
                 }
-            else {
-                       resp.sendRedirect(req.getContextPath() + "/signUp");
-                     }
             }
-      }
-        //обновление и удаление
-        if (action.equals("update")) {
-            if (usUp != null) {
-                usUp.setLastName(req.getParameter("username"));
-                usUp.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
-                usUp.setPassword(req.getParameter("userpass"));
-                usUp.setMonthSalary(Double.parseDouble(req.getParameter("usersalary")));
-                usUp.setBonus(Double.parseDouble(req.getParameter("userbonus")));
-                usUp.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
 
-                usersRepository.update(usUp);
+            //  обновление и удаление
+            if (action.equals("update")) {
+                 UserHib id = (UserHib)(req.getSession().getAttribute("id"));
+                 req.setAttribute("id",id);
+//                UserHib vfgb = (UserHib)(req.getSession().getAttribute("sessionuserid"));
+
+            if (id != null) {
+                id.setLastName(req.getParameter("username"));
+                id.setUserRoleHib(UserRoleHib.valueOf(req.getParameter("userrole")));
+                id.setPassword(req.getParameter("userpass"));
+                id.setMonthSalary(Double.parseDouble(req.getParameter("usersalary")));
+                id.setBonus(Double.parseDouble(req.getParameter("userbonus")));
+                id.setPayPerHour(Double.parseDouble(req.getParameter("userperhour")));
+                id.setId(Integer.parseInt(req.getParameter("sessionuserid")));
+                usersRepository.update(id);
+                     }
+                List<UserHib> usersUpdateList = usersRepository.findAll();
+                req.setAttribute("usersUpdateList", usersUpdateList);
+                resp.sendRedirect(req.getContextPath() + "/signUp");
             }
-            List<UserHib> usersUpdateList = usersRepository.findAll();
-            req.setAttribute("usersUpdateList", usersUpdateList);
-            resp.sendRedirect(req.getContextPath() + "/signUp");
         }
     }
-}
+
 
         //*в методе регистрируем получение данных с сервера
 

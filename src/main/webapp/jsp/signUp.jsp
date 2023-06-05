@@ -65,7 +65,7 @@
                                <input type="hidden" class="input-field" type="payPerHour" id="payPerHour" name="payPerHour"value = "0.0">
                            </label>
               </c:if>
-        <input type="hidden" value="${usUp.getId()==null?'new':'update'}" name="action">
+        <input type="hidden" value="${id.getId()==null?'new':'update'}" name="action">
 
         <input type="submit" value="Сохранить">
 
@@ -104,12 +104,14 @@
     </table>
         <br>
         <br>
-    Имя:<input type="text" name="username" value="${usUp.getLastName()}"><br><br>
-    Роль:<input type="text" name="userrole" value="${usUp.getUserRoleHib()}"><br><br>
-    Пароль:<input type="text" name="userpass" value="${usUp.getPassword()}"><br><br>
-    Оклад:<input type="text" name="usersalary" value="${usUp.getMonthSalary()}"><br><br>
-    Бонус:<input type="text" name="userbonus" value="${usUp.getBonus()}"><br><br>
-    Стоимость часа:<input type="text" name="userperhour" value="${usUp.getPayPerHour()}"><br><br>
+    Имя:<input type="text" name="username" value="${id.getLastName()}"><br><br>
+    Роль:<input type="text" name="userrole" value="${id.getUserRoleHib()}"><br><br>
+    Пароль:<input type="text" name="userpass" value="${id.getPassword()}"><br><br>
+    Оклад:<input type="text" name="usersalary" value="${id.getMonthSalary()}"><br><br>
+    Бонус:<input type="text" name="userbonus" value="${id.getBonus()}"><br><br>
+    Стоимость часа:<input type="text" name="userperhour" value="${id.getPayPerHour()}"><br><br>
+    <input type="hidden" value="${id.getId()}" name="sessionuserid">
+    <input type="hidden" value="${id.getId()==null?'new':'update'}" name="action">
 
     <input type="submit" value="Изменить">
 
