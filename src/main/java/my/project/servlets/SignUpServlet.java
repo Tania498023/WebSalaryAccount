@@ -59,7 +59,8 @@ public class SignUpServlet extends HttpServlet {
 //блок изменения и удаления
         if (req.getParameter("action") != null) {
             if (req.getParameter("action").equals("update")) {
-                Integer selectId = Integer.parseInt(req.getParameter("id").toString());
+
+                Integer selectId = Integer.parseInt(req.getParameter("idSelectedUser").toString());
                 UserHib usUper = usersRepository.findUserById(selectId);
                 req.getSession().setAttribute("idForUpdate", usUper);
                 req.setAttribute("action", "update");
@@ -113,7 +114,7 @@ public class SignUpServlet extends HttpServlet {
             //  обновление и удаление
             if (action.equals("update")) {
                  UserHib userUpdate = (UserHib)(req.getSession().getAttribute("idForUpdate"));
-                 req.setAttribute("userUpdate",userUpdate);
+                 req.setAttribute("userEdit",userUpdate);
 
             if (userUpdate != null) {
                 userUpdate.setLastName(req.getParameter("username"));

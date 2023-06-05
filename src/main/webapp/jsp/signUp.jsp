@@ -97,8 +97,8 @@
                 <td>${users.getMonthSalary()}</td>
                 <td>${users.getBonus()}</td>
                 <td>${users.getPayPerHour()}</td>
-                <td><a href="/signUp?action=delete&id=${users.getId()}">delete</a></td>
-                <td><a href="/signUp?action=update&id=${users.getId()}">update</a></td>
+                <td><a href="/signUp?action=delete&idSelectedUser=${users.getId()}">delete</a></td>
+                <td><a href="/signUp?action=update&idSelectedUser=${users.getId()}">update</a></td>
             </tr>
         </c:forEach>
     </table>
