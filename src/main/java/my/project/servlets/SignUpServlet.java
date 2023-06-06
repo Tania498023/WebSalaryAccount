@@ -30,6 +30,7 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         List<UserHib> users = usersRepository.findAll();//*отсюда будем выводить список пользователей в html
         req.setAttribute("usersFromServer", users);//*в атрибут запроса положили пользователей
 //определение текущего пользователя
@@ -58,12 +59,25 @@ public class SignUpServlet extends HttpServlet {
 
 //блок изменения и удаления
         if (req.getParameter("action") != null) {
+            if (req.getParameter("action").equals("delete")) {
+                Integer selectId = Integer.parseInt(req.getParameter("idSelectedUser"));
+
+                UserHib usDel = usersRepository.findUserById(selectId);
+                usersRepository.delete(usDel);
+                req.setAttribute("action", "delete");
+                List<UserHib> usersUpdateList = usersRepository.findAll();
+                req.setAttribute("usersUpdateList", usersUpdateList);
+
+
+            }
+
             if (req.getParameter("action").equals("update")) {
 
-                Integer selectId = Integer.parseInt(req.getParameter("idSelectedUser").toString());
+                Integer selectId = Integer.parseInt(req.getParameter("idSelectedUser"));
                 UserHib usUper = usersRepository.findUserById(selectId);
                 req.getSession().setAttribute("idForUpdate", usUper);
                 req.setAttribute("action", "update");
+
             }
 
         }
@@ -80,7 +94,7 @@ public class SignUpServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         req.setAttribute("action", "new");
-
+//        req.setAttribute("action", "delete");
         if (action.equals("new")) {
             UserHib user = null;
 
@@ -130,7 +144,13 @@ public class SignUpServlet extends HttpServlet {
                 req.setAttribute("usersUpdateList", usersUpdateList);
                 resp.sendRedirect(req.getContextPath() + "/signUp");
             }
-        }
+//            if (action.equals("delete")){
+//                    List<UserHib> usersUpdateList = usersRepository.findAll();
+//                    req.setAttribute("usersUpdateList", usersUpdateList);
+////                    resp.sendRedirect(req.getContextPath() + "/signUp");
+//            }
+//        resp.sendRedirect(req.getContextPath() + "/signUp");
+    }
     }
 
 

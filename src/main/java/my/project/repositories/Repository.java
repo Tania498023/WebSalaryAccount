@@ -90,6 +90,9 @@ public class Repository implements IRepository{
     public void update(UserHib user) {
         listUsersInDb.UpdateSessionUser(user);
     }
+    public void delete(UserHib user) {
+        listUsersInDb.DeleteSessionUser(user);
+    }
 
     @Override
     public void saveRec(RecordHib record) {

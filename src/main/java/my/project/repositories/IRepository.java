@@ -15,6 +15,7 @@ public interface IRepository {
     UserHib findUserById(int id);
     void save(UserHib user);
     void update(UserHib user);
+    void delete(UserHib user);
 
     List<RecordHib> findAllRec();
     List<RecordHib> findRecByName(String name);

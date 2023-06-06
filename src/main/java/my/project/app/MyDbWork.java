@@ -15,13 +15,15 @@ import java.util.List;
 
 public class MyDbWork {
     Configuration configuration;
-   // public static Repository mem;
+    // public static Repository mem;
     Session session;
-    public MyDbWork(){
+
+    public MyDbWork() {
         MyConfiguration();
 
     }
-    public  void MyConfiguration() {
+
+    public void MyConfiguration() {
         configuration = new Configuration();
         configuration.setProperty("hibernate.connection.url", "jdbc:postgresql://ubmicro.lan:5432/testdb");
         configuration.setProperty("hibernate.connection.username", "tanya");
@@ -38,21 +40,21 @@ public class MyDbWork {
 
     }
 
-    public List<UserHib> GetUserHibList(){
-          return session.createQuery("from UserHib user ", UserHib.class).getResultList();//список объектов user из таблицы(БД)
-         }
+    public List<UserHib> GetUserHibList() {
+        return session.createQuery("from UserHib user ", UserHib.class).getResultList();//список объектов user из таблицы(БД)
+    }
 
 
-    public List<RecordHib> GetRecHibList(){
+    public List<RecordHib> GetRecHibList() {
 
-          return session.createQuery("from RecordHib rec", RecordHib.class).getResultList();
+        return session.createQuery("from RecordHib rec", RecordHib.class).getResultList();
 
     }
 
     public void SaveSessionRec(RecordHib rec) {
         Transaction tx;
         session.save(rec);
-                tx = session.getTransaction();
+        tx = session.getTransaction();
         if (tx.getStatus().equals(TransactionStatus.ACTIVE)) {
             tx.commit();
         } else if (tx.getStatus().equals(TransactionStatus.COMMITTED)) {
@@ -84,4 +86,17 @@ public class MyDbWork {
             tx.commit();
         }
     }
-}
+        public void DeleteSessionUser (UserHib user){
+            Transaction tx;
+            session.delete(user);
+            tx = session.getTransaction();
+            if (tx.getStatus().equals(TransactionStatus.ACTIVE)) {
+                tx.commit();
+            } else if (tx.getStatus().equals(TransactionStatus.COMMITTED)) {
+                session.beginTransaction();
+                tx.commit();
+
+            }
+        }
+    }
+

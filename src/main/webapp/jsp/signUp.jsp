@@ -66,7 +66,7 @@
                            </label>
               </c:if>
         <input type="hidden" value="${idForUpdate.getId()==null?'new':'update'}" name="action">
-
+<%--        <input type="hidden" value="${idForDelete.getId()==null?'delete':'delete'}" name="action">--%>
         <input type="submit" value="Сохранить">
 
 </div>
