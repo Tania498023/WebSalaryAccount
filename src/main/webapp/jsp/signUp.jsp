@@ -27,7 +27,8 @@
     <div class="form-style-2-heading">
         Зарегистрироваться/добавить пользователя
     </div>
-    <form method="post" action="/signUp">
+    <form method="post" action="/signUp" >
+        <input type="hidden" value="${'new'}" name="action">
         <label for="name">Имя
             <input class="input-field" type="text" id="name" name="name">
         </label>
@@ -65,10 +66,10 @@
                                <input type="hidden" class="input-field" type="payPerHour" id="payPerHour" name="payPerHour"value = "0.0">
                            </label>
               </c:if>
-        <input type="hidden" value="${idForUpdate.getId()==null?'new':'update'}" name="action">
-<%--        <input type="hidden" value="${idForDelete.getId()==null?'delete':'delete'}" name="action">--%>
-        <input type="submit" value="Сохранить">
+<%--        <input type="hidden" value="${idForUpdate.getId()==null?'new':'update'}" name="action">--%>
 
+        <input type="submit" value="Сохранить">
+    </form>
 </div>
 
     <c:if test = "${roleForSign eq 'MANAGER'}">
@@ -77,6 +78,7 @@
     <div class="form-style-2-heading">
         Список сотрудников
     </div>
+
     <table>
         <tr id="toptr">
             <td class="tdser">ID</td>
@@ -97,13 +99,24 @@
                 <td>${users.getMonthSalary()}</td>
                 <td>${users.getBonus()}</td>
                 <td>${users.getPayPerHour()}</td>
-                <td><a href="/signUp?action=delete&idSelectedUser=${users.getId()}">delete</a></td>
+<%--                <td><a href="/signUp?action=delete&idSelectedUser=${users.getId()}">delete</a></td>--%>
                 <td><a href="/signUp?action=update&idSelectedUser=${users.getId()}">update</a></td>
             </tr>
+                    <%--    удаление--%>
+                <form method="post" action="/signUp" >
+                    <input type="hidden" value="${'delete'}" name="action" idSelectedUser=${users.getId()}>
+                    <input type="submit" name = "delete" value="delete"/>
+<%--                    <td><a href="/signUp?action=delete&idSelectedUser=${users.getId()}">delete</a></td>--%>
+                </form>
+
+
         </c:forEach>
     </table>
         <br>
         <br>
+    <form method="post" action="/signUp" >
+        <input type="hidden" value="${'update'}" name="action">
+
     Имя:<input type="text" name="username" value="${idForUpdate.getLastName()}"><br><br>
     <label>Роль
         <select name="userrole">
@@ -119,11 +132,13 @@
     Стоимость часа:<input type="text" name="userperhour" value="${idForUpdate.getPayPerHour()}"><br><br>
 
     <input type="submit" value="Изменить">
+</form>
 
-</div>
+
         <input type="button" value="Главное меню" onclick=location.href='home'>
     </c:if>
 <input type="button" value="Выход из приложения" onclick=location.href='logout'>
-</form>
+
+</div>
 </body>
 </html>

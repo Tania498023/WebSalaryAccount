@@ -57,19 +57,8 @@ public class SignUpServlet extends HttpServlet {
 
         req.setAttribute("roleForSign", Ur);
 
-//блок изменения и удаления
+//блок изменения
         if (req.getParameter("action") != null) {
-            if (req.getParameter("action").equals("delete")) {
-                Integer selectId = Integer.parseInt(req.getParameter("idSelectedUser"));
-
-                UserHib usDel = usersRepository.findUserById(selectId);
-                usersRepository.delete(usDel);
-                req.setAttribute("action", "delete");
-                List<UserHib> usersUpdateList = usersRepository.findAll();
-                req.setAttribute("usersUpdateList", usersUpdateList);
-
-
-            }
 
             if (req.getParameter("action").equals("update")) {
 
@@ -77,14 +66,28 @@ public class SignUpServlet extends HttpServlet {
                 UserHib usUper = usersRepository.findUserById(selectId);
                 req.getSession().setAttribute("idForUpdate", usUper);
                 req.setAttribute("action", "update");
-
+                req.getRequestDispatcher("/jsp/signUp.jsp").forward(req,resp);
             }
+//блок удаления
+//            if (req.getParameter("action").equals("delete")) {
+//                Integer selectId = Integer.parseInt(req.getParameter("idSelectedUser"));
+//                UserHib usDel = usersRepository.findUserById(selectId);
+//                usersRepository.delete(usDel);
+//
+//                List<UserHib> usersDeleteList = usersRepository.findAll();
+//                req.setAttribute("usersDeleteList", usersDeleteList);
+//                req.setAttribute("action", "delete");
+//                req.setAttribute("TESTusersDelete", usDel);
+//                req.getRequestDispatcher("/jsp/signUp.jsp").forward(req,resp);
+//            }
+
+
 
         }
-
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");
         dispatcher.forward(req, resp);//*перенаправление запроса на страницу signUp.jsp
         //*в методе :сервер получил запрос, вытащил пользователей(users) из Repository, затем положил users в атрибуты запроса и отправил данные на jsp.
+
     }
 
 
@@ -94,7 +97,7 @@ public class SignUpServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         req.setAttribute("action", "new");
-//        req.setAttribute("action", "delete");
+
         if (action.equals("new")) {
             UserHib user = null;
 
@@ -125,7 +128,7 @@ public class SignUpServlet extends HttpServlet {
                 }
             }
 
-            //  обновление и удаление
+            //  обновление
             if (action.equals("update")) {
                  UserHib userUpdate = (UserHib)(req.getSession().getAttribute("idForUpdate"));
                  req.setAttribute("userEdit",userUpdate);
@@ -144,16 +147,23 @@ public class SignUpServlet extends HttpServlet {
                 req.setAttribute("usersUpdateList", usersUpdateList);
                 resp.sendRedirect(req.getContextPath() + "/signUp");
             }
-//            if (action.equals("delete")){
-//                    List<UserHib> usersUpdateList = usersRepository.findAll();
-//                    req.setAttribute("usersUpdateList", usersUpdateList);
-////                    resp.sendRedirect(req.getContextPath() + "/signUp");
-//            }
-//        resp.sendRedirect(req.getContextPath() + "/signUp");
-    }
+//блок удаления
+            if (req.getParameter("action").equals("delete")) {
+                Integer selectId = Integer.parseInt(req.getParameter("idSelectedUser"));
+                UserHib usDel = usersRepository.findUserById(selectId);
+                usersRepository.delete(usDel);
+
+                List<UserHib> usersDeleteList = usersRepository.findAll();
+                req.setAttribute("usersDeleteList", usersDeleteList);
+                req.setAttribute("action", "delete");
+                req.setAttribute("TESTusersDelete", usDel);
+                req.getRequestDispatcher("/jsp/signUp.jsp").forward(req,resp);
+            }
+
+         }
+
     }
 
 
-        //*в методе регистрируем получение данных с сервера
 
 
