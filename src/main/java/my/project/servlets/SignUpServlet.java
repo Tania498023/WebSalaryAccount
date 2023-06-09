@@ -68,20 +68,6 @@ public class SignUpServlet extends HttpServlet {
                 req.setAttribute("action", "update");
                 req.getRequestDispatcher("/jsp/signUp.jsp").forward(req,resp);
             }
-//блок удаления
-//            if (req.getParameter("action").equals("delete")) {
-//                Integer selectId = Integer.parseInt(req.getParameter("idSelectedUser"));
-//                UserHib usDel = usersRepository.findUserById(selectId);
-//                usersRepository.delete(usDel);
-//
-//                List<UserHib> usersDeleteList = usersRepository.findAll();
-//                req.setAttribute("usersDeleteList", usersDeleteList);
-//                req.setAttribute("action", "delete");
-//                req.setAttribute("TESTusersDelete", usDel);
-//                req.getRequestDispatcher("/jsp/signUp.jsp").forward(req,resp);
-//            }
-
-
 
         }
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp");

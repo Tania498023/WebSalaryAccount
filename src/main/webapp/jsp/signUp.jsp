@@ -99,13 +99,17 @@
                 <td>${users.getMonthSalary()}</td>
                 <td>${users.getBonus()}</td>
                 <td>${users.getPayPerHour()}</td>
-                <td><a href="/signUp?action=update&idSelectedUser=${users.getId()}">update</a></td>
-                    <%--    удаление--%>
                 <td>
-                    <form method="post" action="/signUp" >
-                        <button type='submit' name = 'idSelectedUser' value='${users.getId()}'>delete</button>
-                    </form>
+                        <button type="submit" name='idSelectedUser' onclick=location.href='/signUp?action=update&idSelectedUser=${users.getId()}' value='idSelectedUser'>Изменить </button>
                 </td>
+                    <%--    удаление--%>
+
+                <form method="post" action="/signUp" >
+                    <td>
+                         <button type='submit' name = 'idSelectedUser' value='${users.getId()}'>Удалить </button>
+                    </td>
+                </form>
+
             </tr>
         </c:forEach>
     </table>
