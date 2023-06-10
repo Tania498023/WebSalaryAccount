@@ -15,15 +15,14 @@
 
              </tr>
             <tr>
-
                 <td>${user}</td>
                 <td>${usersRole}</td>
-
             </tr>
         </table>
     </div>
 
 <div class="form-style-2 ">
+<%--    создание новой записи(record) --%>
     <form method="post" action="/home">
 
         <label for="date">Date
@@ -35,8 +34,6 @@
         <label for="message">Message
             <input class="input-field" type="text" id="message" name="message">
         </label>
-
-
         <label>Name
 
             <select name="lastName" >
@@ -50,7 +47,6 @@
                 <c:if test = "${usersRole != 'MANAGER'}">
                     <option selected value=""disabled> </option>
                     <option value="${user}">${user}</option>
-
                 </c:if>
 
             </select>
@@ -59,7 +55,6 @@
         <input type="submit" value="Сохранить запись">
 <c:if test = "${chekRoleForHome eq 'MANAGER'}">
         <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
-
     </form>
 </div>
 
@@ -69,20 +64,26 @@
         Учет времени сотрудников
     </div>
     <table>
-        <tr>
-            <th>Дата</th>
-            <th>Время</th>
-            <th>Работы</th>
-            <th>Имя</th>
+        <tr >
+            <td class="tdser">Дата</td>
+            <td class="tdser">Время</td>
+            <td class="tdser">Работы</td>
+            <td class="tdser">Имя</td>
         </tr>
 
         <c:forEach items="${usersFromServer}" var="records">
             <tr>
 
-                <td>${records.getDate()}</td>
-                <td>${records.getHour()}</td>
-                <td>${records.getMessage()}</td>
-                <td>${records.getLastName().getLastName()}</td>
+                <td class="tdser">${records.getDate()}</td>
+                <td class="tdser">${records.getHour()}</td>
+                <td class="tdser">${records.getMessage()}</td>
+                <td class="tdser">${records.getLastName().getLastName()}</td>
+
+                <form method="post" action="/home" >
+                    <td class="tdser">
+                        <button type='submit' name = 'deleteRec' value='${records.getLastName().getLastName()}'>Удалить </button>
+                    </td>
+                </form>
             </tr>
         </c:forEach>
     </table>

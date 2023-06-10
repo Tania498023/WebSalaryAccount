@@ -63,6 +63,18 @@ public class MyDbWork {
         }
     }
 
+    public void DeleteSessionRec(RecordHib rec) {
+        Transaction tx;
+        session.delete(rec);
+        tx = session.getTransaction();
+        if (tx.getStatus().equals(TransactionStatus.ACTIVE)) {
+            tx.commit();
+        } else if (tx.getStatus().equals(TransactionStatus.COMMITTED)) {
+            session.beginTransaction();
+            tx.commit();
+        }
+    }
+
     public void SaveSessionUser(UserHib user) {
         Transaction tx;
         session.save(user);

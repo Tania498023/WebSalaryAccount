@@ -114,8 +114,7 @@ public class SignUpServlet extends HttpServlet {
                     }
                 }
             }
-
-            //  обновление
+//  обновление
             if (action.equals("update")) {
                 UserHib userUpdate = (UserHib) (req.getSession().getAttribute("idForUpdate"));
                 req.setAttribute("userEdit", userUpdate);
@@ -131,7 +130,6 @@ public class SignUpServlet extends HttpServlet {
                     usersRepository.update(userUpdate);
                 }
                 List<UserHib> usersUpdateList = usersRepository.findAll();
-                req.setAttribute("usersUpdateList", usersUpdateList);
                 resp.sendRedirect(req.getContextPath() + "/signUp");
             }
         }
@@ -143,7 +141,6 @@ public class SignUpServlet extends HttpServlet {
                 usersRepository.delete(usDel);
 
                 List<UserHib> usersUpdateList = usersRepository.findAll();
-                req.setAttribute("usersUpdateList", usersUpdateList);
                 resp.sendRedirect(req.getContextPath() + "/signUp");
             }
 

@@ -31,9 +31,11 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //получаем все записи из БД
         List<RecordHib> records = usersRepository.findAllRec();
         req.setAttribute("usersFromServer", records);
 
+//получаем список имен всех пользователей из БД
         List<UserHib> users = usersRepository.findAll();
         req.setAttribute("roleByName", users);
         List<String> listUsers = new ArrayList<>();
@@ -41,12 +43,15 @@ public class HomeServlet extends HttpServlet {
             var usByName = item.getLastName();
             listUsers.add(usByName);
         }
+        req.setAttribute("usersName", listUsers);
 
-
+//получаем текущего пользователя
         Object checkUser = req.getSession().getAttribute("user");//получаем атрибут "user" из сессии
         req.setAttribute("user", checkUser);
         UserHib us = usersRepository.findUserByName(checkUser.toString());
         req.setAttribute("usersRole", us.getUserRoleHib());
+
+//устанавливаем область видимости полей в зависимости от роли текущего пользователя
         String RoleForHome = "DEFAULT";
         if(us!=null&&us.getUserRoleHib().toString()=="MANAGER"){
             RoleForHome="MANAGER";
@@ -54,19 +59,14 @@ public class HomeServlet extends HttpServlet {
         req.setAttribute("chekRoleForHome",RoleForHome);
 
 
-        // перенаправляем на страницу home
-     //   req.getServletContext().getRequestDispatcher("/signUp").forward(req, resp);
-
-          req.setAttribute("usersName", listUsers);
-          req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
-
+        req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-
+//создание новой записи
         try {
             String date =req.getParameter("date");
             LocalDate d = LocalDate.parse(date);
@@ -81,8 +81,20 @@ public class HomeServlet extends HttpServlet {
         catch (Exception e){
 
         }
+//удаление записи
+        if (req.getParameter("deleteRec")!=null) {
+            String lastName = req.getParameter("deleteRec");
+            RecordHib recDel = (RecordHib) usersRepository.findRecByName(lastName);
+            usersRepository.deleteRec(recDel);
 
-       doGet(req, resp);
+            List<RecordHib> recUpdateList = usersRepository.findAllRec();
+            resp.sendRedirect(req.getContextPath() + "/home");
+        }
+
+
+
+
+//       doGet(req, resp);
 
     }
 }

@@ -92,20 +92,20 @@
 
         <c:forEach items="${usersFromServer}" var="users">
             <tr id="downtr">
-                <td>${users.getId()}</td>
-                <td>${users.getLastName()}</td>
-                <td>${users.getUserRoleHib()}</td>
-                <td>${users.getPassword()}</td>
-                <td>${users.getMonthSalary()}</td>
-                <td>${users.getBonus()}</td>
-                <td>${users.getPayPerHour()}</td>
-                <td>
-                        <button type="submit" name='idSelectedUser' onclick=location.href='/signUp?action=update&idSelectedUser=${users.getId()}' value='idSelectedUser'>Изменить </button>
+                <td class="tdser">${users.getId()}</td>
+                <td class="tdser">${users.getLastName()}</td>
+                <td class="tdser">${users.getUserRoleHib()}</td>
+                <td class="tdser">${users.getPassword()}</td>
+                <td class="tdser">${users.getMonthSalary()}</td>
+                <td class="tdser">${users.getBonus()}</td>
+                <td class="tdser">${users.getPayPerHour()}</td>
+                <td class="tdser">
+                        <button type="submit" onclick=location.href='/signUp?action=update&idSelectedUser=${users.getId()}' >Изменить </button>
                 </td>
                     <%--    удаление--%>
 
                 <form method="post" action="/signUp" >
-                    <td>
+                    <td class="tdser">
                          <button type='submit' name = 'idSelectedUser' value='${users.getId()}'>Удалить </button>
                     </td>
                 </form>
