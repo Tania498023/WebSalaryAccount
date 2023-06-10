@@ -91,7 +91,7 @@
     <br>
     <form method="post" action="/home">
         <input type="hidden" value="${'update'}" name="action">
-
+        Имя:<input type="text" name="recForUpdate" value="${recForUpdate.getLastName().getLastName()}"><br><br>
         Дата:<input type="text" name="recDate" value="${recForUpdate.getDate()}"><br><br>
         Время:<input type="text" name="recHours" value="${recForUpdate.getHour()}"><br><br>
         Сообщение:<input type="text" name="recMess" value="${recForUpdate.getMessage()}"><br><br>
