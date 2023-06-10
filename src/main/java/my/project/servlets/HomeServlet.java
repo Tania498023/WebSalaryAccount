@@ -39,7 +39,7 @@ public class HomeServlet extends HttpServlet {
         List<UserHib> users = usersRepository.findAll();
         req.setAttribute("roleByName", users);
         List<String> listUsers = new ArrayList<>();
-        for (UserHib item: users) {
+        for (UserHib item : users) {
             var usByName = item.getLastName();
             listUsers.add(usByName);
         }
@@ -53,48 +53,84 @@ public class HomeServlet extends HttpServlet {
 
 //устанавливаем область видимости полей в зависимости от роли текущего пользователя
         String RoleForHome = "DEFAULT";
-        if(us!=null&&us.getUserRoleHib().toString()=="MANAGER"){
-            RoleForHome="MANAGER";
+        if (us != null && us.getUserRoleHib().toString() == "MANAGER") {
+            RoleForHome = "MANAGER";
         }
-        req.setAttribute("chekRoleForHome",RoleForHome);
+        req.setAttribute("chekRoleForHome", RoleForHome);
+//изменить
+        if (req.getParameter("action") != null) {
 
+            if (req.getParameter("action").equals("update")) {
 
-        req.getServletContext().getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
+                Integer selectId = Integer.parseInt(req.getParameter("idSelectedRec"));
+                RecordHib recUpdate = usersRepository.findRecById(selectId);
+                req.getSession().setAttribute("recForUpdate", recUpdate);//!
+                req.setAttribute("action", "update");
+                req.getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
+            }
+
+        }
+
+        RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
+        dispatcher.forward(req, resp);
+
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-//создание новой записи
-        try {
-            String date =req.getParameter("date");
-            LocalDate d = LocalDate.parse(date);
-            String hour = req.getParameter("hour");
-            Integer h = Integer.valueOf(hour);
-            String message = req.getParameter("message");
-            String lastName = req.getParameter("lastName");
-            RecordHib rec = new RecordHib(d,h,message,usersRepository.findUserByName(lastName));
-            usersRepository.saveRec(rec);
-            req.setAttribute("listRec", rec);
-        }
-        catch (Exception e){
+        String action = req.getParameter("action");
+        req.setAttribute("action", "new");
 
+        if (action != null) {
+            if (action.equals("new")) {
+//создание новой записи
+                try {
+                    String date = req.getParameter("date");
+                    LocalDate d = LocalDate.parse(date);
+                    String hour = req.getParameter("hour");
+                    Integer h = Integer.valueOf(hour);
+                    String message = req.getParameter("message");
+                    String lastName = req.getParameter("lastName");
+                    RecordHib rec = new RecordHib(d, h, message, usersRepository.findUserByName(lastName));
+                    usersRepository.saveRec(rec);
+                    req.setAttribute("listRec", rec);
+                } catch (Exception e) {
+
+                }
+                resp.sendRedirect(req.getContextPath() + "/home");
+            }
+
+
+
+//изменение
+            if (action.equals("update")) {
+                RecordHib recUp = (RecordHib) (req.getSession().getAttribute("recForUpdate"));
+                req.setAttribute("recEdit", recUp);
+
+                if (recUp != null) {
+                    recUp.setDate(LocalDate.parse(req.getParameter("recDate")));
+                    recUp.setHour(Integer.parseInt(req.getParameter("recHours")));
+                    recUp.setMessage(req.getParameter("recMess"));
+
+                    usersRepository.updateRec(recUp);
+
+                }
+
+                List<RecordHib> recUpdateList = usersRepository.findAllRec();
+                resp.sendRedirect(req.getContextPath() + "/home");
+
+            }
         }
-//удаление записи
-        if (req.getParameter("deleteRec")!=null) {
-            String lastName = req.getParameter("deleteRec");
-            RecordHib recDel = (RecordHib) usersRepository.findRecByName(lastName);
+        //удаление записи
+        if (req.getParameter("idSelectedRec") != null) {
+            Integer selectId = Integer.parseInt(req.getParameter("idSelectedRec"));
+            RecordHib recDel = usersRepository.findRecById(selectId);
             usersRepository.deleteRec(recDel);
 
             List<RecordHib> recUpdateList = usersRepository.findAllRec();
             resp.sendRedirect(req.getContextPath() + "/home");
         }
-
-
-
-
-//       doGet(req, resp);
-
     }
 }

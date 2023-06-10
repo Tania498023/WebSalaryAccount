@@ -19,12 +19,12 @@
                 <td>${usersRole}</td>
             </tr>
         </table>
-    </div>
+</div>
 
 <div class="form-style-2 ">
 <%--    создание новой записи(record) --%>
     <form method="post" action="/home">
-
+        <input type="hidden" value="${'new'}" name="action">
         <label for="date">Date
             <input class="input-field" type="date" id="date" name="date">
         </label>
@@ -53,18 +53,16 @@
         </label>
 
         <input type="submit" value="Сохранить запись">
-<c:if test = "${chekRoleForHome eq 'MANAGER'}">
-        <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
     </form>
-</div>
 
+        <c:if test = "${chekRoleForHome eq 'MANAGER'}">
+        <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
 
-<div class="form-style-2">
     <div class="form-style-2-heading">
         Учет времени сотрудников
     </div>
-    <table>
-        <tr >
+<table>
+        <tr id="toptr">
             <td class="tdser">Дата</td>
             <td class="tdser">Время</td>
             <td class="tdser">Работы</td>
@@ -72,23 +70,38 @@
         </tr>
 
         <c:forEach items="${usersFromServer}" var="records">
-            <tr>
-
+            <tr id="downtr">
                 <td class="tdser">${records.getDate()}</td>
                 <td class="tdser">${records.getHour()}</td>
                 <td class="tdser">${records.getMessage()}</td>
                 <td class="tdser">${records.getLastName().getLastName()}</td>
+                <td class="tdser">
+                    <button type="submit" onclick=location.href='/home?action=update&idSelectedRec=${records.getId()}' >Изменить </button>
+                </td>
 
                 <form method="post" action="/home" >
                     <td class="tdser">
-                        <button type='submit' name = 'deleteRec' value='${records.getLastName().getLastName()}'>Удалить </button>
+                        <button type='submit' name = 'idSelectedRec' value='${records.getId()}'>Удалить </button>
                     </td>
                 </form>
             </tr>
         </c:forEach>
-    </table>
+</table>
+    <br>
+    <br>
+    <form method="post" action="/home">
+        <input type="hidden" value="${'update'}" name="action">
+
+        Дата:<input type="text" name="recDate" value="${recForUpdate.getDate()}"><br><br>
+        Время:<input type="text" name="recHours" value="${recForUpdate.getHour()}"><br><br>
+        Сообщение:<input type="text" name="recMess" value="${recForUpdate.getMessage()}"><br><br>
+
+          <input type="submit" value="Изменить">
+    </form>
+
+
 </div>
-</c:if>
+        </c:if>
 
 <div class=form-style-2 input[type=button]">
 <input type="button" value="Выход из приложения" onclick=location.href='logout'>

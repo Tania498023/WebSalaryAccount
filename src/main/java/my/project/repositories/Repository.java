@@ -73,10 +73,10 @@ public class Repository implements IRepository{
 
     }
     @Override
-    public  RecordHib findRecByName(String name) {
+    public  RecordHib findRecById(int id) {
         RecordHib recByName = null;
     for (RecordHib rec : listUsersInDb.GetRecHibList()) {
-        if (rec.getLastName().getLastName().equals(name)) {
+        if (rec.getId().equals(id)) {
             recByName=rec;
         }
       }
@@ -102,6 +102,9 @@ public class Repository implements IRepository{
     public void deleteRec(RecordHib record) {
         listUsersInDb.DeleteSessionRec(record);
     }
+    public void updateRec(RecordHib record){
+        listUsersInDb.UpdateSessionRec(record);
+    };
     @Override
     public boolean isExist(String name, String password) {
         for (UserHib user : listUsersInDb.GetUserHibList()) {

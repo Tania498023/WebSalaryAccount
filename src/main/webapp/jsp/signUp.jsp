@@ -133,8 +133,9 @@
         Стоимость часа:<input type="text" name="userperhour" value="${idForUpdate.getPayPerHour()}"><br><br>
 
         <input type="submit" value="Изменить">
-    </form>
+
         <input type="button" value="Главное меню" onclick=location.href='home'>
+    </form>
 </c:if>
 <input type="button" value="Выход из приложения" onclick=location.href='logout'>
 
