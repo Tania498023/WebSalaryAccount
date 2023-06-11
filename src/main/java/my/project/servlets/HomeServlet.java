@@ -14,9 +14,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
@@ -70,6 +68,30 @@ public class HomeServlet extends HttpServlet {
             }
 
         }
+        //блок группировки времени
+        Map<String,Integer> groupRec = new HashMap<>();
+
+        List<RecordHib> recGroup = usersRepository.findAllRec();
+
+        for (RecordHib item: recGroup){
+            if(!groupRec.containsKey(item.getLastName().getLastName())){
+
+                groupRec.put(item.getLastName().getLastName(),item.getHour());
+            }
+            else if(groupRec.containsKey(item.getLastName().getLastName())){
+
+                int h = groupRec.get(item.getLastName().getLastName());
+
+                groupRec.put(item.getLastName().getLastName(),item.getHour()+h);
+            }
+            String n = item.getLastName().getLastName();
+            req.setAttribute("nR",n);
+            req.getSession().setAttribute("summHour",groupRec);
+//            resp.sendRedirect(req.getContextPath() + "/home");
+        }
+
+
+
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
         dispatcher.forward(req, resp);
@@ -132,5 +154,6 @@ public class HomeServlet extends HttpServlet {
             List<RecordHib> recUpdateList = usersRepository.findAllRec();
             resp.sendRedirect(req.getContextPath() + "/home");
         }
+
     }
 }

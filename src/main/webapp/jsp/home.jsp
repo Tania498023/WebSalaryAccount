@@ -1,4 +1,4 @@
-<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <html>
@@ -91,13 +91,20 @@
     <br>
     <form method="post" action="/home">
         <input type="hidden" value="${'update'}" name="action">
-        Имя:<input type="text" name="recForUpdate" value="${recForUpdate.getLastName().getLastName()}"><br><br>
-        Дата:<input type="text" name="recDate" value="${recForUpdate.getDate()}"><br><br>
-        Время:<input type="text" name="recHours" value="${recForUpdate.getHour()}"><br><br>
-        Сообщение:<input type="text" name="recMess" value="${recForUpdate.getMessage()}"><br><br>
+        Имя:<input type="text" name="recForUpdate" value="${recForUpdate.getLastName().getLastName()}" ><br><br>
+        Дата:<input type="text" name="recDate" value="${recForUpdate.getDate()}" ><br><br>
+        Время:<input type="text" name="recHours" value="${recForUpdate.getHour()}" ><br><br>
+        Сообщение:<input type="text" name="recMess" value="${recForUpdate.getMessage()}" ><br><br>
 
           <input type="submit" value="Изменить">
+        <br>
+        <br>
     </form>
+<%--блок группировки часов--%>
+
+
+
+
 
 
 </div>
