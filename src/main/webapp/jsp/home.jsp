@@ -101,12 +101,23 @@
         <br>
     </form>
 <%--блок группировки часов--%>
+    <div class="form-style-2-heading">
+        Отработано часов за выбранный период
+    </div>
+    <table>
+        <tr id="toptr">
+            <td class="tdser">Имя</td>
+            <td class="tdser">Время</td>
+        </tr>
 
+        <c:forEach items="${summHour}" var="entry">
 
-
-
-
-
+            <tr id="downtr">
+                <td class="tdser">${entry.key}</td>
+                <td class="tdser">${entry.value}</td>
+            </tr>
+        </c:forEach>
+    </table>
 </div>
         </c:if>
 
