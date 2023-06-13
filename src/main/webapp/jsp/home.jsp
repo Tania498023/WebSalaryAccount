@@ -89,7 +89,7 @@
 </table>
     <br>
     <br>
-    <form method="post" action="/home">
+<form method="post" action="/home">
         <input type="hidden" value="${'update'}" name="action">
         Имя:<input type="text" name="recForUpdate" value="${recForUpdate.getLastName().getLastName()}" ><br><br>
         Дата:<input type="text" name="recDate" value="${recForUpdate.getDate()}" ><br><br>
@@ -99,27 +99,46 @@
           <input type="submit" value="Изменить">
         <br>
         <br>
-    </form>
+</form>
+
+</div>
 <%--блок группировки часов--%>
     <div class="form-style-2-heading">
         Отработано часов за выбранный период
     </div>
+
+<form method="post" action="/home">
+
+    <label for="startDate">Начало периода
+        <input class="input-field" type="date" id="startDate" name="startDate">
+    </label>
+    <label for="endDate">Конец периода
+        <input class="input-field" type="date" id="endDate" name="endDate">
+    </label>
+        <input type="submit" value="Установить">
+    <br>
+    <br>
+</form>
+
     <table>
-        <tr id="toptr">
+        <tr id="">
             <td class="tdser">Имя</td>
             <td class="tdser">Время</td>
         </tr>
 
-        <c:forEach items="${summHour}" var="entry">
 
-            <tr id="downtr">
+       <c:forEach items="${summHourRec}" var="entry">
+
+            <tr id="">
                 <td class="tdser">${entry.key}</td>
                 <td class="tdser">${entry.value}</td>
+
             </tr>
-        </c:forEach>
+
+       </c:forEach>
     </table>
-</div>
-        </c:if>
+</c:if>
+
 
 <div class=form-style-2 input[type=button]">
 <input type="button" value="Выход из приложения" onclick=location.href='logout'>

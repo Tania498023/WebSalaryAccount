@@ -14,8 +14,9 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.*;
-
+import java.util.Date;
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private IRepository usersRepository;
@@ -31,7 +32,7 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //получаем все записи из БД
         List<RecordHib> records = usersRepository.findAllRec();
-        req.setAttribute("usersFromServer", records);
+        req.getSession().setAttribute("usersFromServer", records);
 
 //получаем список имен всех пользователей из БД
         List<UserHib> users = usersRepository.findAll();
@@ -69,28 +70,34 @@ public class HomeServlet extends HttpServlet {
 
         }
         //блок группировки времени
-        Map<String,Integer> groupRec = new HashMap<>();
 
         List<RecordHib> recGroup = usersRepository.findAllRec();
+        req.setAttribute("recGr", recGroup);
 
-        for (RecordHib item: recGroup){
-            if(!groupRec.containsKey(item.getLastName().getLastName())){
-
-                groupRec.put(item.getLastName().getLastName(),item.getHour());
-            }
-            else if(groupRec.containsKey(item.getLastName().getLastName())){
-
-                int h = groupRec.get(item.getLastName().getLastName());
-
-                groupRec.put(item.getLastName().getLastName(),item.getHour()+h);
-            }
-            String n = item.getLastName().getLastName();
-            req.setAttribute("nR",n);
-            req.getSession().setAttribute("summHour",groupRec);
-//            resp.sendRedirect(req.getContextPath() + "/home");
+        LocalDate v = null;
+        LocalDate vv = null;
+        try {
+             v = LocalDate.parse(req.getSession().getAttribute("nachalo").toString());
+             vv = LocalDate.parse(req.getSession().getAttribute("konec").toString());
         }
+       catch (Exception  e){
 
+       }
+        Map<String,Integer> groupRecord = new HashMap<>();
+        for (RecordHib item: recGroup) {
+            if (item.getDate().equals(v)||item.getDate().equals(vv)) {
+                if (!groupRecord.containsKey(item.getLastName().getLastName())) {
 
+                    groupRecord.put(item.getLastName().getLastName(), item.getHour());
+                } else if (groupRecord.containsKey(item.getLastName().getLastName())) {
+
+                    int h = groupRecord.get(item.getLastName().getLastName());
+
+                    groupRecord.put(item.getLastName().getLastName(), item.getHour() + h);
+                }
+            }
+        }
+        req.setAttribute("summHourRec",groupRecord);
 
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
@@ -104,6 +111,7 @@ public class HomeServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         req.setAttribute("action", "new");
+
 
         if (action != null) {
             if (action.equals("new")) {
@@ -154,6 +162,28 @@ public class HomeServlet extends HttpServlet {
             List<RecordHib> recUpdateList = usersRepository.findAllRec();
             resp.sendRedirect(req.getContextPath() + "/home");
         }
+// блок группировки времени(устанавливаем дату и отправляем на сервер)
+
+
+         LocalDate SD=null;
+         LocalDate ED=null;
+
+        try {
+            String startDate = LocalDate.parse(req.getParameter("startDate")).toString();
+            SD = LocalDate.parse(startDate);
+            String endDate = LocalDate.parse(req.getParameter("endDate")).toString();
+            ED = LocalDate.parse(endDate);
+            req.getSession().setAttribute("nachalo", SD);
+            req.getSession().setAttribute("konec", ED);
+        } catch (Exception e) {
+
+        }
+
+
+
+            resp.sendRedirect(req.getContextPath() + "/home");
+
 
     }
+
 }

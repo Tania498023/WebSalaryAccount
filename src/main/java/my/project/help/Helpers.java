@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Helpers {
@@ -29,6 +30,22 @@ public class Helpers {
 
         ZonedDateTime zdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
         return zdt.toInstant().toEpochMilli();
+
+
+
+    }
+    public static final Date LDFromDate(LocalDate ld)
+    {
+        //LocalDate преобразовать в Date
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate localDate = LocalDate.of(2016, 8, 19);
+        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+       return date;
+
+
+
+
+
     }
 
 }
