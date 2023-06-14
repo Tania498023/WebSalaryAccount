@@ -83,9 +83,13 @@ public class HomeServlet extends HttpServlet {
        catch (Exception  e){
 
        }
+
         Map<String,Integer> groupRecord = new HashMap<>();
+        if(v != null && vv != null) // без скобок, но проверка для целого блока ниже
         for (RecordHib item: recGroup) {
-            if (item.getDate().equals(v)||item.getDate().equals(vv)) {
+            long v1 =Helpers.getMilliSecFromDate(item.getDate());
+            if (v1 >= Helpers.getMilliSecFromDate(v) &&
+                    v1 <= Helpers.getMilliSecFromDate(vv)) {
                 if (!groupRecord.containsKey(item.getLastName().getLastName())) {
 
                     groupRecord.put(item.getLastName().getLastName(), item.getHour());
