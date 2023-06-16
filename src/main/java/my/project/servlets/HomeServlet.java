@@ -83,24 +83,28 @@ public class HomeServlet extends HttpServlet {
        catch (Exception  e){
 
        }
-
         Map<String,Integer> groupRecord = new HashMap<>();
-        if(v != null && vv != null) // без скобок, но проверка для целого блока ниже
-        for (RecordHib item: recGroup) {
-            long v1 =Helpers.getMilliSecFromDate(item.getDate());
-            if (v1 >= Helpers.getMilliSecFromDate(v) &&
-                    v1 <= Helpers.getMilliSecFromDate(vv)) {
-                if (!groupRecord.containsKey(item.getLastName().getLastName())) {
+        if(v == null && vv == null){
+            LocalDate dd = LocalDate.now().withDayOfMonth(1);
+            v=dd;
+            LocalDate hh = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+            vv = hh;
+        }
 
-                    groupRecord.put(item.getLastName().getLastName(), item.getHour());
-                } else if (groupRecord.containsKey(item.getLastName().getLastName())) {
+            for (RecordHib item : recGroup) {
+                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(v) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(vv)) {
+                    if (!groupRecord.containsKey(item.getLastName().getLastName())) {
 
-                    int h = groupRecord.get(item.getLastName().getLastName());
+                        groupRecord.put(item.getLastName().getLastName(), item.getHour());
+                    } else if (groupRecord.containsKey(item.getLastName().getLastName())) {
 
-                    groupRecord.put(item.getLastName().getLastName(), item.getHour() + h);
+                        int h = groupRecord.get(item.getLastName().getLastName());
+
+                        groupRecord.put(item.getLastName().getLastName(), item.getHour() + h);
+                    }
                 }
             }
-        }
+
         req.setAttribute("summHourRec",groupRecord);
 
 
@@ -179,14 +183,10 @@ public class HomeServlet extends HttpServlet {
             ED = LocalDate.parse(endDate);
             req.getSession().setAttribute("nachalo", SD);
             req.getSession().setAttribute("konec", ED);
+            resp.sendRedirect(req.getContextPath() + "/home");
         } catch (Exception e) {
 
         }
-
-
-
-            resp.sendRedirect(req.getContextPath() + "/home");
-
 
     }
 

@@ -1,9 +1,6 @@
 package my.project.help;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -34,18 +31,20 @@ public class Helpers {
 
 
     }
-    public static final Date LDFromDate(LocalDate ld)
-    {
-        //LocalDate преобразовать в Date
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        LocalDate localDate = LocalDate.of(2016, 8, 19);
-        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-       return date;
+//    public static final long LDFromDate(LocalDate ld)
+//    {
+//
+////        String strLd = ld.toString()  ;//2007-12-03T10:15:30
+//        long millicek = new Date().getTime();
 
 
 
 
 
-    }
+
+
+
+
+
 
 }

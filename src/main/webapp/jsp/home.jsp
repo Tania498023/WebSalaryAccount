@@ -94,7 +94,7 @@
         Имя:<input type="text" name="recForUpdate" value="${recForUpdate.getLastName().getLastName()}" ><br><br>
         Дата:<input type="text" name="recDate" value="${recForUpdate.getDate()}" ><br><br>
         Время:<input type="text" name="recHours" value="${recForUpdate.getHour()}" ><br><br>
-        Сообщение:<input type="text" name="recMess" value="${recForUpdate.getMessage()}" ><br><br>
+        Работы:<input type="text" name="recMess" value="${recForUpdate.getMessage()}" ><br><br>
 
           <input type="submit" value="Изменить">
         <br>
@@ -141,7 +141,9 @@
 
 
 <div class=form-style-2 input[type=button]">
-<input type="button" value="Выход из приложения" onclick=location.href='logout'>
+    <input type="button" value="Сформировать отчет по зарплате" onclick=location.href='report'>
+    <input type="button" value="Выход из приложения" onclick=location.href='logout'>
+
 </div>
 </body>
 </html>
