@@ -4,6 +4,7 @@ import my.project.help.Helpers;
 import my.project.help.Settings;
 import my.project.models.RecordHib;
 import my.project.models.UserHib;
+import my.project.models.UserRoleHib;
 import my.project.repositories.IRepository;
 import my.project.repositories.Repository;
 
@@ -39,6 +40,7 @@ public class ReportServlet extends HttpServlet {
 //блок расчета з/п
         List<RecordHib> recordGroup = usersRepository.findAllRec();
         req.setAttribute("recGroup", recordGroup);
+        List<UserHib> userGroup = usersRepository.findAll();
 
         LocalDate startDay = null;
         LocalDate endDay = null;
@@ -59,26 +61,39 @@ public class ReportServlet extends HttpServlet {
 //            List<RecordHib> repRec = new ArrayList<>();
             Map<String,Integer> groupDoxod = new HashMap<>();
             Map<String,Double> mapDoxod = new HashMap<>();
+
+        for (UserHib usItem : userGroup) {
             Double dd = 0.0;
-        for (RecordHib item : recordGroup) {
-            if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
-                if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
+            Double doxod = 0.0;
+            Double payHour = 0.0;
+            for (RecordHib item : recordGroup) {
 
-                    groupDoxod.put(item.getLastName().getLastName(), item.getHour());
-                } else if (groupDoxod.containsKey(item.getLastName().getLastName())) {
-                    Double doxod = 0.0;
-                    int h = groupDoxod.get(item.getLastName().getLastName());
-                    groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
+                if (usItem.getLastName() == item.getLastName().getLastName()) {
+                    if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay))
+                        if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
 
-                     doxod = item.getLastName().getMonthSalary()/ Settings.WORKHOURSINMONTH*(item.getHour()+h);
-                     dd = doxod;
-                     mapDoxod.put(item.getLastName().getLastName(),dd);
+                            groupDoxod.put(item.getLastName().getLastName(), item.getHour());
+                        } else if (groupDoxod.containsKey(item.getLastName().getLastName())) {
 
+                            int h = groupDoxod.get(item.getLastName().getLastName());
+                            groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
+                        }
+                    payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
+                    Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
+
+                    if (item.getHour() <= Settings.WORKHOURSINDAY) {
+                        doxod += payHour * item.getHour();
+                    } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
+                        doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
+                    } else {
+                        doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
+                    }
+                    dd = doxod;
+                    mapDoxod.put(item.getLastName().getLastName(), dd);
                 }
-
             }
-
         }
+
 
         req.setAttribute("doxod",mapDoxod);
         req.setAttribute("reportForRec",groupDoxod);
@@ -86,8 +101,37 @@ public class ReportServlet extends HttpServlet {
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/report.jsp");
         dispatcher.forward(req, resp);
 
-
     }
+
+//    private void raschetTotalPay(String name, List<RecordHib> timeRecord, LocalDate startDate, LocalDate endDate) {
+//
+//        double payPerHour = monthSalarys / Settings.WORKHOURSINMONTH;
+//        double totalPay = 0;
+//        double bonusPerDay = bonuses / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
+//
+//
+//        for (RecordHib timeRecordses : timeRecord) {
+//            if (name.equals(timeRecordses.getLastName().getLastName()))
+//                if (Helpers.getMilliSecFromDate(timeRecordses.getDate())>=Helpers.getMilliSecFromDate(startDate)&&Helpers.getMilliSecFromDate(timeRecordses.getDate())<=Helpers.getMilliSecFromDate(endDate))
+//                    if (timeRecordses.getHour() <= Settings.WORKHOURSINDAY) {
+//                        totalPay += payPerHour * timeRecordses.getHour();
+//                        totalHours += timeRecordses.getHour();
+//                    } else if (getWorker().getUserRoleHib() == UserRoleHib.MANAGER) {
+//                        totalPay += payPerHour * Settings.WORKHOURSINDAY + bonusPerDay;
+//                    } else {
+//                        totalPay += payPerHour * timeRecordses.getHour() + (timeRecordses.getHour() - Settings.WORKHOURSINDAY) * payPerHour;
+//                    }
+//            totalPays = totalPay;
+//        }
+//    }
+
+
+
+
+
+
+
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

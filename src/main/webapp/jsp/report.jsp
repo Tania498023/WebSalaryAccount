@@ -81,8 +81,9 @@
                 <td class="tdser">${mapDoxod.value}</td>
             </tr>
         </c:forEach>
-
     </table>
+
 </div>
+
 </body>
 </html>
