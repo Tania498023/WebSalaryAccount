@@ -66,44 +66,6 @@ public class HomeServlet extends HttpServlet {
             }
 
         }
-        //блок группировки времени
-
-        List<RecordHib> recGroup = usersRepository.findAllRec();
-        req.setAttribute("recGr", recGroup);
-
-        LocalDate startDay = null;
-        LocalDate endDay = null;
-        try {
-            startDay = LocalDate.parse(req.getSession().getAttribute("nachalo").toString());
-            endDay = LocalDate.parse(req.getSession().getAttribute("konec").toString());
-        }
-       catch (Exception  e){
-
-       }
-        Map<String,Integer> groupRecord = new HashMap<>();
-        if(startDay == null && endDay == null){
-            LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
-            startDay=firstDayOfMonth;
-            LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-            endDay = lastDayOfMonth;
-        }
-
-            for (RecordHib item : recGroup) {
-                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
-                    if (!groupRecord.containsKey(item.getLastName().getLastName())) {
-
-                        groupRecord.put(item.getLastName().getLastName(), item.getHour());
-                    } else if (groupRecord.containsKey(item.getLastName().getLastName())) {
-
-                        int h = groupRecord.get(item.getLastName().getLastName());
-
-                        groupRecord.put(item.getLastName().getLastName(), item.getHour() + h);
-                    }
-                }
-            }
-
-        req.setAttribute("summHourRec",groupRecord);
-
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
         dispatcher.forward(req, resp);

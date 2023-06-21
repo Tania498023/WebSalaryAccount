@@ -80,8 +80,10 @@ public class ReportServlet extends HttpServlet {
                         }
                     payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
                     Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
-
-                    if (item.getHour() <= Settings.WORKHOURSINDAY) {
+                    if (usItem.getUserRoleHib()==UserRoleHib.FREELANCER){
+                        doxod +=usItem.getPayPerHour()*item.getHour();
+                    }
+                    if (item.getHour() <= Settings.WORKHOURSINDAY&&usItem.getUserRoleHib()!=UserRoleHib.FREELANCER) {
                         doxod += payHour * item.getHour();
                     } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
                         doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;

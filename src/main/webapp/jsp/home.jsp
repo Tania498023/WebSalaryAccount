@@ -6,7 +6,7 @@
     <title>Title</title>
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<form>
 
 <div class="form-style-2-heading">
         <table>
@@ -52,14 +52,14 @@
             </select>
         </label>
 
-        <input type="submit" value="Сохранить запись">
+        <input type="submit" value="Добавить запись">
     </form>
 
         <c:if test = "${chekRoleForHome eq 'MANAGER'}">
-        <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
+
 
     <div class="form-style-2-heading">
-        Учет времени сотрудников
+        Корректировка записи
     </div>
 <table>
         <tr id="toptr">
@@ -96,54 +96,24 @@
         Время:<input type="text" name="recHours" value="${recForUpdate.getHour()}" ><br><br>
         Работы:<input type="text" name="recMess" value="${recForUpdate.getMessage()}" ><br><br>
 
-          <input type="submit" value="Изменить">
-        <br>
-        <br>
+          <input type="submit" value="Изменить запись">
 </form>
 
 </div>
-<%--блок группировки часов--%>
-    <div class="form-style-2-heading">
-        Отработано часов за выбранный период
-    </div>
-
-<form method="post" action="/home">
-
-    <label for="startDate">Начало периода
-        <input class="input-field" type="date" id="startDate" name="startDate">
-    </label>
-    <label for="endDate">Конец периода
-        <input class="input-field" type="date" id="endDate" name="endDate">
-    </label>
-        <input type="submit" value="Установить">
-    <br>
-    <br>
-</form>
-
-    <table>
-        <tr id="">
-            <td class="tdser">Имя</td>
-            <td class="tdser">Время</td>
-        </tr>
 
 
-       <c:forEach items="${summHourRec}" var="entry">
-
-            <tr id="">
-                <td class="tdser">${entry.key}</td>
-                <td class="tdser">${entry.value}</td>
-
-            </tr>
-
-       </c:forEach>
-    </table>
 </c:if>
 
-
 <div class=form-style-2 input[type=button]">
+<c:if test = "${chekRoleForHome eq 'MANAGER'}">
+    <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
+</c:if>
     <input type="button" value="Сформировать отчет по зарплате" onclick=location.href='report'>
-    <input type="button" value="Выход из приложения" onclick=location.href='logout'>
-
 </div>
+
+    <div class=form-style-2 >
+    <input type="button" value="Выход из приложения" onclick=location.href='logout'>
+    </div>
+
 </body>
 </html>
