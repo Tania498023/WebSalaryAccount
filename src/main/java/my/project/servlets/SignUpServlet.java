@@ -1,5 +1,6 @@
 package my.project.servlets;
 
+import my.project.help.Settings;
 import my.project.models.UserHib;
 import my.project.models.UserRoleHib;
 import my.project.repositories.IRepository;

@@ -3,7 +3,6 @@ package my.project.servlets;
 import my.project.help.Helpers;
 import my.project.models.RecordHib;
 import my.project.models.UserHib;
-import my.project.models.UserRoleHib;
 import my.project.repositories.IRepository;
 import my.project.repositories.Repository;
 
@@ -12,11 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.*;
-import java.util.Date;
+
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private IRepository usersRepository;
@@ -74,25 +71,25 @@ public class HomeServlet extends HttpServlet {
         List<RecordHib> recGroup = usersRepository.findAllRec();
         req.setAttribute("recGr", recGroup);
 
-        LocalDate v = null;
-        LocalDate vv = null;
+        LocalDate startDay = null;
+        LocalDate endDay = null;
         try {
-             v = LocalDate.parse(req.getSession().getAttribute("nachalo").toString());
-             vv = LocalDate.parse(req.getSession().getAttribute("konec").toString());
+            startDay = LocalDate.parse(req.getSession().getAttribute("nachalo").toString());
+            endDay = LocalDate.parse(req.getSession().getAttribute("konec").toString());
         }
        catch (Exception  e){
 
        }
         Map<String,Integer> groupRecord = new HashMap<>();
-        if(v == null && vv == null){
-            LocalDate dd = LocalDate.now().withDayOfMonth(1);
-            v=dd;
-            LocalDate hh = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-            vv = hh;
+        if(startDay == null && endDay == null){
+            LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+            startDay=firstDayOfMonth;
+            LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+            endDay = lastDayOfMonth;
         }
 
             for (RecordHib item : recGroup) {
-                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(v) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(vv)) {
+                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
                     if (!groupRecord.containsKey(item.getLastName().getLastName())) {
 
                         groupRecord.put(item.getLastName().getLastName(), item.getHour());
@@ -172,17 +169,16 @@ public class HomeServlet extends HttpServlet {
         }
 // блок группировки времени(устанавливаем дату и отправляем на сервер)
 
-
-         LocalDate SD=null;
-         LocalDate ED=null;
+         LocalDate StartD =null;
+         LocalDate EndD =null;
 
         try {
             String startDate = LocalDate.parse(req.getParameter("startDate")).toString();
-            SD = LocalDate.parse(startDate);
+            StartD = LocalDate.parse(startDate);
             String endDate = LocalDate.parse(req.getParameter("endDate")).toString();
-            ED = LocalDate.parse(endDate);
-            req.getSession().setAttribute("nachalo", SD);
-            req.getSession().setAttribute("konec", ED);
+            EndD = LocalDate.parse(endDate);
+            req.getSession().setAttribute("nachalo", StartD);
+            req.getSession().setAttribute("konec", EndD);
             resp.sendRedirect(req.getContextPath() + "/home");
         } catch (Exception e) {
 

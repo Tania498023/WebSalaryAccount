@@ -1,6 +1,7 @@
 package my.project.servlets;
 
 import my.project.help.Helpers;
+import my.project.help.Settings;
 import my.project.models.RecordHib;
 import my.project.models.UserHib;
 import my.project.repositories.IRepository;
@@ -14,10 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet("/report")
 public class ReportServlet extends HttpServlet {
@@ -38,7 +36,52 @@ public class ReportServlet extends HttpServlet {
         UserHib us = usersRepository.findUserByName(checkUser.toString());
         req.setAttribute("usersRole", us.getUserRoleHib());
 
+//блок расчета з/п
+        List<RecordHib> recordGroup = usersRepository.findAllRec();
+        req.setAttribute("recGroup", recordGroup);
 
+        LocalDate startDay = null;
+        LocalDate endDay = null;
+        try {
+            startDay = LocalDate.parse(req.getSession().getAttribute("nachaloRep").toString());
+            endDay = LocalDate.parse(req.getSession().getAttribute("konecRep").toString());
+        }
+        catch (Exception  e){
+
+        }
+
+        if(startDay == null && endDay == null){
+            LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+            startDay=firstDayOfMonth;
+            LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+            endDay = lastDayOfMonth;
+        }
+//            List<RecordHib> repRec = new ArrayList<>();
+            Map<String,Integer> groupDoxod = new HashMap<>();
+            Map<String,Double> mapDoxod = new HashMap<>();
+            Double dd = 0.0;
+        for (RecordHib item : recordGroup) {
+            if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+                if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
+
+                    groupDoxod.put(item.getLastName().getLastName(), item.getHour());
+                } else if (groupDoxod.containsKey(item.getLastName().getLastName())) {
+                    Double doxod = 0.0;
+                    int h = groupDoxod.get(item.getLastName().getLastName());
+                    groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
+
+                     doxod = item.getLastName().getMonthSalary()/ Settings.WORKHOURSINMONTH*(item.getHour()+h);
+                     dd = doxod;
+                     mapDoxod.put(item.getLastName().getLastName(),dd);
+
+                }
+
+            }
+
+        }
+
+        req.setAttribute("doxod",mapDoxod);
+        req.setAttribute("reportForRec",groupDoxod);
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/report.jsp");
         dispatcher.forward(req, resp);
@@ -48,7 +91,24 @@ public class ReportServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
 
+        // блок группировки времени(устанавливаем дату и отправляем на сервер)
+
+        LocalDate StartD =null;
+        LocalDate EndD =null;
+
+        try {
+            String startDate = LocalDate.parse(req.getParameter("startDate")).toString();
+            StartD = LocalDate.parse(startDate);
+            String endDate = LocalDate.parse(req.getParameter("endDate")).toString();
+            EndD = LocalDate.parse(endDate);
+            req.getSession().setAttribute("nachaloRep", StartD);
+            req.getSession().setAttribute("konecRep", EndD);
+            resp.sendRedirect(req.getContextPath() + "/report");
+        } catch (Exception e) {
+
+        }
         }
 
     }
