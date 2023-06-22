@@ -21,7 +21,7 @@
     </table>
 </div>
 <div class="form-style-2-heading">
-    Учет времени и дохода сотрудников
+    Учет времени и дохода по всем сотрудникам
 </div>
 <form method="post" action="/report">
 

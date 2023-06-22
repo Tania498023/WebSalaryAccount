@@ -68,7 +68,7 @@
             </label>
         </c:if>
 
-        <input type="submit" value="Сохранить">
+        <input type="submit" value="Сохранить пользователя">
     </form>
 </div>
 
@@ -132,7 +132,7 @@
         Бонус:<input type="text" name="userbonus" value="${idForUpdate.getBonus()}"><br><br>
         Стоимость часа:<input type="text" name="userperhour" value="${idForUpdate.getPayPerHour()}"><br><br>
 
-        <input type="submit" value="Изменить">
+        <input type="submit" value="Редактировать пользователя">
 
         <input type="button" value="Главное меню" onclick=location.href='home'>
     </form>

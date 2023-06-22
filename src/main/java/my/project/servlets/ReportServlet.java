@@ -69,7 +69,7 @@ public class ReportServlet extends HttpServlet {
             for (RecordHib item : recordGroup) {
 
                 if (usItem.getLastName() == item.getLastName().getLastName()) {
-                    if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay))
+                    if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
                         if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
 
                             groupDoxod.put(item.getLastName().getLastName(), item.getHour());
@@ -78,20 +78,21 @@ public class ReportServlet extends HttpServlet {
                             int h = groupDoxod.get(item.getLastName().getLastName());
                             groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
                         }
-                    payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
-                    Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
-                    if (usItem.getUserRoleHib()==UserRoleHib.FREELANCER){
-                        doxod +=usItem.getPayPerHour()*item.getHour();
+                        payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
+                        Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
+                        if (usItem.getUserRoleHib() == UserRoleHib.FREELANCER) {
+                            doxod += usItem.getPayPerHour() * item.getHour();
+                        }
+                        if (item.getHour() <= Settings.WORKHOURSINDAY && usItem.getUserRoleHib() != UserRoleHib.FREELANCER) {
+                            doxod += payHour * item.getHour();
+                        } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
+                            doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
+                        } else {
+                            doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
+                        }
+                        dd = doxod;
+                        mapDoxod.put(item.getLastName().getLastName(), dd);
                     }
-                    if (item.getHour() <= Settings.WORKHOURSINDAY&&usItem.getUserRoleHib()!=UserRoleHib.FREELANCER) {
-                        doxod += payHour * item.getHour();
-                    } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
-                        doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
-                    } else {
-                        doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
-                    }
-                    dd = doxod;
-                    mapDoxod.put(item.getLastName().getLastName(), dd);
                 }
             }
         }
