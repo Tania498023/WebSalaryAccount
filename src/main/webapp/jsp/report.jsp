@@ -5,15 +5,7 @@
 <head>
     <title>Отчеты по заработной плате</title>
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
-    <style>
-        .tab-a {
-            width:auto;
-            float:left;
-            height:200px;
-            background:cyan;
-            border:0;
-        }
-    </style>
+
 </head>
 <body>
 
@@ -31,12 +23,7 @@
 </div>
 <div class="form-style-2-heading">
     Учет времени и дохода
-    <br>
-<c:if test = "${usersRole != 'MANAGER'}">
-    Итого отработано: ${sumHours} часов
-    <br>
-    Итого заработано: ${salaryPerMonth} рублей
-</c:if>
+
 </div>
 <form method="post" action="/report">
 
@@ -55,18 +42,17 @@
 <%--/*отчет по всем с группировкой времени и дохода*/--%>
 
 <c:if test = "${usersRole eq 'MANAGER'}">
-<%--<div style="margin: auto 5%;">--%>
-    <table class="tab-a">
-        <tr id="">
+
+<div id="tab-a">
+    <table>
+        <tr >
             <td class="tdser">Сотрудник</td>
             <td class="tdser">Начало периода</td>
             <td class="tdser">Конец периода</td>
             <td class="tdser">Отработано часов</td>
-
          </tr>
     <c:forEach items="${reportForRec}" var="groupDoxod">
-
-        <tr id="downtr">
+        <tr >
             <td class="tdser">${groupDoxod.key}</td>
             <td class="tdser">${nachaloRep}</td>
             <td class="tdser">${konecRep}</td>
@@ -74,54 +60,62 @@
         </tr>
     </c:forEach>
     </table>
-
-    <table class="tab-a" >
-                <tr id="">
-                     <td class="tdser">Доход общий</td>
-                </tr>
+</div>
+<div id="tab-a">
+    <table>
+        <tr >
+            <td class="tdser">Доход общий</td>
+        </tr>
         <c:forEach items="${doxod}" var="mapDoxod">
-            <tr id="downtr">
+            <tr >
                 <td class="tdser">${mapDoxod.value}</td>
             </tr>
         </c:forEach>
     </table>
-<%--</div>--%>
+</div>
 </c:if>
 
 <%--отчет по определенному сотруднику--%>
-
 <c:if test = "${usersRole != 'MANAGER'}">
-<%--<div style="margin: auto 5%;">--%>
-    <table class="tab-a">
-        <tr id="">
+<%--<div class="tab-a">--%>
+    <div id="tab-a">
+        <table>
+        <tr >
             <td class="tdser">Дата</td>
             <td class="tdser">Отработано часов</td>
             <td class="tdser">Описание работ</td>
         </tr>
         <c:forEach items="${repForOne}" var="repByOne">
 
-            <tr id="downtr">
+            <tr >
                 <td class="tdser">${repByOne.getDate()}</td>
                 <td class="tdser">${repByOne.getHour()}</td>
                 <td class="tdser">${repByOne.getMessage()}</td>
-             </tr>
+            </tr>
         </c:forEach>
 
+
+            <td class="tdserx">  Итого  </td>
+            <td class="tdserx">  ${sumHours} </td>
+            <td class="tdserx"></td>
     </table>
+</div>
 
-    <table class="tab-a" >
-
-        <tr id="">
+    <div id="tab-a">
+        <table>
+        <tr >
             <td class="tdser">Доход</td>
+
         </tr>
         <c:forEach items="${listZarplata}" var="zarplata">
-            <tr id="downtr">
+            <tr >
                 <td class="tdser">${zarplata}</td>
             </tr>
         </c:forEach>
-    </table>
 
-<%--</div>--%>
+            <td class="tdserx">  ${salaryPerMonth} </td>
+    </table>
+</div>
 
 </c:if>
 </body>
