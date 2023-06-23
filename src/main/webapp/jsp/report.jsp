@@ -5,6 +5,15 @@
 <head>
     <title>Отчеты по заработной плате</title>
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
+    <style>
+        .tab-a {
+            width:auto;
+            float:left;
+            height:200px;
+            background:cyan;
+            border:0;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,7 +30,13 @@
     </table>
 </div>
 <div class="form-style-2-heading">
-    Учет времени и дохода по всем сотрудникам
+    Учет времени и дохода
+    <br>
+<c:if test = "${usersRole != 'MANAGER'}">
+    Итого отработано: ${sumHours} часов
+    <br>
+    Итого заработано: ${salaryPerMonth} рублей
+</c:if>
 </div>
 <form method="post" action="/report">
 
@@ -36,20 +51,12 @@
     <br>
 </form>
 
-<style>
-    .tab-a {
-        width:auto;
-        float:left;
-        height:200px;
-        background:cyan;
-        border:0;
-    }
 
-</style>
-<div style="margin: auto 5%;">
+<%--/*отчет по всем с группировкой времени и дохода*/--%>
+
+<c:if test = "${usersRole eq 'MANAGER'}">
+<%--<div style="margin: auto 5%;">--%>
     <table class="tab-a">
-
-
         <tr id="">
             <td class="tdser">Сотрудник</td>
             <td class="tdser">Начало периода</td>
@@ -69,21 +76,53 @@
     </table>
 
     <table class="tab-a" >
-
                 <tr id="">
-
-                     <td class="tdser">Доход</td>
-
+                     <td class="tdser">Доход общий</td>
                 </tr>
         <c:forEach items="${doxod}" var="mapDoxod">
             <tr id="downtr">
-
                 <td class="tdser">${mapDoxod.value}</td>
             </tr>
         </c:forEach>
     </table>
+<%--</div>--%>
+</c:if>
 
-</div>
+<%--отчет по определенному сотруднику--%>
 
+<c:if test = "${usersRole != 'MANAGER'}">
+<%--<div style="margin: auto 5%;">--%>
+    <table class="tab-a">
+        <tr id="">
+            <td class="tdser">Дата</td>
+            <td class="tdser">Отработано часов</td>
+            <td class="tdser">Описание работ</td>
+        </tr>
+        <c:forEach items="${repForOne}" var="repByOne">
+
+            <tr id="downtr">
+                <td class="tdser">${repByOne.getDate()}</td>
+                <td class="tdser">${repByOne.getHour()}</td>
+                <td class="tdser">${repByOne.getMessage()}</td>
+             </tr>
+        </c:forEach>
+
+    </table>
+
+    <table class="tab-a" >
+
+        <tr id="">
+            <td class="tdser">Доход</td>
+        </tr>
+        <c:forEach items="${listZarplata}" var="zarplata">
+            <tr id="downtr">
+                <td class="tdser">${zarplata}</td>
+            </tr>
+        </c:forEach>
+    </table>
+
+<%--</div>--%>
+
+</c:if>
 </body>
 </html>

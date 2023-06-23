@@ -7,6 +7,7 @@ import my.project.models.UserHib;
 import my.project.models.UserRoleHib;
 import my.project.repositories.IRepository;
 import my.project.repositories.Repository;
+import my.project.salary.Freelancer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -58,12 +59,12 @@ public class ReportServlet extends HttpServlet {
             LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
             endDay = lastDayOfMonth;
         }
-//            List<RecordHib> repRec = new ArrayList<>();
+//отчет по всем с группировкой времени и дохода
             Map<String,Integer> groupDoxod = new HashMap<>();
             Map<String,Double> mapDoxod = new HashMap<>();
 
         for (UserHib usItem : userGroup) {
-            Double dd = 0.0;
+            Double sumdoxod = 0.0;
             Double doxod = 0.0;
             Double payHour = 0.0;
             for (RecordHib item : recordGroup) {
@@ -87,46 +88,69 @@ public class ReportServlet extends HttpServlet {
                             doxod += payHour * item.getHour();
                         } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
                             doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
-                        } else {
+                        } else if (usItem.getUserRoleHib() == UserRoleHib.EMPLOYEE){
                             doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
                         }
-                        dd = doxod;
-                        mapDoxod.put(item.getLastName().getLastName(), dd);
+                        sumdoxod = doxod;
+                        mapDoxod.put(item.getLastName().getLastName(), sumdoxod);
                     }
                 }
             }
         }
-
-
         req.setAttribute("doxod",mapDoxod);
         req.setAttribute("reportForRec",groupDoxod);
+
+        //отчет по времени и доходу по одному сотруднику
+
+        List<RecordHib> repByOne = new ArrayList<>();
+        List<Double> zarplata = new ArrayList<>();
+
+        Integer sumHours = 0;
+        Double summaDoxod = 0.0;
+        Double salary=0.0;
+        Double salaryPerMonth = 0.0;
+        for (RecordHib item: recordGroup) {
+
+            if (item.getLastName().getLastName().equals(checkUser)) {
+                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+                    repByOne.add(item);
+
+                     sumHours +=item.getHour();//для итоговой ячейки
+
+                    Double perPayHours = item.getLastName().getMonthSalary() / Settings.WORKHOURSINMONTH;
+                    Double bonusPerDay = item.getLastName().getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
+                    if (item.getLastName().getUserRoleHib()==UserRoleHib.FREELANCER) {
+                        salary = item.getLastName().getPayPerHour() * item.getHour();
+                    }
+
+                    if (item.getHour() <= Settings.WORKHOURSINDAY && item.getLastName().getUserRoleHib() != UserRoleHib.FREELANCER) {
+                        salary = perPayHours * item.getHour();
+                    } else if (item.getLastName().getUserRoleHib() == UserRoleHib.MANAGER) {
+                        salary = perPayHours * Settings.WORKHOURSINDAY + bonusPerDay;
+                    } else if (item.getLastName().getUserRoleHib()==UserRoleHib.EMPLOYEE){
+                        salary = perPayHours * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * perPayHours;
+                    }
+                    summaDoxod = salary;
+                    zarplata.add(summaDoxod);
+                     salaryPerMonth += summaDoxod;
+
+                }
+            }
+
+        }
+        req.setAttribute("sumHours",sumHours);//итоговые часы
+        req.setAttribute("repForOne",repByOne);
+        req.setAttribute("listZarplata", zarplata);
+        req.setAttribute("salaryPerMonth",salaryPerMonth);//итоговый доход
+
+
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/report.jsp");
         dispatcher.forward(req, resp);
 
     }
 
-//    private void raschetTotalPay(String name, List<RecordHib> timeRecord, LocalDate startDate, LocalDate endDate) {
-//
-//        double payPerHour = monthSalarys / Settings.WORKHOURSINMONTH;
-//        double totalPay = 0;
-//        double bonusPerDay = bonuses / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
-//
-//
-//        for (RecordHib timeRecordses : timeRecord) {
-//            if (name.equals(timeRecordses.getLastName().getLastName()))
-//                if (Helpers.getMilliSecFromDate(timeRecordses.getDate())>=Helpers.getMilliSecFromDate(startDate)&&Helpers.getMilliSecFromDate(timeRecordses.getDate())<=Helpers.getMilliSecFromDate(endDate))
-//                    if (timeRecordses.getHour() <= Settings.WORKHOURSINDAY) {
-//                        totalPay += payPerHour * timeRecordses.getHour();
-//                        totalHours += timeRecordses.getHour();
-//                    } else if (getWorker().getUserRoleHib() == UserRoleHib.MANAGER) {
-//                        totalPay += payPerHour * Settings.WORKHOURSINDAY + bonusPerDay;
-//                    } else {
-//                        totalPay += payPerHour * timeRecordses.getHour() + (timeRecordses.getHour() - Settings.WORKHOURSINDAY) * payPerHour;
-//                    }
-//            totalPays = totalPay;
-//        }
-//    }
+
 
 
 

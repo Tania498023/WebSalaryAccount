@@ -1,7 +1,7 @@
 
 .form-style-2-tab-a {
     width:30%;
-    float:left;
+    float:start;
     height:200px;
     background:cyan;
     border:0;
@@ -35,6 +35,7 @@
     max-width: 500px;
     padding: 20px 12px 10px 20px;
     font: 13px Arial, Helvetica, sans-serif;
+
 }
 
 .form-style-2-heading {
