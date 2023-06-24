@@ -63,18 +63,23 @@
     </div>
 <table>
         <tr id="toptr">
+            <td class="tdser">Имя</td>
             <td class="tdser">Дата</td>
             <td class="tdser">Время</td>
             <td class="tdser">Работы</td>
-            <td class="tdser">Имя</td>
+
         </tr>
 
         <c:forEach items="${usersFromServer}" var="records">
             <tr id="downtr">
+                <td class="tdser">${records.getLastName().getLastName()}</td>
                 <td class="tdser">${records.getDate()}</td>
                 <td class="tdser">${records.getHour()}</td>
                 <td class="tdser">${records.getMessage()}</td>
-                <td class="tdser">${records.getLastName().getLastName()}</td>
+
+                <td class="tdser">
+                    <button type="submit" onclick=location.href='/report?nameSelectedRec=${records.getLastName().getLastName()}' >Отчет </button>
+                </td>
                 <td class="tdser">
                     <button type="submit" onclick=location.href='/home?action=update&idSelectedRec=${records.getId()}' >Изменить </button>
                 </td>

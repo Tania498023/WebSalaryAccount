@@ -59,6 +59,8 @@ public class ReportServlet extends HttpServlet {
             LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
             endDay = lastDayOfMonth;
         }
+        req.setAttribute("startDay", startDay);
+        req.setAttribute("endDay", endDay);
 //отчет по всем с группировкой времени и дохода
             Map<String,Integer> groupDoxod = new HashMap<>();
             Map<String,Double> mapDoxod = new HashMap<>();
@@ -100,7 +102,7 @@ public class ReportServlet extends HttpServlet {
         req.setAttribute("doxod",mapDoxod);
         req.setAttribute("reportForRec",groupDoxod);
 
-        //отчет по времени и доходу по одному сотруднику
+        //отчет по времени и доходу по одному сотруднику (не менеджер)
 
         List<RecordHib> repByOne = new ArrayList<>();
         List<Double> zarplata = new ArrayList<>();
@@ -138,27 +140,38 @@ public class ReportServlet extends HttpServlet {
             }
 
         }
+        req.setAttribute("checkUser",checkUser);//итоговые часы
         req.setAttribute("sumHours",sumHours);//итоговые часы
         req.setAttribute("repForOne",repByOne);
         req.setAttribute("listZarplata", zarplata);
         req.setAttribute("salaryPerMonth",salaryPerMonth);//итоговый доход
 
+//отчет по времени и доходу по одному сотруднику (для менеджера)
 
+        List<RecordHib> repByOneForManager = new ArrayList<>();
+        Integer sumHour = 0;
+        String selectName = req.getParameter("nameSelectedRec");
+            for (RecordHib item:recordGroup) {
+                if (item.getLastName().getLastName().equals(selectName)) {
+                    if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+                    repByOneForManager.add(item);
+                        sumHour +=item.getHour();//для итоговой ячейки
+
+                }
+            }
+        }
+                req.getSession().setAttribute("nameForReport", selectName);
+                req.getSession().setAttribute("recForReport", repByOneForManager);
+                req.setAttribute("sumHour",sumHour);//итоговые часы
+                req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
+//            }
+//
+//        }
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/report.jsp");
         dispatcher.forward(req, resp);
 
     }
-
-
-
-
-
-
-
-
-
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
