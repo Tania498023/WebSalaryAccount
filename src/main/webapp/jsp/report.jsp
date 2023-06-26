@@ -38,13 +38,11 @@
 </form>
 
 
-<%--/*отчет по всем с группировкой времени и дохода*/--%>
+<%--/*отчет по всем с группировкой времени и дохода для Менеджера*/--%>
 
 <c:if test = "${usersRole eq 'MANAGER'}">
-
-
-<div class="tab-a">
-    <table class="tab-a">
+<%--    <c:if test = "${action != 'forOne'}">--%>
+<table class="tab-a">
         <caption>Итоговый отчет по всем сотрудникам за период с ${startDay} до ${endDay} </caption>
         <tr >
             <td class="tdser">Сотрудник</td>
@@ -61,8 +59,7 @@
         </tr>
     </c:forEach>
     </table>
-<%--</div>--%>
-<%--<div id="tab-a">--%>
+
     <table class="tab-a">
         <caption><br></caption>
         <tr >
@@ -73,18 +70,21 @@
                 <td class="tdser">${mapDoxod.value}</td>
             </tr>
         </c:forEach>
+
     </table>
+<%--    </c:if>--%>
 
 
-
+<%--отчет по конкретному сотруднику для Менеджера--%>
+<%--    <c:if test = "${action eq 'forOne'}">--%>
     <table class="tab-b">
-        <caption>Отчет по сотруднику ${nameForReport}</caption>
+        <caption>Отчет по сотруднику ${repNames}</caption>
         <tr >
             <td class="tdser">Дата</td>
             <td class="tdser">Отработано часов</td>
             <td class="tdser">Описание работ</td>
         </tr>
-        <c:forEach items="${recForReport}" var="repByOneForManager">
+        <c:forEach items="${listRecForReport}" var="repByOneForManager">
 
             <tr >
                 <td class="tdser">${repByOneForManager.getDate()}</td>
@@ -95,22 +95,21 @@
         <td class="tdserx">  Итого  </td>
         <td class="tdserx">  ${sumHour} </td>
     </table>
-</div>
-</c:if>
 
-<%--отчет по определенному сотруднику--%>
+</c:if>
+<%--</c:if>--%>
+<%--отчет по определенному сотруднику для НЕ менеджера--%>
+
 <c:if test = "${usersRole != 'MANAGER'}">
-<%--<div class="tab-a">--%>
-    <table class="tab-a">
+
+<table class="tab-a">
         <caption>Отчет за период c ${startDay} до ${endDay} по сотруднику </caption>
-<%--        <table>--%>
         <tr >
             <td class="tdser">Дата</td>
             <td class="tdser">Отработано часов</td>
             <td class="tdser">Описание работ</td>
         </tr>
         <c:forEach items="${repForOne}" var="repByOne">
-
             <tr >
                 <td class="tdser">${repByOne.getDate()}</td>
                 <td class="tdser">${repByOne.getHour()}</td>
@@ -118,30 +117,25 @@
             </tr>
         </c:forEach>
 
-
             <td class="tdserx">  Итого  </td>
             <td class="tdserx">  ${sumHours} </td>
             <td class="tdserx"></td>
-    </table>
-<%--</div>--%>
+</table>
 
     <table class="tab-a">
         <caption>  ${checkUser}  </caption>
-<%--        <table>--%>
         <tr >
             <td class="tdser">Доход</td>
-
         </tr>
         <c:forEach items="${listZarplata}" var="zarplata">
             <tr >
                 <td class="tdser">${zarplata}</td>
             </tr>
         </c:forEach>
-
             <td class="tdserx">  ${salaryPerMonth} </td>
         </table>
-<%--    </div>--%>
 
 </c:if>
+
 </body>
 </html>

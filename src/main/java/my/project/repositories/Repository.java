@@ -74,14 +74,25 @@ public class Repository implements IRepository{
     }
     @Override
     public  RecordHib findRecById(int id) {
-        RecordHib recByName = null;
+        RecordHib recById = null;
     for (RecordHib rec : listUsersInDb.GetRecHibList()) {
         if (rec.getId().equals(id)) {
-            recByName=rec;
+            recById =rec;
         }
       }
+    return recById;
+}
+    @Override
+    public  List<RecordHib> findRecByName(String name){
+        List<RecordHib> recByName=new ArrayList<>();
+    for (RecordHib item: listUsersInDb.GetRecHibList()) {
+        if(item.getLastName().getLastName().equals(name)){
+            recByName.add(item);
+        }
+    }
     return recByName;
 }
+
     @Override
     public void save(UserHib user) {
       listUsersInDb.SaveSessionUser(user);

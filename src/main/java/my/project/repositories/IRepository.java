@@ -18,6 +18,7 @@ public interface IRepository {
     void delete(UserHib user);
 
     List<RecordHib> findAllRec();
+    List<RecordHib> findRecByName(String name);
     RecordHib findRecById(int id);
     void saveRec(RecordHib record);
     void deleteRec(RecordHib record);

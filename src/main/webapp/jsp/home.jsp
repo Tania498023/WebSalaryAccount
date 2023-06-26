@@ -77,9 +77,11 @@
                 <td class="tdser">${records.getHour()}</td>
                 <td class="tdser">${records.getMessage()}</td>
 
+
                 <td class="tdser">
-                    <button type="submit" onclick=location.href='/report?nameSelectedRec=${records.getLastName().getLastName()}' >Отчет </button>
+                    <button type="submit" onclick=location.href='/home?nsr=${records.getLastName().getLastName()}' >Отчет </button>
                 </td>
+
                 <td class="tdser">
                     <button type="submit" onclick=location.href='/home?action=update&idSelectedRec=${records.getId()}' >Изменить </button>
                 </td>

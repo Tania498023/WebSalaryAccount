@@ -66,7 +66,14 @@ public class HomeServlet extends HttpServlet {
             }
 
         }
+//          имя для отчета на страницу rep
+        if (req.getParameter("nsr")!=null) {
 
+            String repName = req.getParameter("nsr");
+
+            req.getSession().setAttribute("nsr", repName);
+            req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);//не трогаем,перенаправляет на страницу report иначе остаемся на home
+        }
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
         dispatcher.forward(req, resp);
 
@@ -145,6 +152,8 @@ public class HomeServlet extends HttpServlet {
         } catch (Exception e) {
 
         }
+
+
 
     }
 

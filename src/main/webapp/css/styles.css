@@ -1,12 +1,13 @@
  .tab-a {
+
      caption-side: top;
      font-size: 12px;
      width:auto;
      float:left;
-     height:50px;
-
+     height:80px;
+     position:relative;
      border:0px;
-     margin:auto;
+     margin:0;
  }
 
  /*noinspection CssInvalidPropertyValue*/
@@ -16,10 +17,10 @@
      width:auto;
      height:80px;
      position:absolute;
-
-     top: 65%;
+     bottom: 50px;
+     top: 100%;
      border:0px;
-     margin: auto;
+     margin:auto;
  }
  .fix-this {
     all: unset;
