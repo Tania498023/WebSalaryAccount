@@ -78,7 +78,7 @@
 <%--отчет по конкретному сотруднику для Менеджера--%>
 <%--    <c:if test = "${action eq 'forOne'}">--%>
     <table class="tab-b">
-        <caption>Отчет по сотруднику ${repNames}</caption>
+        <caption>Отчет по сотруднику ${nsr}</caption>
         <tr >
             <td class="tdser">Дата</td>
             <td class="tdser">Отработано часов</td>

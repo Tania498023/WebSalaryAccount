@@ -105,47 +105,47 @@ public class ReportServlet extends HttpServlet {
 
         //отчет по времени и доходу по одному сотруднику (не менеджер)
 
-        List<RecordHib> repByOne = new ArrayList<>();
-        List<Double> zarplata = new ArrayList<>();
+            List<RecordHib> repByOne = new ArrayList<>();
+            List<Double> zarplata = new ArrayList<>();
 
-        Integer sumHours = 0;
-        Double summaDoxod = 0.0;
-        Double salary = 0.0;
-        Double salaryPerMonth = 0.0;
-        for (RecordHib item : recordGroup) {
+            Integer sumHours = 0;
+            Double summaDoxod = 0.0;
+            Double salary = 0.0;
+            Double salaryPerMonth = 0.0;
+            for (RecordHib item : recordGroup) {
 
-            if (item.getLastName().getLastName().equals(checkUser)) {
-                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
-                    repByOne.add(item);
+                if (item.getLastName().getLastName().equals(checkUser)) {
+                    if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+                        repByOne.add(item);
 
-                    sumHours += item.getHour();//для итоговой ячейки
+                        sumHours += item.getHour();//для итоговой ячейки
 
-                    Double perPayHours = item.getLastName().getMonthSalary() / Settings.WORKHOURSINMONTH;
-                    Double bonusPerDay = item.getLastName().getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
-                    if (item.getLastName().getUserRoleHib() == UserRoleHib.FREELANCER) {
-                        salary = item.getLastName().getPayPerHour() * item.getHour();
+                        Double perPayHours = item.getLastName().getMonthSalary() / Settings.WORKHOURSINMONTH;
+                        Double bonusPerDay = item.getLastName().getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
+                        if (item.getLastName().getUserRoleHib() == UserRoleHib.FREELANCER) {
+                            salary = item.getLastName().getPayPerHour() * item.getHour();
+                        }
+
+                        if (item.getHour() <= Settings.WORKHOURSINDAY && item.getLastName().getUserRoleHib() != UserRoleHib.FREELANCER) {
+                            salary = perPayHours * item.getHour();
+                        } else if (item.getLastName().getUserRoleHib() == UserRoleHib.MANAGER) {
+                            salary = perPayHours * Settings.WORKHOURSINDAY + bonusPerDay;
+                        } else if (item.getLastName().getUserRoleHib() == UserRoleHib.EMPLOYEE) {
+                            salary = perPayHours * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * perPayHours;
+                        }
+                        summaDoxod = salary;
+                        zarplata.add(summaDoxod);
+                        salaryPerMonth += summaDoxod;
+
                     }
-
-                    if (item.getHour() <= Settings.WORKHOURSINDAY && item.getLastName().getUserRoleHib() != UserRoleHib.FREELANCER) {
-                        salary = perPayHours * item.getHour();
-                    } else if (item.getLastName().getUserRoleHib() == UserRoleHib.MANAGER) {
-                        salary = perPayHours * Settings.WORKHOURSINDAY + bonusPerDay;
-                    } else if (item.getLastName().getUserRoleHib() == UserRoleHib.EMPLOYEE) {
-                        salary = perPayHours * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * perPayHours;
-                    }
-                    summaDoxod = salary;
-                    zarplata.add(summaDoxod);
-                    salaryPerMonth += summaDoxod;
-
                 }
-            }
 
-        }
-        req.setAttribute("checkUser", checkUser);//текущ пользователь(в т ч по кому отчет)
-        req.setAttribute("sumHours", sumHours);//итоговые часы
-        req.setAttribute("repForOne", repByOne);//List записей текущего пользователя
-        req.setAttribute("listZarplata", zarplata);//List дохода
-        req.setAttribute("salaryPerMonth", salaryPerMonth);//итоговый доход
+            }
+            req.setAttribute("checkUser", checkUser);//текущ пользователь(в т ч по кому отчет)
+            req.setAttribute("sumHours", sumHours);//итоговые часы
+            req.setAttribute("repForOne", repByOne);//List записей текущего пользователя
+            req.setAttribute("listZarplata", zarplata);//List дохода
+            req.setAttribute("salaryPerMonth", salaryPerMonth);//итоговый доход
 //        req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
 
 //отчет по времени и доходу по одному сотруднику (для менеджера)
@@ -155,7 +155,7 @@ public class ReportServlet extends HttpServlet {
         if (req.getParameter("nsr")!=null) {
             String repNames = req.getSession().getAttribute("nsr").toString();
 
-            req.getSession().setAttribute("repName", repNames);
+            req.getSession().setAttribute("nsr", repNames);
             List<RecordHib> userRep = usersRepository.findRecByName(repNames);
 
     for (RecordHib item : userRep) {
@@ -173,7 +173,7 @@ public class ReportServlet extends HttpServlet {
 //                req.setAttribute("action", "forOne");//итоговые часы
   //  }
                 req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
-     }
+    }
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/report.jsp");
         dispatcher.forward(req, resp);
@@ -197,13 +197,11 @@ public class ReportServlet extends HttpServlet {
             req.getSession().setAttribute("nachaloRep", StartD);
             req.getSession().setAttribute("konecRep", EndD);
 
-            String nsr = req.getSession().getAttribute("repName").toString();
-            req.getSession().setAttribute("repName", nsr);
-//            resp.sendRedirect(req.getContextPath() + "/report");
+            resp.sendRedirect(req.getContextPath() + "/report");
         } catch (Exception e) {
 
         }
-        resp.sendRedirect(req.getContextPath() + "/report");
+//        resp.sendRedirect(req.getContextPath() + "/report");
         }
 
     }

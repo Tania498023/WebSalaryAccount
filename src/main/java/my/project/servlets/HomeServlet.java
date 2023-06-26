@@ -1,6 +1,5 @@
 package my.project.servlets;
 
-import my.project.help.Helpers;
 import my.project.models.RecordHib;
 import my.project.models.UserHib;
 import my.project.repositories.IRepository;
@@ -66,19 +65,23 @@ public class HomeServlet extends HttpServlet {
             }
 
         }
-//          имя для отчета на страницу rep
-        if (req.getParameter("nsr")!=null) {
-
-            String repName = req.getParameter("nsr");
-
-            req.getSession().setAttribute("nsr", repName);
-            req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);//не трогаем,перенаправляет на страницу report иначе остаемся на home
-        }
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
-        dispatcher.forward(req, resp);
+        dispatcher.forward(req,resp);
+
+//          имя для отчета на страницу rep
+//        if (req.getParameter("nsr")!=null) {
+
+        String nsr = req.getParameter("nsr");
+
+        req.getSession().setAttribute("nsr", nsr);
+        req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);//не трогаем,перенаправляет на страницу report иначе остаемся на home
 
 
-    }
+//    RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
+//        dispatcher.forward(req,resp);
+}
+
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
