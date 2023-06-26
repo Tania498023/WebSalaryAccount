@@ -65,20 +65,22 @@ public class HomeServlet extends HttpServlet {
             }
 
         }
-        RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
-        dispatcher.forward(req,resp);
 
 //          имя для отчета на страницу rep
-//        if (req.getParameter("nsr")!=null) {
+        if (req.getParameter("nsr") != null) {
 //            if (req.getParameter("nsr").equals("nsr")) {
-                String nsr = req.getParameter("nsr");
+            String nsr = req.getParameter("nsr");
 
-                req.getSession().setAttribute("nsr", nsr);
-                req.getServletContext().getRequestDispatcher("/jsp/report.jsp").forward(req, resp);//не трогаем,перенаправляет на страницу report иначе остаемся на home
-            }
-  //      }
+            req.getSession().setAttribute("nsr", nsr);
+            req.getServletContext().getRequestDispatcher("/jsp/report.jsp").forward(req, resp);//не трогаем,перенаправляет на страницу report иначе остаемся на home
+        }
+        else {
+            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
+            dispatcher.forward(req,resp);
+        }
+    }
 
- //   }
+
 
 
 

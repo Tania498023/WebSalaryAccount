@@ -152,7 +152,7 @@ public class ReportServlet extends HttpServlet {
 
         List<RecordHib> repByOneForManager = new ArrayList<>();
         Integer sumHour = 0;
-        if (req.getParameter("nsr")!=null) {
+        if (req.getSession().getAttribute("nsr")!=null) {
             String repNames = req.getSession().getAttribute("nsr").toString();
 
             req.getSession().setAttribute("nsr", repNames);
