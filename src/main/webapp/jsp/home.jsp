@@ -79,7 +79,7 @@
 
 
                 <td class="tdser">
-                    <button type="submit" onclick=location.href='/home?nsr=${records.getLastName().getLastName()}' >Отчет </button>
+                    <button type="submit" onclick=location.href='/home?userForReport=${records.getLastName().getLastName()}' >Отчет </button>
                 </td>
 
                 <td class="tdser">
