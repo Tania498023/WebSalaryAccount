@@ -54,8 +54,6 @@ public class ReportServlet extends HttpServlet {
 
             }
 
-
-
         if (startDays == null && endDays == null) {
             LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
             startDay = firstDayOfMonth;
@@ -66,13 +64,10 @@ public class ReportServlet extends HttpServlet {
            startDay=startDays;
            endDay=endDays;
         }
-
-
         req.setAttribute("startDay", startDay);//должны уйти на jsp
         req.setAttribute("endDay", endDay);
 
 //отчет по всем с группировкой времени и дохода для Менеджера
-
 
         Map<String, Integer> groupDoxod = new HashMap<>();
         Map<String, Double> mapDoxod = new HashMap<>();
@@ -116,6 +111,7 @@ public class ReportServlet extends HttpServlet {
 
         //отчет по времени и доходу по одному сотруднику (не менеджер)
 
+
             List<RecordHib> repByOne = new ArrayList<>();
             List<Double> zarplata = new ArrayList<>();
 
@@ -157,12 +153,37 @@ public class ReportServlet extends HttpServlet {
             req.setAttribute("repForOne", repByOne);//List записей текущего пользователя
             req.setAttribute("listZarplata", zarplata);//List дохода
             req.setAttribute("salaryPerMonth", salaryPerMonth);//итоговый доход
-//        req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
+
 
 //отчет по времени и доходу по одному сотруднику (для менеджера)
 
         List<RecordHib> repByOneForManager = new ArrayList<>();
+        LocalDate startDayss=null;
+        LocalDate konDayss=null;
+        LocalDate dd=null;
+        LocalDate NN=null;
         Integer sumHour = 0;
+        try {
+             dd = LocalDate.parse(req.getSession().getAttribute("nachaloRep").toString());
+             NN = LocalDate.parse(req.getSession().getAttribute("konecRep").toString());
+        }
+        catch (Exception e){
+
+        }
+
+        if (dd == null && NN == null) {
+            LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+            startDayss = firstDayOfMonth;
+            LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+            konDayss = lastDayOfMonth;
+        }
+        else {
+            startDayss=dd;
+            konDayss=NN;
+        }
+        req.setAttribute("startDay", startDayss);//должны уйти на jsp
+        req.setAttribute("endDay", konDayss);
+
         if (req.getSession().getAttribute("nsr")!=null) {
             String repNames = req.getSession().getAttribute("nsr").toString();
 
@@ -170,7 +191,7 @@ public class ReportServlet extends HttpServlet {
             List<RecordHib> userRep = usersRepository.findRecByName(repNames);
 
     for (RecordHib item : userRep) {
-        if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+        if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDayss) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(konDayss)) {
 
             repByOneForManager.add(item);
             sumHour += item.getHour();//для итоговой ячейки
