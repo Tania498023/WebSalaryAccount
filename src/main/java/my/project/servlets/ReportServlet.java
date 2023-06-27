@@ -44,20 +44,31 @@ public class ReportServlet extends HttpServlet {
 
         LocalDate startDay = null;
         LocalDate endDay = null;
-        try {
-            startDay = LocalDate.parse(req.getSession().getAttribute("nachaloRep").toString());
-            endDay = LocalDate.parse(req.getSession().getAttribute("konecRep").toString());
-        } catch (Exception e) {
+        LocalDate startDays = null;
+        LocalDate endDays = null;
 
-        }
+            try {
+                startDays = LocalDate.parse(req.getSession().getAttribute("nachaloRep").toString());
+                endDays = LocalDate.parse(req.getSession().getAttribute("konecRep").toString());
+            } catch (Exception e) {
 
-        if (startDay == null && endDay == null) {
+            }
+
+
+
+        if (startDays == null && endDays == null) {
             LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
             startDay = firstDayOfMonth;
             LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
             endDay = lastDayOfMonth;
         }
-        req.setAttribute("startDay", startDay);
+       else {
+           startDay=startDays;
+           endDay=endDays;
+        }
+
+
+        req.setAttribute("startDay", startDay);//должны уйти на jsp
         req.setAttribute("endDay", endDay);
 
 //отчет по всем с группировкой времени и дохода для Менеджера
@@ -190,7 +201,7 @@ public class ReportServlet extends HttpServlet {
         LocalDate EndD =null;
 
         try {
-            String startDate = LocalDate.parse(req.getParameter("startDate")).toString();
+            String startDate = LocalDate.parse(req.getParameter("startDate")).toString();//получаем с jsp страницы
             StartD = LocalDate.parse(startDate);
             String endDate = LocalDate.parse(req.getParameter("endDate")).toString();
             EndD = LocalDate.parse(endDate);

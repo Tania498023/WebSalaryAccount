@@ -53,8 +53,8 @@
     <c:forEach items="${reportForRec}" var="groupDoxod">
         <tr >
             <td class="tdser">${groupDoxod.key}</td>
-            <td class="tdser">${nachaloRep}</td>
-            <td class="tdser">${konecRep}</td>
+            <td class="tdser">${startDay}</td>
+            <td class="tdser">${endDay}</td>
             <td class="tdser">${groupDoxod.value}</td>
         </tr>
     </c:forEach>

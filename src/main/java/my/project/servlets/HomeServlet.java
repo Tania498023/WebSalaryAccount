@@ -68,11 +68,9 @@ public class HomeServlet extends HttpServlet {
 
 //          имя для отчета на страницу rep
         if (req.getParameter("nsr") != null) {
-//            if (req.getParameter("nsr").equals("nsr")) {
             String nsr = req.getParameter("nsr");
-
             req.getSession().setAttribute("nsr", nsr);
-            req.getServletContext().getRequestDispatcher("/jsp/report.jsp").forward(req, resp);//не трогаем,перенаправляет на страницу report иначе остаемся на home
+            req.getServletContext().getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
         }
         else {
             RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
