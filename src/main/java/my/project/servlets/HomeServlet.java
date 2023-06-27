@@ -31,6 +31,42 @@ public class HomeServlet extends HttpServlet {
         List<RecordHib> records = usersRepository.findAllRec();
         req.getSession().setAttribute("usersFromServer", records);
 
+        LocalDate nachDay = null;
+        LocalDate konecDay = null;
+        LocalDate startDays = null;
+        LocalDate endDays = null;
+
+        try {
+            startDays = LocalDate.parse(req.getSession().getAttribute("nachalo").toString());
+            endDays = LocalDate.parse(req.getSession().getAttribute("konec").toString());
+        } catch (Exception e) {
+
+        }
+
+            if (startDays == null && endDays == null) {
+            LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+            nachDay = firstDayOfMonth;
+            LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+            konecDay = lastDayOfMonth;
+        }
+            else {
+                nachDay=startDays;
+                konecDay=endDays;
+        }
+//устанавливаем период для блока корректировка записи
+        List<RecordHib> editRec = new ArrayList<>();
+        for (RecordHib item : records) {
+            if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(nachDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(konecDay)) {
+
+                editRec.add(item);
+
+            }
+        }
+        req.setAttribute("startDay", nachDay);//должны уйти на jsp
+        req.setAttribute("endDay", konecDay);
+        req.setAttribute("ListEditRec", editRec);
+
+
 //получаем список имен всех пользователей из БД
         List<UserHib> users = usersRepository.findAll();
         req.setAttribute("roleByName", users);
@@ -67,38 +103,32 @@ public class HomeServlet extends HttpServlet {
 
         }
 
-//          имя для отчета на страницу rep
+//          имя для отчета по каждому сотруднику (Менеджер) на страницу rep
         if (req.getParameter("userForReport") != null) {
-            String userForReport = req.getParameter("userForReport");
 
-            LocalDate nachDay = null;
-            LocalDate konecDay = null;
-            Integer sumHour = 0;
+                String userForReport = req.getParameter("userForReport");
 
-            if (nachDay == null && konecDay == null) {
-                LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
-                nachDay = firstDayOfMonth;
-                LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-                konecDay = lastDayOfMonth;
-            }
-            List<RecordHib> repByOneForManager = new ArrayList<>();
-            List<RecordHib> userRep = usersRepository.findRecByName(userForReport);
+                Integer sumHour = 0;
 
-            for (RecordHib item : userRep) {
-                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(nachDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(konecDay)) {
+                List<RecordHib> repByOneForManager = new ArrayList<>();
+                List<RecordHib> userRep = usersRepository.findRecByName(userForReport);
 
-                    repByOneForManager.add(item);
-                    sumHour += item.getHour();//для итоговой ячейки
+                for (RecordHib item : userRep) {
+                    if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(nachDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(konecDay)) {
+
+                        repByOneForManager.add(item);
+                        sumHour += item.getHour();//для итоговой ячейки
+                    }
                 }
-            }
-            req.getSession().setAttribute("startDay", nachDay);
-            req.getSession().setAttribute("endDay", konecDay);
+                req.getSession().setAttribute("startDay", nachDay);
+                req.getSession().setAttribute("endDay", konecDay);
 
-            req.getSession().setAttribute("userForReport", userForReport);
-            req.getSession().setAttribute("listRecForReport", repByOneForManager);
-            req.getSession().setAttribute("sumHour", sumHour);
-            req.getServletContext().getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
-        }
+                req.getSession().setAttribute("userForReport", userForReport);
+                req.getSession().setAttribute("listRecForReport", repByOneForManager);
+                req.getSession().setAttribute("sumHour", sumHour);
+                req.getServletContext().getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
+            }
+
         else {
             RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
             dispatcher.forward(req,resp);

@@ -57,9 +57,22 @@
 
         <c:if test = "${chekRoleForHome eq 'MANAGER'}">
 
+<%--//возможность установки периода--%>
+
+    <form method="post" action="/home">
+        <label for="startDate">Начало периода
+            <input class="input-field" type="date" id="startDate" name="startDate">
+        </label>
+        <label for="endDate">Конец периода
+            <input class="input-field" type="date" id="endDate" name="endDate">
+        </label>
+        <input type="submit" value="Установить">
+        <br>
+        <br>
+    </form>
 
     <div class="form-style-2-heading">
-        Корректировка записи
+        Корректировка записи в периоде с ${startDay} по ${endDay}
     </div>
 <table>
         <tr id="toptr">
@@ -70,25 +83,25 @@
 
         </tr>
 
-        <c:forEach items="${usersFromServer}" var="records">
+        <c:forEach items="${ListEditRec}" var="editRec">
             <tr id="downtr">
-                <td class="tdser">${records.getLastName().getLastName()}</td>
-                <td class="tdser">${records.getDate()}</td>
-                <td class="tdser">${records.getHour()}</td>
-                <td class="tdser">${records.getMessage()}</td>
+                <td class="tdser">${editRec.getLastName().getLastName()}</td>
+                <td class="tdser">${editRec.getDate()}</td>
+                <td class="tdser">${editRec.getHour()}</td>
+                <td class="tdser">${editRec.getMessage()}</td>
 
 
                 <td class="tdser">
-                    <button type="submit" onclick=location.href='/home?userForReport=${records.getLastName().getLastName()}' >Отчет </button>
+                    <button type="submit" onclick=location.href='/home?userForReport=${editRec.getLastName().getLastName()}' >Отчет </button>
                 </td>
 
                 <td class="tdser">
-                    <button type="submit" onclick=location.href='/home?action=update&idSelectedRec=${records.getId()}' >Изменить </button>
+                    <button type="submit" onclick=location.href='/home?action=update&idSelectedRec=${editRec.getId()}' >Изменить </button>
                 </td>
 
                 <form method="post" action="/home" >
                     <td class="tdser">
-                        <button type='submit' name = 'idSelectedRec' value='${records.getId()}'>Удалить </button>
+                        <button type='submit' name = 'idSelectedRec' value='${editRec.getId()}'>Удалить </button>
                     </td>
                 </form>
             </tr>
