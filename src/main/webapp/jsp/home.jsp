@@ -68,7 +68,7 @@
         </label>
         <input type="submit" value="Установить">
         <br>
-        <br>
+
     </form>
 
     <div class="form-style-2-heading">
@@ -92,7 +92,7 @@
 
 
                 <td class="tdser">
-                    <button type="submit" onclick=location.href='/home?userForReport=${editRec.getLastName().getLastName()}' >Отчет </button>
+                    <button type="submit" onclick=location.href='/home?idOne=oneRep&userForReport=${editRec.getLastName().getLastName()}' >Отчет </button>
                 </td>
 
                 <td class="tdser">
@@ -108,8 +108,7 @@
         </c:forEach>
 </table>
     <br>
-    <br>
-<form method="post" action="/home">
+ <form method="post" action="/home">
         <input type="hidden" value="${'update'}" name="action">
         Имя:<input type="text" name="recForUpdate" value="${recForUpdate.getLastName().getLastName()}" ><br><br>
         Дата:<input type="text" name="recDate" value="${recForUpdate.getDate()}" ><br><br>
@@ -124,13 +123,16 @@
 
 </c:if>
 
+<div class=form-style-2 >
+    <form>
+        <input type="button" value="Сформировать отчет по зарплате" onclick=location.href='report?id=groupRep'>
+    </form>
+</div>
 <div class=form-style-2 input[type=button]">
 <c:if test = "${chekRoleForHome eq 'MANAGER'}">
     <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
 </c:if>
-    <input type="button" value="Сформировать отчет по зарплате" onclick=location.href='report'>
 </div>
-
     <div class=form-style-2 >
     <input type="button" value="Выход из приложения" onclick=location.href='logout'>
     </div>

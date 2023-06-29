@@ -20,12 +20,13 @@
         </tr>
     </table>
 </div>
+
 <div class="form-style-2-heading">
     Учет времени и дохода
 </div>
 
 <form method="post" action="/report">
-
+<input type="hidden" name="id" value="groupRep">
     <label for="startDate">Начало периода
         <input class="input-field" type="date" id="startDate" name="startDate">
     </label>
@@ -35,13 +36,13 @@
     <input type="submit" value="Установить">
     <br>
     <br>
-</form>
+<%--</form>--%>
 
 
 <%--/*отчет по всем с группировкой времени и дохода для Менеджера*/--%>
 
 <c:if test = "${usersRole eq 'MANAGER'}">
-<%--    <c:if test = "${action != 'forOne'}">--%>
+    <c:if test = "${idForJsp eq 'groupRep'}">
 <table class="tab-a">
         <caption>Итоговый отчет по всем сотрудникам за период с ${startDay} до ${endDay} </caption>
         <tr >
@@ -72,32 +73,33 @@
         </c:forEach>
 
     </table>
-<%--    </c:if>--%>
+    </c:if>
+</form>
 
 
 <%--отчет по конкретному сотруднику для Менеджера--%>
-<%--    <c:if test = "${action eq 'forOne'}">--%>
-    <table class="tab-b">
-        <caption>Отчет по сотруднику ${userForReport} за период с ${startDay} по ${endDay}</caption>
-        <tr >
-            <td class="tdser">Дата</td>
-            <td class="tdser">Отработано часов</td>
-            <td class="tdser">Описание работ</td>
-        </tr>
-        <c:forEach items="${listRecForReport}" var="repByOneForManager">
 
-            <tr >
-                <td class="tdser">${repByOneForManager.getDate()}</td>
-                <td class="tdser">${repByOneForManager.getHour()}</td>
-                <td class="tdser">${repByOneForManager.getMessage()}</td>
-            </tr>
-        </c:forEach>
-        <td class="tdserx">  Итого  </td>
-        <td class="tdserx">  ${sumHour} </td>
-    </table>
+<%--    <table class="tab-b">--%>
+<%--        <caption>Отчет по сотруднику ${userForReport} за период с ${startDay} по ${endDay}</caption>--%>
+<%--        <tr >--%>
+<%--            <td class="tdser">Дата</td>--%>
+<%--            <td class="tdser">Отработано часов</td>--%>
+<%--            <td class="tdser">Описание работ</td>--%>
+<%--        </tr>--%>
+<%--        <c:forEach items="${listRecForReport}" var="repByOneForManager">--%>
 
-</c:if>
+<%--            <tr >--%>
+<%--                <td class="tdser">${repByOneForManager.getDate()}</td>--%>
+<%--                <td class="tdser">${repByOneForManager.getHour()}</td>--%>
+<%--                <td class="tdser">${repByOneForManager.getMessage()}</td>--%>
+<%--            </tr>--%>
+<%--        </c:forEach>--%>
+<%--        <td class="tdserx">  Итого  </td>--%>
+<%--        <td class="tdserx">  ${sumHour} </td>--%>
+<%--    </table>--%>
+
 <%--</c:if>--%>
+</c:if>
 <%--отчет по определенному сотруднику для НЕ менеджера--%>
 
 <c:if test = "${usersRole != 'MANAGER'}">

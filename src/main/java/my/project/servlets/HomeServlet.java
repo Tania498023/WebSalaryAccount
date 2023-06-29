@@ -43,15 +43,14 @@ public class HomeServlet extends HttpServlet {
 
         }
 
-            if (startDays == null && endDays == null) {
+        if (startDays == null && endDays == null) {
             LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
             nachDay = firstDayOfMonth;
             LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
             konecDay = lastDayOfMonth;
-        }
-            else {
-                nachDay=startDays;
-                konecDay=endDays;
+        } else {
+            nachDay = startDays;
+            konecDay = endDays;
         }
 //устанавливаем период для блока корректировка записи
         List<RecordHib> editRec = new ArrayList<>();
@@ -104,30 +103,35 @@ public class HomeServlet extends HttpServlet {
         }
 
 //          имя для отчета по каждому сотруднику (Менеджер) на страницу rep
-        if (req.getParameter("userForReport") != null) {
-
-                String userForReport = req.getParameter("userForReport");
-
-                Integer sumHour = 0;
-
-                List<RecordHib> repByOneForManager = new ArrayList<>();
-                List<RecordHib> userRep = usersRepository.findRecByName(userForReport);
-
-                for (RecordHib item : userRep) {
-                    if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(nachDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(konecDay)) {
-
-                        repByOneForManager.add(item);
-                        sumHour += item.getHour();//для итоговой ячейки
-                    }
-                }
-                req.getSession().setAttribute("startDay", nachDay);
-                req.getSession().setAttribute("endDay", konecDay);
-
-                req.getSession().setAttribute("userForReport", userForReport);
-                req.getSession().setAttribute("listRecForReport", repByOneForManager);
-                req.getSession().setAttribute("sumHour", sumHour);
-                req.getServletContext().getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
-            }
+//        if (req.getParameter("idOne") != null) {
+//            if (req.getParameter("idOne").equals("oneRep")) {
+//
+//                if (req.getParameter("userForReport") != null) {
+//                    req.setAttribute("idOne","oneRep");
+//                    String userForReport = req.getParameter("userForReport");
+//
+//                    Integer sumHour = 0;
+//
+//                    List<RecordHib> repByOneForManager = new ArrayList<>();
+//                    List<RecordHib> userRep = usersRepository.findRecByName(userForReport);
+//
+//                    for (RecordHib item : userRep) {
+//                        if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(nachDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(konecDay)) {
+//
+//                            repByOneForManager.add(item);
+//                            sumHour += item.getHour();//для итоговой ячейки
+//                        }
+//                    }
+//                    req.getSession().setAttribute("startDay", nachDay);
+//                    req.getSession().setAttribute("endDay", konecDay);
+//
+//                    req.getSession().setAttribute("userForReport", userForReport);
+//                    req.getSession().setAttribute("listRecForReport", repByOneForManager);
+//                    req.getSession().setAttribute("sumHour", sumHour);
+//                    req.getServletContext().getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
+//                }
+//            }
+//        }
 
         else {
             RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
