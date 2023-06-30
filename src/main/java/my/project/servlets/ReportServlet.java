@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -38,152 +39,107 @@ public class ReportServlet extends HttpServlet {
         req.getSession().setAttribute("usersRole", us.getUserRoleHib());
 
 //блок расчета з/п
-//        List<RecordHib> recordGroup = usersRepository.findAllRec();
+        List<RecordHib> recordGroup = usersRepository.findAllRec();
 //        req.getSession().setAttribute("recGroup", recordGroup);
 //        List<UserHib> userGroup = usersRepository.findAll();
 //        req.getSession().setAttribute("recGroup", recordGroup);
 
-//        LocalDate startDay = null;
-//        LocalDate endDay = null;
-//        LocalDate startDays = null;
-//        LocalDate endDays = null;
-//
-//        try {
-//            startDays = LocalDate.parse(req.getSession().getAttribute("nachaloRep").toString());
-//            endDays = LocalDate.parse(req.getSession().getAttribute("konecRep").toString());
-//        } catch (Exception e) {
-//
-//        }
-//
-//        if (startDays == null && endDays == null) {
-//            LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
-//            startDay = firstDayOfMonth;
-//            LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-//            endDay = lastDayOfMonth;
-//        } else {
-//            startDay = startDays;
-//            endDay = endDays;
-//        }
-//        req.setAttribute("startDay", startDay);//должны уйти на jsp
-//        req.setAttribute("endDay", endDay);
+        //устанавливаем период
+        LocalDate startDay = null;
+        LocalDate endDay = null;
 
-//отчет по всем с группировкой времени и дохода для Менеджера
-//        if (req.getParameter("id") != null) {
-//            if (req.getParameter("id").equals("groupRep")) {
-//
-//                req.getSession().setAttribute("id", "groupRep");
-//            }
-//        }
-//                Map<String, Integer> groupDoxod = new HashMap<>();
-//                Map<String, Double> mapDoxod = new HashMap<>();
-//
-//                for (UserHib usItem : userGroup) {
-//                    Double sumdoxod = 0.0;
-//                    Double doxod = 0.0;
-//                    Double payHour = 0.0;
-//                    for (RecordHib item : recordGroup) {
-//
-//                        if (usItem.getLastName() == item.getLastName().getLastName()) {
-//                            if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
-//                                if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
-//
-//                                    groupDoxod.put(item.getLastName().getLastName(), item.getHour());
-//                                } else if (groupDoxod.containsKey(item.getLastName().getLastName())) {
-//
-//                                    int h = groupDoxod.get(item.getLastName().getLastName());
-//                                    groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
-//                                }
-//                                payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
-//                                Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
-//                                if (usItem.getUserRoleHib() == UserRoleHib.FREELANCER) {
-//                                    doxod += usItem.getPayPerHour() * item.getHour();
-//                                }
-//                                if (item.getHour() <= Settings.WORKHOURSINDAY && usItem.getUserRoleHib() != UserRoleHib.FREELANCER) {
-//                                    doxod += payHour * item.getHour();
-//                                } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
-//                                    doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
-//                                } else if (usItem.getUserRoleHib() == UserRoleHib.EMPLOYEE) {
-//                                    doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
-//                                }
-//                                sumdoxod = doxod;
-//                                mapDoxod.put(item.getLastName().getLastName(), sumdoxod);
-//                            }
-//                        }
-//                    }
-//                }
-//                req.setAttribute("doxod", mapDoxod);
-//                req.setAttribute("reportForRec", groupDoxod);
+        if (startDay == null && endDay == null) {
+            LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+            startDay = firstDayOfMonth;
+            LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+            endDay = lastDayOfMonth;
+        }
+        try {
+            startDay = LocalDate.parse(req.getSession().getAttribute("startDay").toString());
+            endDay = LocalDate.parse(req.getSession().getAttribute("endDay").toString());
+        }
+        catch (Exception e){
 
-
+        }
+        req.getSession().setAttribute("startDay", startDay);
+        req.getSession().setAttribute("endDay", endDay);
 
         //отчет по времени и доходу по одному сотруднику (для менеджера)
 
-//        List<RecordHib> repByOneForManager = new ArrayList<>();
-//        Integer sumHour = 0;
-//
-//        if (req.getSession().getAttribute("userForReport") != null) {
-//
-//            String repNames = req.getSession().getAttribute("userForReport").toString();
-//            req.getSession().setAttribute("userForReport", repNames);
-//
-//            List<RecordHib> userRep = usersRepository.findRecByName(repNames);
 
-//            for (RecordHib item : userRep) {
-//                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
-//                    repByOneForManager.add(item);
-//                    sumHour += item.getHour();//для итоговой ячейки
-//                }
-//            }
-//            req.setAttribute("startDay", startDay);//должны уйти на jsp
-//            req.setAttribute("endDay", endDay);
-//            req.getSession().setAttribute("listRecForReport", repByOneForManager);
-//            req.setAttribute("sumHour", sumHour);//итоговые часы
-//
-//            req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
-//        }
-//
-//        //отчет по времени и доходу по одному сотруднику (не менеджер)
-//
-//        List<RecordHib> repByOne = new ArrayList<>();
-//        List<Double> zarplata = new ArrayList<>();
-//
-//        Integer sumHours = 0;
-//        Double summaDoxod = 0.0;
-//        Double salary = 0.0;
-//        Double salaryPerMonth = 0.0;
-//        for (RecordHib item : recordGroup) {
-//
-//            if (item.getLastName().getLastName().equals(checkUser)) {
-//                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
-//                    repByOne.add(item);
-//
-//                    sumHours += item.getHour();//для итоговой ячейки
-//
-//                    Double perPayHours = item.getLastName().getMonthSalary() / Settings.WORKHOURSINMONTH;
-//                    Double bonusPerDay = item.getLastName().getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
-//                    if (item.getLastName().getUserRoleHib() == UserRoleHib.FREELANCER) {
-//                        salary = item.getLastName().getPayPerHour() * item.getHour();
-//                    }
-//
-//                    if (item.getHour() <= Settings.WORKHOURSINDAY && item.getLastName().getUserRoleHib() != UserRoleHib.FREELANCER) {
-//                        salary = perPayHours * item.getHour();
-//                    } else if (item.getLastName().getUserRoleHib() == UserRoleHib.MANAGER) {
-//                        salary = perPayHours * Settings.WORKHOURSINDAY + bonusPerDay;
-//                    } else if (item.getLastName().getUserRoleHib() == UserRoleHib.EMPLOYEE) {
-//                        salary = perPayHours * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * perPayHours;
-//                    }
-//                    summaDoxod = salary;
-//                    zarplata.add(summaDoxod);
-//                    salaryPerMonth += summaDoxod;
-//
-//                }
-//            }
-//            req.setAttribute("checkUser", checkUser);//текущ пользователь(в т ч по кому отчет)
-//            req.setAttribute("sumHours", sumHours);//итоговые часы
-//            req.setAttribute("repForOne", repByOne);//List записей текущего пользователя
-//            req.setAttribute("listZarplata", zarplata);//List дохода
-//            req.setAttribute("salaryPerMonth", salaryPerMonth);//итоговый доход
-//        }
+
+        List<RecordHib> repByOneForManager = new ArrayList<>();
+        Integer sumHour = 0;
+            String visOne = "def";
+        if (req.getSession().getAttribute("visibleForOne") != null) {
+            if (req.getSession().getAttribute("visibleForOne").equals("oneRep")) {
+                visOne = "oneRep";
+                req.getSession().setAttribute("ff", visOne);
+                String repNames = req.getSession().getAttribute("userForReport").toString();
+                req.getSession().setAttribute("userForReport", repNames);
+
+
+
+                List<RecordHib> userRep = usersRepository.findRecByName(repNames);
+
+                for (RecordHib item : userRep) {
+                    if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+                        repByOneForManager.add(item);
+                        sumHour += item.getHour();//для итоговой ячейки
+                    }
+                }
+                req.setAttribute("startDay", startDay);//должны уйти на jsp
+                req.setAttribute("endDay", endDay);
+                req.getSession().setAttribute("listRecForReport", repByOneForManager);
+                req.setAttribute("sumHour", sumHour);//итоговые часы
+
+                req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
+            }
+        }
+
+
+        //отчет по времени и доходу по одному сотруднику (не менеджер)
+        //(оставила в Get для примера)
+
+        List<RecordHib> repByOne = new ArrayList<>();
+        List<Double> zarplata = new ArrayList<>();
+
+        Integer sumHours = 0;
+        Double summaDoxod = 0.0;
+        Double salary = 0.0;
+        Double salaryPerMonth = 0.0;
+        for (RecordHib item : recordGroup) {
+            if (item.getLastName().getLastName().equals(checkUser)) {
+                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+                    repByOne.add(item);
+
+                    sumHours += item.getHour();//для итоговой ячейки
+
+                    Double perPayHours = item.getLastName().getMonthSalary() / Settings.WORKHOURSINMONTH;
+                    Double bonusPerDay = item.getLastName().getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
+                    if (item.getLastName().getUserRoleHib() == UserRoleHib.FREELANCER) {
+                        salary = item.getLastName().getPayPerHour() * item.getHour();
+                    }
+
+                    if (item.getHour() <= Settings.WORKHOURSINDAY && item.getLastName().getUserRoleHib() != UserRoleHib.FREELANCER) {
+                        salary = perPayHours * item.getHour();
+                    } else if (item.getLastName().getUserRoleHib() == UserRoleHib.MANAGER) {
+                        salary = perPayHours * Settings.WORKHOURSINDAY + bonusPerDay;
+                    } else if (item.getLastName().getUserRoleHib() == UserRoleHib.EMPLOYEE) {
+                        salary = perPayHours * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * perPayHours;
+                    }
+                    summaDoxod = salary;
+                    zarplata.add(summaDoxod);
+                    salaryPerMonth += summaDoxod;
+
+                }
+            }
+            req.setAttribute("checkUser", checkUser);//текущ пользователь(в т ч по кому отчет)
+            req.setAttribute("sumHours", sumHours);//итоговые часы
+            req.setAttribute("repForOne", repByOne);//List записей текущего пользователя
+            req.setAttribute("listZarplata", zarplata);//List дохода
+            req.setAttribute("salaryPerMonth", salaryPerMonth);//итоговый доход
+        }
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/report.jsp");
         dispatcher.forward(req, resp);
@@ -222,54 +178,56 @@ public class ReportServlet extends HttpServlet {
         req.getSession().setAttribute("endDay", endDay);
 
 //отчет по всем с группировкой времени и дохода для Менеджера
-        String visibility = "default";
-        if (req.getParameter("id") != null) {
-            if (req.getParameter("id").equals("groupRep")) {
-                visibility = "groupRep";
-            req.getSession().setAttribute("idForJsp",visibility);
-                Map<String, Integer> groupDoxod = new HashMap<>();
-                Map<String, Double> mapDoxod = new HashMap<>();
 
-                for (UserHib usItem : userGroup) {
-                    Double sumdoxod = 0.0;
-                    Double doxod = 0.0;
-                    Double payHour = 0.0;
-                    for (RecordHib item : recordGroup) {
+                    String visibility = "default";
+                    if (req.getParameter("id") != null) {
+                        if (req.getParameter("id").equals("groupRep")) {
+                            visibility = "groupRep";
+                            req.getSession().setAttribute("idForJsp", visibility);
+                            Map<String, Integer> groupDoxod = new HashMap<>();
+                            Map<String, Double> mapDoxod = new HashMap<>();
 
-                        if (usItem.getLastName() == item.getLastName().getLastName()) {
-                            if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
-                                if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
+                            for (UserHib usItem : userGroup) {
+                                Double sumdoxod = 0.0;
+                                Double doxod = 0.0;
+                                Double payHour = 0.0;
+                                for (RecordHib item : recordGroup) {
 
-                                    groupDoxod.put(item.getLastName().getLastName(), item.getHour());
-                                } else if (groupDoxod.containsKey(item.getLastName().getLastName())) {
+                    if (usItem.getLastName() == item.getLastName().getLastName()) {
+                        if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+                            if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
 
-                                    int h = groupDoxod.get(item.getLastName().getLastName());
-                                    groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
-                                }
-                                payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
-                                Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
-                                if (usItem.getUserRoleHib() == UserRoleHib.FREELANCER) {
-                                    doxod += usItem.getPayPerHour() * item.getHour();
-                                }
-                                if (item.getHour() <= Settings.WORKHOURSINDAY && usItem.getUserRoleHib() != UserRoleHib.FREELANCER) {
-                                    doxod += payHour * item.getHour();
-                                } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
-                                    doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
-                                } else if (usItem.getUserRoleHib() == UserRoleHib.EMPLOYEE) {
-                                    doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
-                                }
-                                sumdoxod = doxod;
-                                mapDoxod.put(item.getLastName().getLastName(), sumdoxod);
+                                groupDoxod.put(item.getLastName().getLastName(), item.getHour());
+                            } else if (groupDoxod.containsKey(item.getLastName().getLastName())) {
+
+                                int h = groupDoxod.get(item.getLastName().getLastName());
+                                groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
                             }
+                            payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
+                            Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
+                            if (usItem.getUserRoleHib() == UserRoleHib.FREELANCER) {
+                                doxod += usItem.getPayPerHour() * item.getHour();
+                            }
+                            if (item.getHour() <= Settings.WORKHOURSINDAY && usItem.getUserRoleHib() != UserRoleHib.FREELANCER) {
+                                doxod += payHour * item.getHour();
+                            } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
+                                doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
+                            } else if (usItem.getUserRoleHib() == UserRoleHib.EMPLOYEE) {
+                                doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
+                            }
+                            sumdoxod = doxod;
+                            mapDoxod.put(item.getLastName().getLastName(), sumdoxod);
                         }
                     }
                 }
-
-                req.getSession().setAttribute("doxod", mapDoxod);
-                req.getSession().setAttribute("reportForRec", groupDoxod);
-
             }
+
+            req.getSession().setAttribute("doxod", mapDoxod);
+            req.getSession().setAttribute("reportForRec", groupDoxod);
+
         }
+    }
+
         resp.sendRedirect(req.getContextPath() + "/report");
             }
 

@@ -124,16 +124,21 @@
 </c:if>
 
 <div class=form-style-2 >
-    <form>
+    <c:if test = "${chekRoleForHome eq 'MANAGER'}">
+    <form method="post" action="report">
         <input type="button" value="Сформировать отчет по зарплате" onclick=location.href='report?id=groupRep'>
+        <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
     </form>
-</div>
-<div class=form-style-2 input[type=button]">
-<c:if test = "${chekRoleForHome eq 'MANAGER'}">
-    <input type="button" value="Добавить пользователя" onclick=location.href='signUp'>
 </c:if>
 </div>
-    <div class=form-style-2 >
+<div class=form-style-2 >
+    <c:if test = "${chekRoleForHome ne 'MANAGER'}">
+        <form>
+            <input type="button" value="Сформировать отчет по зарплате" onclick=location.href='report?'>
+        </form>
+    </c:if>
+</div>
+    <div class="form-style-2" >
     <input type="button" value="Выход из приложения" onclick=location.href='logout'>
     </div>
 
