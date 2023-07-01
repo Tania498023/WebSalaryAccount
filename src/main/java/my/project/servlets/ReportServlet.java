@@ -57,8 +57,7 @@ public class ReportServlet extends HttpServlet {
         try {
             startDay = LocalDate.parse(req.getSession().getAttribute("startDay").toString());
             endDay = LocalDate.parse(req.getSession().getAttribute("endDay").toString());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
         req.getSession().setAttribute("startDay", startDay);
@@ -66,18 +65,15 @@ public class ReportServlet extends HttpServlet {
 
         //отчет по времени и доходу по одному сотруднику (для менеджера)
 
-
-
         List<RecordHib> repByOneForManager = new ArrayList<>();
         Integer sumHour = 0;
-            String visOne = "def";
+        String visOne = "def";
         if (req.getSession().getAttribute("visibleForOne") != null) {
             if (req.getSession().getAttribute("visibleForOne").equals("oneRep")) {
                 visOne = "oneRep";
                 req.getSession().setAttribute("ff", visOne);
                 String repNames = req.getSession().getAttribute("userForReport").toString();
                 req.getSession().setAttribute("userForReport", repNames);
-
 
 
                 List<RecordHib> userRep = usersRepository.findRecByName(repNames);
@@ -177,61 +173,65 @@ public class ReportServlet extends HttpServlet {
         req.getSession().setAttribute("startDay", startDay);//должны уйти на jsp
         req.getSession().setAttribute("endDay", endDay);
 
+
 //отчет по всем с группировкой времени и дохода для Менеджера
 
-                    String visibility = "default";
-                    if (req.getParameter("id") != null) {
-                        if (req.getParameter("id").equals("groupRep")) {
-                            visibility = "groupRep";
-                            req.getSession().setAttribute("idForJsp", visibility);
-                            Map<String, Integer> groupDoxod = new HashMap<>();
-                            Map<String, Double> mapDoxod = new HashMap<>();
+        if (req.getParameter("id") != null) {
+            if (req.getParameter("id").equals("groupRep")) {
+                if (req.getSession().getAttribute("idForJsp").equals("visibility")) {
+                    req.getSession().setAttribute("idForJsp", "visibility");
 
-                            for (UserHib usItem : userGroup) {
-                                Double sumdoxod = 0.0;
-                                Double doxod = 0.0;
-                                Double payHour = 0.0;
-                                for (RecordHib item : recordGroup) {
+                    Map<String, Integer> groupDoxod = new HashMap<>();
+                    Map<String, Double> mapDoxod = new HashMap<>();
 
-                    if (usItem.getLastName() == item.getLastName().getLastName()) {
-                        if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
-                            if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
+                    for (UserHib usItem : userGroup) {
+                        Double sumdoxod = 0.0;
+                        Double doxod = 0.0;
+                        Double payHour = 0.0;
+                        for (RecordHib item : recordGroup) {
 
-                                groupDoxod.put(item.getLastName().getLastName(), item.getHour());
-                            } else if (groupDoxod.containsKey(item.getLastName().getLastName())) {
+                            if (usItem.getLastName() == item.getLastName().getLastName()) {
+                                if (Helpers.getMilliSecFromDate(item.getDate()) >= Helpers.getMilliSecFromDate(startDay) && Helpers.getMilliSecFromDate(item.getDate()) <= Helpers.getMilliSecFromDate(endDay)) {
+                                    if (!groupDoxod.containsKey(item.getLastName().getLastName())) {
 
-                                int h = groupDoxod.get(item.getLastName().getLastName());
-                                groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
+                                        groupDoxod.put(item.getLastName().getLastName(), item.getHour());
+                                    } else if (groupDoxod.containsKey(item.getLastName().getLastName())) {
+
+                                        int h = groupDoxod.get(item.getLastName().getLastName());
+                                        groupDoxod.put(item.getLastName().getLastName(), item.getHour() + h);
+                                    }
+                                    payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
+                                    Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
+                                    if (usItem.getUserRoleHib() == UserRoleHib.FREELANCER) {
+                                        doxod += usItem.getPayPerHour() * item.getHour();
+                                    }
+                                    if (item.getHour() <= Settings.WORKHOURSINDAY && usItem.getUserRoleHib() != UserRoleHib.FREELANCER) {
+                                        doxod += payHour * item.getHour();
+                                    } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
+                                        doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
+                                    } else if (usItem.getUserRoleHib() == UserRoleHib.EMPLOYEE) {
+                                        doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
+                                    }
+                                    sumdoxod = doxod;
+                                    mapDoxod.put(item.getLastName().getLastName(), sumdoxod);
+                                }
                             }
-                            payHour = usItem.getMonthSalary() / Settings.WORKHOURSINMONTH;
-                            Double bonusPerDay = usItem.getBonus() / Settings.WORKHOURSINMONTH * Settings.WORKHOURSINDAY;
-                            if (usItem.getUserRoleHib() == UserRoleHib.FREELANCER) {
-                                doxod += usItem.getPayPerHour() * item.getHour();
-                            }
-                            if (item.getHour() <= Settings.WORKHOURSINDAY && usItem.getUserRoleHib() != UserRoleHib.FREELANCER) {
-                                doxod += payHour * item.getHour();
-                            } else if (usItem.getUserRoleHib() == UserRoleHib.MANAGER) {
-                                doxod += payHour * Settings.WORKHOURSINDAY + bonusPerDay;
-                            } else if (usItem.getUserRoleHib() == UserRoleHib.EMPLOYEE) {
-                                doxod += payHour * item.getHour() + (item.getHour() - Settings.WORKHOURSINDAY) * payHour;
-                            }
-                            sumdoxod = doxod;
-                            mapDoxod.put(item.getLastName().getLastName(), sumdoxod);
                         }
                     }
+
+                    req.getSession().setAttribute("doxod", mapDoxod);
+                    req.getSession().setAttribute("reportForRec", groupDoxod);
+
                 }
             }
-
-            req.getSession().setAttribute("doxod", mapDoxod);
-            req.getSession().setAttribute("reportForRec", groupDoxod);
-
+        } else {
+            req.getSession().setAttribute("idForJsp", "");
         }
-    }
-
         resp.sendRedirect(req.getContextPath() + "/report");
-            }
+    }
+}
 
-        }
+
 
 
 

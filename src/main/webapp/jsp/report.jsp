@@ -38,49 +38,9 @@
     <br>
 </form>
 
-
-<%--/*отчет по всем с группировкой времени и дохода для Менеджера*/--%>
-<form method="post" action="/report">
-<c:if test = "${usersRole eq 'MANAGER'}">
-    <c:if test = "${idForJsp eq 'groupRep'}">
-<table class="tab-a">
-        <caption>Итоговый отчет по всем сотрудникам за период с ${startDay} до ${endDay} </caption>
-        <tr >
-            <td class="tdser">Сотрудник</td>
-            <td class="tdser">Начало периода</td>
-            <td class="tdser">Конец периода</td>
-            <td class="tdser">Отработано часов</td>
-         </tr>
-    <c:forEach items="${reportForRec}" var="groupDoxod">
-        <tr >
-            <td class="tdser">${groupDoxod.key}</td>
-            <td class="tdser">${startDay}</td>
-            <td class="tdser">${endDay}</td>
-            <td class="tdser">${groupDoxod.value}</td>
-        </tr>
-    </c:forEach>
-    </table>
-
-    <table class="tab-a">
-        <caption><br></caption>
-        <tr >
-            <td class="tdser">Доход общий</td>
-        </tr>
-        <c:forEach items="${doxod}" var="mapDoxod">
-            <tr >
-                <td class="tdser">${mapDoxod.value}</td>
-            </tr>
-        </c:forEach>
-
-    </table>
-    </c:if>
-    </c:if>
-</form>
-
-
 <%--отчет по конкретному сотруднику для Менеджера--%>
     <c:if test = "${usersRole eq 'MANAGER'}">
-        <c:if test = "${visibleForOne eq 'oneRep'}">
+        <c:if test = "${ff eq 'oneRep'}">
     <table class="tab-b">
         <caption>Отчет по сотруднику ${userForReport} за период с ${startDay} по ${endDay}</caption>
         <tr >
@@ -102,6 +62,46 @@
 
 </c:if>
 </c:if>
+
+<%--/*отчет по всем с группировкой времени и дохода для Менеджера*/--%>
+
+<c:if test = "${usersRole eq 'MANAGER'}">
+<c:if test = "${idForJsp eq 'visibility'}">
+    <form method="post" action="/report">
+        <table class="tab-a">
+            <caption>Итоговый отчет по всем сотрудникам за период с ${startDay} до ${endDay} </caption>
+            <tr >
+                <td class="tdser">Сотрудник</td>
+                <td class="tdser">Начало периода</td>
+                <td class="tdser">Конец периода</td>
+                <td class="tdser">Отработано часов</td>
+            </tr>
+            <c:forEach items="${reportForRec}" var="groupDoxod">
+                <tr >
+                    <td class="tdser">${groupDoxod.key}</td>
+                    <td class="tdser">${startDay}</td>
+                    <td class="tdser">${endDay}</td>
+                    <td class="tdser">${groupDoxod.value}</td>
+                </tr>
+            </c:forEach>
+        </table>
+
+        <table class="tab-a">
+            <caption><br></caption>
+            <tr >
+                <td class="tdser">Доход общий</td>
+            </tr>
+            <c:forEach items="${doxod}" var="mapDoxod">
+                <tr >
+                    <td class="tdser">${mapDoxod.value}</td>
+                </tr>
+            </c:forEach>
+
+        </table>
+    </form>
+</c:if>
+    </c:if>
+
 
 <%--отчет по определенному сотруднику для НЕ менеджера--%>
 <c:if test = "${usersRole != 'MANAGER'}">

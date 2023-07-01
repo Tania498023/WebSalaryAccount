@@ -133,9 +133,9 @@
 </div>
 <div class=form-style-2 >
     <c:if test = "${chekRoleForHome ne 'MANAGER'}">
-        <form>
+
             <input type="button" value="Сформировать отчет по зарплате" onclick=location.href='report?'>
-        </form>
+
     </c:if>
 </div>
     <div class="form-style-2" >

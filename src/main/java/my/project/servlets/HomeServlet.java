@@ -104,6 +104,7 @@ public class HomeServlet extends HttpServlet {
 
 
 //          имя для отчета по каждому сотруднику (Менеджер) на страницу rep
+        req.getSession().setAttribute("idForJsp", "");
         if (req.getParameter("userForReport") != null) {
             if (req.getParameter("idOne") != null) {
                 if (req.getParameter("idOne").equals("oneRep")) {
@@ -133,7 +134,10 @@ public class HomeServlet extends HttpServlet {
             }
        }
 
+
+
         else {
+            req.getSession().setAttribute("idForJsp", "visibility");
             RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
             dispatcher.forward(req,resp);
         }
