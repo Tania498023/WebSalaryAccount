@@ -75,7 +75,6 @@ public class ReportServlet extends HttpServlet {
                 String repNames = req.getSession().getAttribute("userForReport").toString();
                 req.getSession().setAttribute("userForReport", repNames);
 
-
                 List<RecordHib> userRep = usersRepository.findRecByName(repNames);
 
                 for (RecordHib item : userRep) {
@@ -90,6 +89,8 @@ public class ReportServlet extends HttpServlet {
                 req.setAttribute("sumHour", sumHour);//итоговые часы
 
                 req.getRequestDispatcher("/jsp/report.jsp").forward(req, resp);
+            } else {
+                req.getSession().setAttribute("ff", "");
             }
         }
 
@@ -172,6 +173,7 @@ public class ReportServlet extends HttpServlet {
         }
         req.getSession().setAttribute("startDay", startDay);//должны уйти на jsp
         req.getSession().setAttribute("endDay", endDay);
+
 
 
 //отчет по всем с группировкой времени и дохода для Менеджера
