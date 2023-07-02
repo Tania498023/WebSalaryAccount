@@ -101,7 +101,7 @@ public class HomeServlet extends HttpServlet {
             }
 
         }
-
+        req.getSession().setAttribute("visibleForOne", null);
 
 //          имя для отчета по каждому сотруднику (Менеджер) на страницу rep
         req.getSession().setAttribute("idForJsp", "");
@@ -137,6 +137,12 @@ public class HomeServlet extends HttpServlet {
 
 
         else {
+
+            req.getSession().setAttribute("visibleForOne", "");
+            req.getSession().setAttribute("userForReport", "");
+            req.getSession().setAttribute("listRecForReport", "");
+            req.getSession().setAttribute("sumHour", "");
+
             req.getSession().setAttribute("idForJsp", "visibility");
             RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/jsp/home.jsp");
             dispatcher.forward(req,resp);
