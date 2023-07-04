@@ -5,7 +5,7 @@
      width:auto;
      float:left;
      height:80px;
-     position:relative;
+
      border:0px;
      margin:0;
  }
@@ -14,11 +14,10 @@
  .tab-b {
      caption-side: top;
      font-size: 12px;
-     width:auto;
+
      height:80px;
      position:absolute;
-     bottom: 50px;
-     top: 100%;
+
      border:0px;
      margin:auto;
  }

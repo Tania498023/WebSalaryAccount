@@ -40,9 +40,7 @@ public class ReportServlet extends HttpServlet {
 
 //блок расчета з/п
         List<RecordHib> recordGroup = usersRepository.findAllRec();
-//        req.getSession().setAttribute("recGroup", recordGroup);
-//        List<UserHib> userGroup = usersRepository.findAll();
-//        req.getSession().setAttribute("recGroup", recordGroup);
+
 
         //устанавливаем период
         LocalDate startDay = null;
@@ -230,9 +228,10 @@ public class ReportServlet extends HttpServlet {
             req.getSession().setAttribute("idForJsp", "");
         }
         resp.sendRedirect(req.getContextPath() + "/report");
+
+
     }
 }
-
 
 
 

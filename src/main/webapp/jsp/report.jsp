@@ -41,7 +41,7 @@
 <%--отчет по конкретному сотруднику для Менеджера--%>
     <c:if test = "${usersRole eq 'MANAGER'}">
         <c:if test = "${ff eq 'oneRep'}">
-            <table class="tab-b">
+            <table class="tab-a">
                 <caption>Отчет по сотруднику ${userForReport} за период с ${startDay} по ${endDay}</caption>
                 <tr >
                     <td class="tdser">Дата</td>
@@ -140,6 +140,10 @@
         </table>
 
 </c:if>
+
+<div class="tab-b">
+    <input type="button" value="Главное меню" onclick=location.href='home'>
+</div>
 
 </body>
 </html>
